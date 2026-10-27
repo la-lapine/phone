@@ -103,7 +103,7 @@
 
         .typing-bubble { display: flex; align-items: center; space-x: 3px; padding: 8px 12px; }
         .typing-dot { width: 5px; height: 5px; background: #888; border-radius: 50%; animation: blink 1.2s infinite; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; height: 12px; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes blink { 0%, 100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
     </style>
@@ -198,7 +198,7 @@
             <!-- 3. MÀN HÌNH CHÍNH (HOME SCREEN) -->
             <div id="home-screen" class="flex-1 flex flex-col justify-between px-3.5 pt-1 pb-1 text-white overflow-hidden">
                 <div>
-                    <!-- Widget Thời tiết Kazan tự nhiên -->
+                    <!-- Widget Thời tiết Kazan -->
                     <div class="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex justify-between items-center shadow-lg">
                         <div>
                             <p class="text-xl font-light" id="home-clock">--:--</p>
@@ -262,7 +262,7 @@
             <div id="app-messages" class="app-surface text-slate-900">
                 <div class="app-header-fixed bg-slate-50">
                     <button onclick="goHome()" class="flex items-center text-xs text-purple-600 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
-                    <!-- Bộ lọc thư mục: Hộp thư / Đã xóa gần đây (ĐÃ SỬA LỖI ĐỘC LẬP TỪNG NGƯỜI) -->
+                    <!-- Bộ lọc thư mục độc lập từng người -->
                     <div class="flex bg-slate-200 p-0.5 rounded-lg text-[9px] font-bold">
                         <button onclick="filterMessages('inbox')" id="tab-inbox" class="px-2 py-0.5 rounded-md bg-white text-purple-700 shadow-sm">Hộp thư</button>
                         <button onclick="filterMessages('trash')" id="tab-trash" class="px-2 py-0.5 rounded-md text-slate-600 hover:text-rose-600">🗑️ Đã xóa (<span id="trash-count">0</span>)</button>
@@ -272,7 +272,7 @@
                 <div class="app-body-scroll p-2 space-y-1 hide-scroll" id="inbox-list"></div>
             </div>
 
-            <!-- CHAT SUB-VIEW -->
+            <!-- CHAT SUB-VIEW (GIAO DIỆN HỘI THOẠI TRÒ CHUYỆN) -->
             <div id="chat-subview" class="app-surface text-slate-900 z-40">
                 <div class="app-header-fixed bg-slate-50">
                     <button onclick="backToMessages()" class="flex items-center text-xs text-purple-600 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Tin nhắn</button>
@@ -283,13 +283,61 @@
                     <button id="btn-call-action" onclick="makeCall(document.getElementById('chatting-name').innerText)" class="text-purple-600 text-xs p-1"><i class="fa-solid fa-phone"></i></button>
                     <div id="btn-call-placeholder" class="w-5 hidden"></div>
                 </div>
+
+                <!-- Vùng chứa bong bóng chat cuộn chuẩn -->
                 <div id="bubbles-area" class="app-body-scroll p-3 space-y-2 hide-scroll text-xs"></div>
+
+                <!-- THANH SOẠN THẢO: TÍCH HỢP NÚT GỬI ẢNH MÔ TẢ (CHỈ DÀNH CHO USER) -->
                 <div id="chat-composer" class="h-11 px-2 border-t bg-slate-100 flex items-center space-x-1.5 flex-shrink-0">
+                    <!-- Nút gửi ảnh mô tả -->
+                    <button onclick="openPhotoPickerSheet()" class="w-7 h-7 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-full flex items-center justify-center text-xs active:scale-90 transition-transform" title="Gửi ảnh dưới dạng text mô tả">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
                     <input type="text" id="composer-text" placeholder="Nhắn tin..." class="flex-1 h-7 bg-white border border-slate-300 rounded-full px-3 text-[11px] outline-none focus:border-purple-600" onkeypress="if(event.key==='Enter') executeSendMessage()">
                     <button onclick="executeSendMessage()" class="w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs active:scale-90"><i class="fa-solid fa-arrow-up"></i></button>
                 </div>
+
                 <div id="chat-readonly-banner" class="h-9 border-t bg-slate-100 text-slate-500 text-[10px] hidden items-center justify-center flex-shrink-0">
                     <i class="fa-solid fa-lock mr-1.5"></i> Chế độ chỉ xem tin nhắn (Read-Only)
+                </div>
+            </div>
+
+            <!-- BẢNG CHỌN GỬI ẢNH MÔ TẢ (PHOTO PICKER MODAL) -->
+            <div id="photo-picker-sheet" class="absolute inset-0 bg-black/75 z-[230] hidden items-center justify-center p-3">
+                <div class="bg-white rounded-3xl p-3.5 w-full max-w-[290px] text-slate-900 shadow-2xl space-y-2.5">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
+                        <span class="text-xs font-bold text-purple-700 flex items-center"><i class="fa-solid fa-camera mr-1.5"></i>Gửi ảnh mô tả</span>
+                        <button onclick="closePhotoPickerSheet()" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <p class="text-[9px] text-slate-500">Chọn ảnh có sẵn hoặc tự gõ mô tả bức ảnh bạn muốn gửi:</p>
+
+                    <!-- Danh sách ảnh kịch bản mẫu -->
+                    <div class="space-y-1.5 text-[10px]">
+                        <button onclick="sendDescribedPhoto('🧾 [Ảnh chụp: Hóa đơn phòng 402 Khách sạn Lux rơi trong túi áo vest]')" class="w-full p-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl text-left font-semibold text-purple-900 flex items-center">
+                            <i class="fa-solid fa-receipt mr-1.5 text-purple-600"></i>Hóa đơn phòng 402 Khách sạn Lux
+                        </button>
+                        <button onclick="sendDescribedPhoto('💄 [Ảnh chụp: Vết son môi đỏ thẫm dính trên cổ áo sơ mi Emil]')" class="w-full p-2 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl text-left font-semibold text-rose-900 flex items-center">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-rose-500"></i>Vết son môi lạ trên cổ áo sơ mi
+                        </button>
+                        <button onclick="sendDescribedPhoto('🍲 [Ảnh chụp: Bát súp củ dền Borscht nóng hổi vừa nấu bốc khói]')" class="w-full p-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-left font-semibold text-amber-900 flex items-center">
+                            <i class="fa-solid fa-bowl-food mr-1.5 text-amber-600"></i>Bát súp củ dền nóng hổi vừa nấu
+                        </button>
+                        <button onclick="sendDescribedPhoto('🧥 [Ảnh chụp: Chiếc áo khoác dạ tuyết Cashmere mới mua ở K-Mart]')" class="w-full p-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl text-left font-semibold text-slate-800 flex items-center">
+                            <i class="fa-solid fa-vest-patches mr-1.5 text-slate-600"></i>Áo khoác dạ mới mua ở K-Mart
+                        </button>
+                    </div>
+
+                    <!-- Ô tự gõ mô tả ảnh tự do -->
+                    <div class="pt-1 space-y-1 border-t border-slate-100">
+                        <label class="text-[9px] font-bold text-slate-500">Hoặc tự nhập mô tả bức ảnh:</label>
+                        <input type="text" id="custom-photo-input" placeholder="VD: Ảnh chụp lén Emil đứng cùng gái lạ..." class="w-full border border-slate-300 rounded-xl p-1.5 text-xs outline-none focus:border-purple-600">
+                    </div>
+
+                    <div class="flex justify-end space-x-1.5 pt-1">
+                        <button onclick="closePhotoPickerSheet()" class="px-2.5 py-1 text-xs text-slate-500 font-semibold">Đóng</button>
+                        <button onclick="sendCustomDescribedPhoto()" class="px-3 py-1 bg-purple-600 text-white rounded-xl text-xs font-bold shadow-md">Gửi ảnh</button>
+                    </div>
                 </div>
             </div>
 
@@ -407,7 +455,7 @@
                 <div class="app-body-scroll p-2 space-y-1.5 hide-scroll" id="kmart-items-container"></div>
             </div>
 
-            <!-- 8. RED VAULT CỦA EMIL (DIỄN ĐÀN NGẦM MỞ RỘNG VƯỢT BẬC) -->
+            <!-- 8. RED VAULT CỦA EMIL -->
             <div id="app-vault" class="app-surface bg-[#0a0a0f] text-slate-200">
                 <div class="app-header-fixed bg-[#141420] border-b border-red-900/40">
                     <button onclick="goHome()" class="flex items-center text-xs text-red-500 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
@@ -425,7 +473,7 @@
                     <button onclick="switchVaultSubTab('mistresses')" id="vtab-mistresses" class="px-2.5 py-1 rounded-xl text-slate-400 hover:text-white flex items-center"><i class="fa-solid fa-address-book mr-1"></i>Nhân tình</button>
                 </div>
 
-                <!-- BỘ LỌC CHUYÊN SÂU CỦA DIỄN ĐÀN -->
+                <!-- BỘ LỌC CHUYÊN SÂU DIỄN ĐÀN -->
                 <div id="forum-filter-bar" class="px-2.5 py-1.5 bg-[#0d0d15] border-b border-white/5 flex space-x-1.5 overflow-x-auto hide-scroll text-[9px] font-semibold flex-shrink-0">
                     <button onclick="filterForumFeed('all')" id="ff-all" class="px-2 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap">🔥 Tất cả bài đăng</button>
                     <button onclick="filterForumFeed('emil')" id="ff-emil" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">👤 Bài của Emil</button>
@@ -512,12 +560,7 @@
         // ================= KHO BÀI ĐĂNG DIỄN ĐÀN ĐỒ SỘ (NOCTURNE NET) =================
         const comprehensiveForumThreads = [
             {
-                id: "ft_emil_1",
-                category: "emil",
-                tag: "Tài chính ngầm",
-                author: "KazanWolf_91 (Emil)",
-                badge: "VIP Diamond",
-                time: "45 phút trước",
+                id: "ft_emil_1", category: "emil", tag: "Tài chính ngầm", author: "KazanWolf_91 (Emil)", badge: "VIP Diamond", time: "45 phút trước",
                 title: "Làm sao tẩu tán 2 triệu Rúp sang ví lạnh Dubai trước khi ly hôn? Cần tìm luật sư kín ở Kazan.",
                 snippet: "Vợ tôi bắt đầu nghi ngờ vì mấy tuần nay tôi vắng nhà liên tục. Tôi đang chuẩn bị đường lui để dứt áo ra đi...",
                 body: "Chào anh em hội kín. Vợ tôi dạo này bắt đầu cằn nhằn về chuyện đi sớm về muộn. Tôi đã gom được hơn 2 triệu Rúp tiền mặt từ công ty. Tôi muốn chuyển toàn bộ sang Bitcoin rút vào ví lạnh Ledger cất riêng. Nếu nộp đơn ly hôn ra tòa án Kazan thì tòa có thể sao kê được địa chỉ ví tiền ảo không? Tuyệt đối không để con bé ở nhà đụng vào một xu nào.",
@@ -529,12 +572,7 @@
                 ]
             },
             {
-                id: "ft_warn_1",
-                category: "warning",
-                tag: "Cảnh báo khẩn",
-                author: "Shadow_Spotter",
-                badge: "Thành viên uy tín",
-                time: "2 giờ trước",
+                id: "ft_warn_1", category: "warning", tag: "Cảnh báo khẩn", author: "Shadow_Spotter", badge: "Thành viên uy tín", time: "2 giờ trước",
                 title: "CẢNH BÁO: Khách sạn Lux Kazan dạo này có thám tử tư lởn vởn ở sảnh, anh em dẫn bồ cẩn thận!",
                 snippet: "Tôi vừa thấy một gã thám tử cầm máy ảnh ống kính tele ngồi ở quán cà phê đối diện cổng Khách sạn Lux...",
                 body: "Anh em hay dắt bồ qua phòng Suite 402 hoặc các phòng VIP ở Lux Hotel chú ý cao độ! Hôm qua tôi thấy 2 người ăn mặc lịch sự chụp hình lại toàn bộ biển số xe vào bãi đỗ ngầm. Nghi ngờ có bà vợ nhà nào thuê thám tử săn bằng chứng ngoại tình.",
@@ -546,12 +584,7 @@
                 ]
             },
             {
-                id: "ft_service_1",
-                category: "tips",
-                tag: "Dịch vụ đen",
-                author: "Aero_Ticket_Fake",
-                badge: "Thương gia",
-                time: "Hôm nay 10:15",
+                id: "ft_service_1", category: "tips", tag: "Dịch vụ đen", author: "Aero_Ticket_Fake", badge: "Thương gia", time: "Hôm nay 10:15",
                 title: "Nhận xuất hóa đơn đỏ công tác Moscow giả để sếp đi nghỉ dưỡng Sochi cùng thư ký",
                 snippet: "Xuất hóa đơn vé máy bay, phòng khách sạn đóng dấu công ty kiểm toán chuẩn chỉ 100%...",
                 body: "Anh em nào muốn dẫn bồ nhí đi Sochi hoặc Dubai xả hơi mà cần bằng chứng 'đi công tác khẩn cấp' nộp cho vợ và phòng kế toán thì liên hệ. Bao trọn gói từ giấy điều động công tác đến hóa đơn ăn uống ở Moscow.",
@@ -561,12 +594,7 @@
                 ]
             },
             {
-                id: "ft_emil_2",
-                category: "emil",
-                tag: "Cấp cứu",
-                author: "KazanWolf_91 (Emil)",
-                badge: "VIP Diamond",
-                time: "Hôm qua",
+                id: "ft_emil_2", category: "emil", tag: "Cấp cứu", author: "KazanWolf_91 (Emil)", badge: "VIP Diamond", time: "Hôm qua",
                 title: "CẤP CỨU: Bị bé sinh viên dọa gửi ảnh phòng 402 cho bố vợ, anh em có số đội dằn mặt kín ở Kazan không?",
                 snippet: "Nó phát hiện tôi dắt cô thư ký đi nghỉ dưỡng Sochi nên nổi điên, đòi tống tiền 1 triệu Rúp...",
                 body: "Con bé sinh viên tôi bao nuôi ở chung cư Magnolia phát hiện tôi đi Sochi với em thư ký Elena. Giờ nó quay ra đe dọa đòi 1 triệu Rúp, nếu không sẽ gửi toàn bộ ảnh nhạy cảm chụp ở khách sạn Lux cho bố vợ tôi. Anh em có số mối nào xử lý kín miệng hoặc dằn mặt cho nó xóa ảnh không?",
@@ -577,12 +605,7 @@
                 ]
             },
             {
-                id: "ft_tips_1",
-                category: "tips",
-                tag: "Kinh nghiệm",
-                author: "Master_Gaslight",
-                badge: "Hội viên vàng",
-                time: "Hôm qua",
+                id: "ft_tips_1", category: "tips", tag: "Kinh nghiệm", author: "Master_Gaslight", badge: "Hội viên vàng", time: "Hôm qua",
                 title: "Kinh nghiệm 5 năm bao 2 bồ cùng lúc mà vợ ở nhà vẫn tưởng chồng là trụ cột mẫu mực",
                 snippet: "Tuyệt chiêu: Luôn luôn chủ động gắt gỏng trước mỗi khi bước chân vào nhà...",
                 body: "Bước 1: Về đến cửa là mặt mày nhăn nhó, kêu mệt mỏi vì họp hành kiếm tiền. Bước 2: Vợ vừa hé miệng hỏi 'Anh đi đâu về muộn thế?' là gắt lên ngay: 'Tôi đi kiếm tiền nuôi cái nhà này mà cô còn tra khảo à?'. Bước 3: Lập tức vợ sẽ thấy có lỗi và đi rót nước nấu canh cho các bác.",
@@ -592,12 +615,7 @@
                 ]
             },
             {
-                id: "ft_blackmarket_1",
-                category: "tips",
-                tag: "Chợ đen",
-                author: "Spy_Gadgets_Rus",
-                badge: "Thương gia",
-                time: "2 ngày trước",
+                id: "ft_blackmarket_1", category: "tips", tag: "Chợ đen", author: "Spy_Gadgets_Rus", badge: "Thương gia", time: "2 ngày trước",
                 title: "Bán thiết bị quét sóng GPS phát hiện định vị lén gắn trên xe hơi và máy phá sóng mini",
                 snippet: "Thiết bị cầm tay chuyên quét tìm thiết bị nghe lén, AirTag hoặc nam châm GPS gắn gầm xe...",
                 body: "Dạo này các bà vợ hay lén gắn AirTag hoặc thiết bị GPS của thám tử tư dưới gầm xe các sếp. Thiết bị bên em rà một lượt là tít còi báo động ngay. Nhỏ gọn bằng bao thuốc lá.",
@@ -607,12 +625,7 @@
                 ]
             },
             {
-                id: "ft_crypto_1",
-                category: "emil",
-                tag: "Rửa tiền",
-                author: "Crypto_Kazan_P2P",
-                badge: "Uy tín",
-                time: "3 ngày trước",
+                id: "ft_crypto_1", category: "emil", tag: "Rửa tiền", author: "Crypto_Kazan_P2P", badge: "Uy tín", time: "3 ngày trước",
                 title: "Nhận đổi tiền mặt sang USDT ẩn danh tại quán cà phê phố Bauman, giao dịch tiền tươi",
                 snippet: "Bảo mật tuyệt đối, không yêu cầu KYC, không lưu camera, tỷ giá tốt nhất Tatarstan...",
                 body: "Anh em cần rút quỹ đen công ty hoặc giấu tiền trước khi phân chia tài sản cứ mang tiền mặt qua điểm hẹn. Đổi thẳng sang ví lạnh cá nhân trong vòng 5 phút.",
@@ -654,7 +667,6 @@
             let weatherBadge = "Kazan • Mặt đường đóng băng";
             let mistressNightText = `${mistress.name}: Anh yêu, phòng 402 em lấy thẻ rồi nhé, qua nhanh đi...`;
             
-            // LỜI NÓI DỐI CỦA EMIL GỬI CHO VỢ (KHÔNG BAO GIỜ LẪN VỚI TIN NHẮN BỒ NHÍ)
             let emilExcuseToWife = "Tối nay anh bận họp đối tác ở trung tâm Kazan, không về ăn cơm.";
             if (hour >= 22 || hour < 6) {
                 emilExcuseToWife = "Họp muộn quá anh ngủ lại khách sạn gần đối tác, em đừng chờ cơm.";
@@ -676,7 +688,6 @@
 
         let ctx = getNaturalContext();
 
-        // MỖI PROFILE CÓ MẢNG TIN NHẮN VÀ THÙNG RÁC HOÀN TOÀN TÁCH BIỆT (ĐÃ FIX LỖI ĐỒNG BỘ)
         let activeStoryState = {
             vaultPhotos: [],
             vaultMistresses: [],
@@ -687,22 +698,19 @@
         function buildNaturalState() {
             ctx = getNaturalContext();
 
-            // 1. Ảnh Vault
             activeStoryState.vaultPhotos = [
                 { title: `[ẢNH MẬT: ${ctx.mistress.name} tại Khách sạn Lux]`, desc: `${ctx.mistress.name} mặc váy ngủ lụa đỏ chụp trước gương phòng 402, cổ đeo sợi dây chuyền kim cương vừa được Emil tặng.`, tag: "Phòng 402" },
                 { title: `[ẢNH MẬT: Xe Mercedes Emil tại ${ctx.mistress.loc}]`, desc: `Ảnh chụp biển số xe Mercedes đỗ lén lút ngoài căn hộ của ${ctx.mistress.name} lúc 23:40.`, tag: "Lén lút" },
                 { title: `[ẢNH MẬT: Hóa đơn Chanel Boutique Kazan]`, desc: `Biên lai thanh toán 85,000 ₽ mua túi xách tặng bồ nhí giấu dưới ghế phụ xe.`, tag: "Hóa đơn đen" }
             ];
 
-            // 2. Sổ tay nhân tình của Emil
             activeStoryState.vaultMistresses = [
                 { name: `${ctx.mistress.name} (${ctx.mistress.role})`, phone: ctx.mistress.phone, monthlyCost: ctx.mistress.cost, address: ctx.mistress.loc, note: "Nhân tình đang hẹn hò thường xuyên" },
                 { name: "Elena (Thư ký công ty)", phone: "+7 (919) 444-55-66", monthlyCost: "Hoa hồng lậu", address: "Biệt thự ven hồ", note: "Cùng đi nghỉ dưỡng Sochi" },
                 { name: "Anya (Sinh viên)", phone: "+7 (927) 888-11-22", monthlyCost: "120,000 ₽", address: "Chung cư Magnolia", note: "Thích quà cáp đắt tiền" }
             ];
 
-            // 3. TIN NHẮN TỪNG MÁY (ĐÃ SỬA: EMIL NÓI DỐI VỢ, ELENA CHỈ NHẮN VỚI EMIL)
-            // A. MÁY CỦA TÔI (USER)
+            // 1. MÁY CỦA TÔI (USER)
             activeStoryState.chats.user = [
                 { id: "emil", name: "Chồng (Emil)", sub: "Trực tuyến", preview: ctx.emilExcuseToWife, history: [
                     { me: false, text: ctx.emilExcuseToWife },
@@ -723,7 +731,7 @@
                 ]}
             ];
 
-            // B. MÁY CỦA EMIL
+            // 2. MÁY CỦA EMIL
             activeStoryState.chats.emil = [
                 { id: "wife", name: "Vợ (Ở nhà)", sub: "1 giờ trước", preview: "Lại họp? Tuần này 4 lần rồi...", history: [
                     { me: true, text: ctx.emilExcuseToWife },
@@ -744,7 +752,7 @@
                 ]}
             ];
 
-            // C. MÁY CỦA BA RUDOLF
+            // 3. MÁY CỦA BA RUDOLF
             activeStoryState.chats.rudolf = [
                 { id: "user_r", name: "Con gái nhỏ yêu quý", sub: "Hôm nay", preview: "Con nhớ giữ ấm nhé...", history: [
                     { me: true, text: "Con gái, ngoài trời tuyết lạnh lắm, nhớ mặc ấm nhé." },
@@ -763,13 +771,11 @@
                 ]}
             ];
 
-            // 4. THÙNG RÁC (ĐÃ SỬA: ĐỘC LẬP TỪNG NGƯỜI, KHÔNG BỊ ĐỒNG BỘ NỮA)
-            // Máy của bạn: Chỉ có thư rác thông thường
+            // 4. THÙNG RÁC RIÊNG BIỆT TỪNG MÁY
             activeStoryState.deletedChats.user = [
                 { id: "del_u1", name: "Spam - Thẩm mỹ viện Kazan", sub: "3 ngày trước", preview: "Ưu đãi 20% chăm sóc da mùa đông...", history: [{ me: false, text: "Ưu đãi 20% dịch vụ xông hơi và phục hồi da mùa tuyết lạnh." }] }
             ];
 
-            // Máy của Emil: CHỨA TOÀN BỘ TIN NHẮN NGOẠI TÌNH HẮN LÉN XÓA
             activeStoryState.deletedChats.emil = [
                 { id: "del_e1", name: `🗑️ Client A (${ctx.mistress.name})`, sub: "Đã xóa 1 giờ trước", preview: "Anh nhớ chùi vết son môi trên áo...", history: [
                     { me: false, text: "Lúc nãy em lỡ làm dính son môi trên cổ áo sơ mi đấy, chùi sạch chưa? Coi chừng mụ vợ ở nhà phát hiện!" },
@@ -783,12 +789,10 @@
                 ]}
             ];
 
-            // Máy của Ba Rudolf: Chỉ có thông báo thư viện
             activeStoryState.deletedChats.rudolf = [
                 { id: "del_r1", name: "🗑️ Thư viện ĐH Kazan", sub: "Tuần trước", preview: "Xác nhận gia hạn sách...", history: [{ me: false, text: "Sách 'Văn học Nga cổ điển' của Giáo sư đã được gia hạn thêm 30 ngày." }] }
             ];
 
-            // Cập nhật giao diện tự nhiên
             document.getElementById('home-story-badge').innerText = ctx.weatherBadge;
             document.getElementById('lock-timeline-hint').innerText = ctx.timeHint;
             document.getElementById('lock-sender').innerText = (activeProfile === 'emil') ? ctx.mistress.name : (activeProfile === 'rudolf' ? "Viktor Petrov" : "Ba Rudolf");
@@ -817,9 +821,7 @@
 
         const mediaPlaying = { user: "Lana Del Rey - Young and Beautiful", emil: "Deep Dark Techno - Nocturne Live", rudolf: "Tchaikovsky - Nutcracker Suite" };
 
-        // DANH BẠ ĐỘC QUYỀN MỞ RỘNG CHO CẢ 3 MÁY THEO ĐÚNG YÊU CẦU
         const db = {
-            // 1. MÁY CỦA TÔI (USER)
             user: {
                 readOnly: false,
                 contacts: [
@@ -833,7 +835,6 @@
                 bank: [{ title: "Rudolf chuyển tiền", time: "Sáng nay", val: "+50,000 ₽", plus: true }],
                 notes: [{ title: "Cần sắm", body: "Kem nẻ Siberi, áo dạ mới." }]
             },
-            // 2. MÁY CỦA EMIL
             emil: {
                 readOnly: true,
                 contacts: [
@@ -850,7 +851,6 @@
                 bank: [{ title: "Khách sạn Lux phòng 402", time: "Đêm qua", val: "-28,000 ₽", plus: false }],
                 notes: [{ title: "Ví Ledger", body: "Giấu trong hộc xe Mercedes." }]
             },
-            // 3. MÁY CỦA BA RUDOLF
             rudolf: {
                 readOnly: true,
                 contacts: [
@@ -973,7 +973,105 @@
             triggerToast(`🎵 Đang phát: ${mediaPlaying[activeProfile]}`);
         }
 
-        // ================= RENDER RED VAULT & DIỄN ĐÀN NGẦM MỞ RỘNG =================
+        // ================= TÍNH NĂNG MỚI: GỬI ẢNH MÔ TẢ TRONG PHÒNG CHAT =================
+        function openPhotoPickerSheet() {
+            clickSound();
+            document.getElementById('photo-picker-sheet').classList.remove('hidden');
+            document.getElementById('photo-picker-sheet').classList.add('flex');
+        }
+
+        function closePhotoPickerSheet() {
+            clickSound();
+            document.getElementById('photo-picker-sheet').classList.add('hidden');
+            document.getElementById('photo-picker-sheet').classList.remove('flex');
+        }
+
+        function sendDescribedPhoto(photoDesc) {
+            closePhotoPickerSheet();
+            dispatchDescribedPhoto(photoDesc);
+        }
+
+        function sendCustomDescribedPhoto() {
+            const input = document.getElementById('custom-photo-input');
+            const desc = input.value.trim();
+            if (!desc) return;
+            closePhotoPickerSheet();
+            input.value = '';
+            dispatchDescribedPhoto(`📷 [Ảnh chụp: ${desc}]`);
+        }
+
+        function dispatchDescribedPhoto(photoText) {
+            clickSound();
+            const chat = activeStoryState.chats[activeProfile][currentChatIndex];
+            
+            // Đẩy vào lịch sử tin nhắn dưới dạng ảnh
+            chat.history.push({ me: true, text: photoText, isPhoto: true });
+            chat.preview = photoText;
+            renderChatBubbles();
+            renderMessagesInbox();
+
+            // Kích hoạt AI phản ứng theo nội dung ảnh
+            if (activeProfile === 'user') {
+                processPhotoReaction(chat, photoText);
+            }
+        }
+
+        function processPhotoReaction(chat, photoText) {
+            const box = document.getElementById('bubbles-area');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = "self-start bg-slate-200 rounded-2xl rounded-bl-none typing-bubble mt-1";
+            typingDiv.id = "typingBubble";
+            typingDiv.innerHTML = `<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>`;
+            box.appendChild(typingDiv);
+            box.scrollTop = box.scrollHeight;
+
+            const lower = photoText.toLowerCase();
+
+            setTimeout(() => {
+                const bubble = document.getElementById('typingBubble');
+                if (bubble) bubble.remove();
+
+                let reply = "";
+
+                if (chat.id === 'emil') {
+                    // Emil phản ứng giật mình nếu gửi ảnh bằng chứng
+                    if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('phòng 402') || lower.includes('lux') || lower.includes('lén') || lower.includes('lắc tay')) {
+                        reply = "Cái này ở đâu ra?! Cô lục lọi túi áo và xe của tôi đấy à?! Cô thôi ngay cái thói theo dõi bệnh hoạn ấy đi trước khi tôi nổi điên!";
+                    } else if (lower.includes('súp') || lower.includes('áo') || lower.includes('bánh')) {
+                        reply = "Gửi mấy thứ này làm gì? Tôi đang họp bận tối mắt tối mũi, đừng làm phiền nữa.";
+                    } else {
+                        reply = "Gửi ảnh gì đấy? Tôi không có thời gian xem mấy thứ vớ vẩn này.";
+                    }
+                } else if (chat.id === 'rudolf') {
+                    // Ba Rudolf phản ứng bảo bọc / điều tra
+                    if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('phòng 402') || lower.includes('lux') || lower.includes('lén')) {
+                        reply = "Con chụp được cái này ở đâu thế?! Hãy cất kỹ bản gốc đừng để nó biết, ba sẽ chuyển ngay bằng chứng này cho Luật sư Tarasov để bổ sung vào hồ sơ khởi kiện!";
+                    } else if (lower.includes('súp') || lower.includes('bánh')) {
+                        reply = "Bát súp trông ấm áp và ngon miệng quá con gái. Con nhớ ăn hết khi còn nóng nhé, ba thương con.";
+                    } else if (lower.includes('áo')) {
+                        reply = "Áo đẹp và ấm lắm con gái. Mùa đông Kazan lạnh buốt, con nhớ luôn giữ ấm cơ thể nhé.";
+                    } else {
+                        reply = "Ba đã xem ảnh con gửi rồi nhé con gái.";
+                    }
+                } else if (chat.id === 'dmitry') {
+                    if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('lux')) {
+                        reply = "Ủa... cái này... chị dâu chụp ở đâu thế? Em không biết gì đâu nhé, chị hỏi thẳng thằng Emil ấy!";
+                    } else {
+                        reply = "Ảnh đẹp đấy chị dâu!";
+                    }
+                } else {
+                    reply = "Đã nhận được hình ảnh.";
+                }
+
+                chat.history.push({ me: false, text: reply });
+                chat.preview = reply;
+                renderChatBubbles();
+                renderMessagesInbox();
+                clickSound();
+            }, 1500);
+        }
+
+        // ================= RENDER RED VAULT & DIỄN ĐÀN NGẦM =================
         function switchVaultSubTab(tab) {
             clickSound();
             currentVaultSubTab = tab;
@@ -1204,7 +1302,6 @@
             });
         }
 
-        // ================= ĐÃ SỬA: LỌC TIN NHẮN TỪNG NGƯỜI VÀ HIỂN THỊ THÙNG RÁC ĐỘC LẬP =================
         function filterMessages(tab) {
             clickSound();
             currentMessageFilter = tab;
@@ -1223,8 +1320,6 @@
         function renderMessagesInbox() {
             const list = document.getElementById('inbox-list');
             list.innerHTML = '';
-            
-            // LẤY ĐÚNG DANH SÁCH TIN NHẮN HOẶC THÙNG RÁC CỦA MÁY ĐANG CHỌN (activeProfile)
             const chatList = (currentMessageFilter === 'inbox') ? (activeStoryState.chats[activeProfile] || []) : (activeStoryState.deletedChats[activeProfile] || []);
 
             document.getElementById('trash-count').innerText = (activeStoryState.deletedChats[activeProfile] || []).length;
@@ -1271,11 +1366,26 @@
             const chat = chatList[currentChatIndex];
             const box = document.getElementById('bubbles-area');
             box.innerHTML = '';
+            
             chat.history.forEach(c => {
-                box.innerHTML += `
-                    <div class="${c.me ? 'self-end bg-purple-600 text-white rounded-br-none' : 'self-start bg-slate-200 text-slate-900 rounded-bl-none'} px-3 py-1.5 rounded-2xl max-w-[80%] leading-relaxed text-[11px] shadow-sm">
-                        ${c.text}
-                    </div>`;
+                if (c.isPhoto) {
+                    // HIỂN THỊ DẠNG THẺ ẢNH POLAROID ĐÍNH KÈM
+                    box.innerHTML += `
+                        <div class="${c.me ? 'self-end bg-purple-700 text-white rounded-br-none' : 'self-start bg-slate-800 text-white rounded-bl-none'} p-2.5 rounded-2xl max-w-[85%] shadow-md border border-purple-400/30 space-y-1">
+                            <div class="flex items-center space-x-1.5 text-[9px] text-purple-200 font-bold">
+                                <i class="fa-solid fa-camera animate-pulse"></i>
+                                <span>ẢNH ĐÍNH KÈM</span>
+                            </div>
+                            <div class="bg-black/40 p-2 rounded-xl border border-white/10 text-[11px] leading-relaxed italic text-purple-100 font-mono">
+                                ${c.text}
+                            </div>
+                        </div>`;
+                } else {
+                    box.innerHTML += `
+                        <div class="${c.me ? 'self-end bg-purple-600 text-white rounded-br-none' : 'self-start bg-slate-200 text-slate-900 rounded-bl-none'} px-3 py-1.5 rounded-2xl max-w-[80%] leading-relaxed text-[11px] shadow-sm">
+                            ${c.text}
+                        </div>`;
+                }
             });
             box.scrollTop = box.scrollHeight;
         }
@@ -1289,7 +1399,7 @@
             clickSound();
             let callerName = "Ba Rudolf";
             let script = [
-                "Con gái à, ba Rudolf đây... Ngoài trời Kazan tuyết rơi lạnh lắm.",
+                "Con gái à, ba Rudolf đây... Ngoài trời Kazan tuyết rơi âm 5 độ rồi đấy.",
                 "Ba vừa gửi chuyển phát âu súp củ dền nóng qua Kazan Go cho con đấy.",
                 "Có chuyện gì cứ gọi cho ba ngay nhé, đừng chịu đựng một mình..."
             ];
@@ -1456,7 +1566,6 @@
             });
         }
 
-        // RENDER DANH BẠ MỞ RỘNG ĐỘC QUYỀN CHO TỪNG NHÂN VẬT
         function renderContactsApp() {
             const list = document.getElementById('contacts-book');
             list.innerHTML = '';
