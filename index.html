@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleplay Interactive Smartphone</title>
+    <!-- Tailwind CSS & FontAwesome CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --border-phone: #1f2333;
+            --bg-phone: linear-gradient(180deg, #121524 0%, #0a0b12 100%);
+            --shadow-theme: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --primary: #c084fc;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body {
+            width: 100vw; min-height: 100vh; background-color: #05060a;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow-x: hidden; padding: 15px 0;
+        }
+
+        .hide-scroll { overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+
+        /* KHUNG ĐIỆN THOẠI */
+        .phone-wrapper { position: relative; }
+        .phone {
+            width: 360px; height: 710px;
+            background: var(--bg-phone);
+            border: 8px solid var(--border-phone);
+            border-radius: 48px;
+            box-shadow: var(--shadow-theme);
+            position: relative;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* NÚT VẬT LÝ BÊN CẠNH SƯỜN (NÚT NGUỒN) */
+        .power-btn {
+            position: absolute; right: -12px; top: 140px;
+            width: 4px; height: 50px;
+            background: #3b4259; border-radius: 0 3px 3px 0;
+            cursor: pointer; transition: transform 0.1s;
+        }
+        .power-btn:active { transform: scaleX(0.7); }
+
+        /* DYNAMIC ISLAND */
+        .island {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 105px; height: 25px; background: #000; border-radius: 20px;
+            z-index: 120; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 10px; border: 1px solid rgba(255,255,255,0.08);
+        }
+        .island-cam { width: 9px; height: 9px; background: #1a1a1a; border-radius: 50%; border: 1.5px solid #333; }
+        .island-pulse { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 8px var(--primary); }
+
+        /* CHUYỂN CẢNH MÀN HÌNH */
+        .app-screen, .chat-screen {
+            position: absolute; inset: 0; z-index: 30;
+            transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .app-screen.open, .chat-screen.open { transform: translateX(0); }
+        .glass-dock { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+        .glass-nav { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body>
+
+    <!-- THANH CHỌN NHÂN VẬT DÀNH CHO ROLEPLAY -->
+    <div class="mb-3 flex items-center bg-slate-900/90 border border-slate-700 p-1.5 rounded-2xl shadow-lg z-50">
+        <button onclick="switchProfile('user')" id="btn-user" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-purple-600 transition-all">📱 Máy của Tôi</button>
+        <button onclick="switchProfile('emil')" id="btn-emil" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">🥀 Emil Kulikov</button>
+        <button onclick="switchProfile('rudolf')" id="btn-rudolf" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">☕ Rudolf Korolyov</button>
+    </div>
+
+    <!-- WRAPPER CHỨA ĐIỆN THOẠI & NÚT VẬT LÝ -->
+    <div class="phone-wrapper">
+        <!-- Nút nguồn vật lý để tắt/bật -->
+        <div class="power-btn" title="Bấm để Tắt/Bật màn hình" onclick="togglePower()"></div>
+
+        <div class="phone" id="phoneContainer">
+            
+            <!-- Dynamic Island -->
+            <div class="island">
+                <div class="island-cam"></div>
+                <div class="island-pulse"></div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="absolute top-0 w-full h-[40px] flex justify-between items-center px-6 text-white text-[11px] font-semibold z-40">
+                <span id="clock">12:00</span> 
+                <div class="flex space-x-1.5 items-center">
+                    <i class="fa-solid fa-signal text-[9px]"></i>
+                    <i class="fa-solid fa-wifi text-[9px]"></i>
+                    <i class="fa-solid fa-battery-full text-xs"></i>
+                </div>
+            </div>
+
+            <!-- 1. MÀN HÌNH TẮT HOÀN TOÀN (SCREEN-OFF) -->
+            <div id="screen-off" class="absolute inset-0 bg-black z-[190] flex flex-col justify-end items-center pb-12 cursor-pointer transition-opacity duration-300" onclick="wakePhone()">
+                <div class="text-slate-600 text-xs flex flex-col items-center animate-pulse">
+                    <i class="fa-solid fa-fingerprint text-2xl mb-1 text-slate-500"></i>
+                    <span>Chạm để bật màn hình</span>
+                </div>
+            </div>
+
+            <!-- 2. MÀN HÌNH KHÓA (LOCK SCREEN) -->
+            <div id="lock-screen" class="absolute inset-0 z-[140] bg-cover bg-center flex flex-col justify-between pt-16 pb-8 px-6 text-white cursor-pointer transition-all duration-300" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80')" onclick="unlockPhone()">
+                <div class="text-center mt-6">
+                    <i class="fa-solid fa-lock text-sm text-slate-300 mb-1"></i>
+                    <h1 class="text-5xl font-light tracking-tight" id="lock-time">12:00</h1>
+                    <p class="text-xs text-purple-200 mt-1" id="lock-date">Thứ Ba, 27 Tháng 10</p>
+                </div>
+
+                <!-- Thẻ thông báo trên màn hình khóa -->
+                <div id="lock-notification" class="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 shadow-lg text-left">
+                    <div class="flex justify-between items-center text-[10px] text-purple-300 mb-1">
+                        <span class="font-bold flex items-center"><i class="fa-solid fa-comment mr-1"></i> Tin nhắn mới</span>
+                        <span>Vừa xong</span>
+                    </div>
+                    <p class="text-xs font-semibold" id="lock-notif-title">Emil Kulikov</p>
+                    <p class="text-[11px] text-slate-200 truncate" id="lock-notif-desc">Tối nay anh về muộn, đừng chờ cơm...</p>
+                </div>
+
+                <div class="text-center text-[11px] text-slate-300 animate-bounce">
+                    <i class="fa-solid fa-chevron-up text-xs mb-1"></i>
+                    <p>Chạm vào màn hình để mở khóa</p>
+                </div>
+            </div>
+
+            <!-- SCREEN CONTAINER (MÀN HÌNH CHÍNH) -->
+            <div class="relative w-full h-full pt-[42px] pb-[18px] hide-scroll flex flex-col justify-between">
+                
+                <!-- HOME SCREEN -->
+                <div id="home-screen" class="h-full flex flex-col justify-between p-4 text-white">
+                    <div>
+                        <!-- Widget Thời Tiết Kazan -->
+                        <div class="mt-2 p-3.5 rounded-[22px] bg-white/10 backdrop-blur-md border border-white/10 flex justify-between items-center shadow-lg">
+                            <div>
+                                <p class="text-2xl font-light text-white" id="widget-time">12:00</p>
+                                <p class="text-[11px] text-purple-200 mt-0.5">Kazan, Russia</p>
+                            </div>
+                            <div class="text-right flex flex-col items-end">
+                                <i class="fa-solid fa-snowflake text-2xl text-purple-300"></i>
+                                <p class="text-xs font-bold text-white mt-1">-5°C Tuyết nhẹ</p>
+                            </div>
+                        </div>
+
+                        <!-- Lưới Ứng Dụng -->
+                        <div class="grid grid-cols-4 gap-3.5 mt-6 px-1" id="app-grid">
+                            <!-- App Ngân hàng -->
+                            <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-bank')">
+                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-blue-500 to-indigo-700 rounded-2xl flex justify-center items-center text-xl text-white shadow-lg"><i class="fa-solid fa-building-columns"></i></div>
+                                <span class="text-white text-[10.5px] mt-1.5 font-medium">T-Bank</span>
+                            </div>
+                            <!-- App Ghi Chú -->
+                            <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-notes')">
+                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-amber-400 to-orange-500 rounded-2xl flex justify-center items-center text-xl text-yellow-950 shadow-lg"><i class="fa-solid fa-note-sticky"></i></div>
+                                <span class="text-white text-[10.5px] mt-1.5 font-medium">Notes</span>
+                            </div>
+                            <!-- App Mua sắm (Chỉ User) -->
+                            <div id="grid-item-kmart" class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-shopping')">
+                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-pink-400 to-rose-600 rounded-2xl flex justify-center items-center text-xl text-white shadow-lg"><i class="fa-solid fa-bag-shopping"></i></div>
+                                <span class="text-white text-[10.5px] mt-1.5 font-medium">K-Mart</span>
+                            </div>
+                            <!-- App Bí mật (Chỉ Emil) -->
+                            <div id="grid-item-vault" class="hidden flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-secret')">
+                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-red-600 to-rose-950 rounded-2xl flex justify-center items-center text-xl text-white shadow-lg shadow-red-950/50"><i class="fa-solid fa-lock"></i></div>
+                                <span class="text-red-400 text-[10.5px] mt-1.5 font-medium">Vault</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dock Bar -->
+                    <div class="w-full h-[72px] mb-2 glass-dock rounded-[26px] flex justify-around items-center px-4 shadow-xl border border-white/10">
+                        <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-messages')">
+                            <div class="w-[48px] h-[48px] bg-gradient-to-b from-emerald-400 to-teal-600 rounded-[18px] flex justify-center items-center text-xl text-white relative shadow-md">
+                                <i class="fa-solid fa-comment"></i>
+                                <div class="absolute -top-1 -right-1 bg-rose-500 w-4 h-4 rounded-full border border-white flex justify-center items-center text-[9px] font-bold" id="unread-count">1</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-contacts')">
+                            <div class="w-[48px] h-[48px] bg-gradient-to-b from-slate-200 to-slate-400 rounded-[18px] flex justify-center items-center text-xl text-slate-800 shadow-md">
+                                <i class="fa-solid fa-address-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. MESSAGES APP -->
+                <div id="app-messages" class="app-screen bg-white text-slate-900">
+                    <div class="pt-[38px] pb-2 px-4 border-b glass-nav absolute w-full z-10 flex justify-between items-center">
+                        <h1 class="text-xl font-bold tracking-tight">Messages</h1>
+                        <i class="fa-solid fa-pen-to-square text-purple-600 text-base cursor-pointer"></i>
+                    </div>
+                    <div class="pt-[78px] pb-[35px] px-3 hide-scroll h-full">
+                        <div id="msg-list" class="space-y-1"></div>
+                    </div>
+                </div>
+
+                <!-- CHAT VIEW DETAIL -->
+                <div id="chat-view" class="chat-screen bg-slate-50 text-slate-900 flex flex-col justify-between">
+                    <div class="glass-nav pt-[38px] pb-2 px-3 border-b flex items-center justify-between shadow-sm z-10 w-full">
+                        <div class="flex items-center cursor-pointer" onclick="closeChat()">
+                            <i class="fa-solid fa-chevron-left text-purple-600 text-lg mr-2"></i>
+                            <div>
+                                <h2 id="chat-name" class="font-bold text-xs">Name</h2>
+                                <p id="chat-status" class="text-[9px] text-slate-500">Đang hoạt động</p>
+                            </div>
+                        </div>
+                        <i id="chat-call-btn" class="fa-solid fa-phone text-purple-600 text-base mr-1 cursor-pointer active:scale-90 transition-transform" onclick="startCall(document.getElementById('chat-name').innerText)"></i>
+                    </div>
+                    
+                    <div id="chat-bubbles" class="flex-1 p-3.5 hide-scroll flex flex-col space-y-2.5 overflow-y-auto"></div>
+
+                    <!-- Ô nhập tin nhắn -->
+                    <div id="chat-input-bar" class="w-full bg-[#f3f4f6] border-t p-2 flex items-center">
+                        <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." class="flex-1 bg-white border border-slate-300 rounded-full px-3 py-1.5 text-xs outline-none focus:border-purple-500" onkeypress="if(event.key==='Enter') sendRealMessage()">
+                        <button onclick="sendRealMessage()" class="ml-2 w-7 h-7 bg-purple-600 rounded-full text-white flex justify-center items-center active:scale-90 transition-transform"><i class="fa-solid fa-arrow-up text-xs"></i></button>
+                    </div>
+                </div>
+
+                <!-- 2. CONTACTS APP -->
+                <div id="app-contacts" class="app-screen bg-white text-slate-900">
+                    <div class="pt-[38px] pb-2 px-4 border-b glass-nav z-10 sticky top-0"><h1 class="text-xl font-bold">Contacts</h1></div>
+                    <div class="p-3 hide-scroll h-full space-y-2 pb-16" id="contacts-list"></div>
+                </div>
+
+                <!-- 3. BANKING APP -->
+                <div id="app-bank" class="app-screen bg-[#121212] text-white">
+                    <div class="pt-[38px] pb-2 px-4 z-10 sticky top-0 bg-[#121212]/90 backdrop-blur-md"><h1 class="text-lg font-bold text-center">T-Bank</h1></div>
+                    <div class="p-4 hide-scroll h-full pb-16">
+                        <div class="bg-gradient-to-br from-purple-700 via-indigo-800 to-slate-900 rounded-[20px] p-4 shadow-xl mb-4 border border-white/10">
+                            <p class="text-[10px] text-purple-200">Số dư khả dụng</p>
+                            <h2 class="text-2xl font-extrabold tracking-tight mt-0.5" id="bank-balance">0 ₽</h2>
+                            <div class="mt-4 flex justify-between items-end">
+                                <p class="font-mono text-xs tracking-widest text-purple-300">**** 8892</p>
+                                <i class="fa-brands fa-cc-visa text-2xl opacity-80"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xs font-bold mb-2 text-slate-400">Giao dịch gần đây</h3>
+                        <div class="space-y-2" id="bank-transactions"></div>
+                    </div>
+                </div>
+
+                <!-- 4. NOTES APP -->
+                <div id="app-notes" class="app-screen bg-[#fdfaf6] text-slate-900">
+                    <div class="pt-[38px] pb-2 px-4 border-b border-yellow-200 bg-[#fdfaf6]/90 backdrop-blur-md z-10 sticky top-0"><h1 class="text-xl font-bold text-amber-600">Notes</h1></div>
+                    <div class="p-3.5 hide-scroll h-full space-y-3 pb-16" id="notes-list"></div>
+                </div>
+
+                <!-- 5. SHOPPING (K-MART) -->
+                <div id="app-shopping" class="app-screen bg-[#fdf2f8] text-slate-900">
+                    <div class="pt-[38px] pb-2 px-4 border-b border-pink-200 bg-white/90 backdrop-blur-md z-10 sticky top-0 flex justify-between items-center">
+                        <h1 class="text-xl font-extrabold text-pink-600"><i class="fa-solid fa-store mr-1.5"></i>K-Mart</h1>
+                        <span class="text-[9px] text-pink-600 bg-pink-100 px-2 py-0.5 rounded-full font-bold">Kazan Mart</span>
+                    </div>
+                    <div class="p-3.5 hide-scroll h-full pb-16 space-y-2.5">
+                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex justify-between items-center">
+                            <div><p class="font-bold text-xs">👗 Váy dạ hội Kazan</p><p class="text-[10px] text-slate-500">Nhung đỏ nhạt, giữ ấm cực tốt</p><p class="text-xs font-bold text-pink-600 mt-1">4,500 ₽</p></div>
+                            <button onclick="buyItem(this)" class="bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl font-semibold">Mua ngay</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex justify-between items-center">
+                            <div><p class="font-bold text-xs">🍰 Bánh mật ong Medovik</p><p class="text-[10px] text-slate-500">Vị ngọt thanh từ tiệm bánh Rudolf thích</p><p class="text-xs font-bold text-pink-600 mt-1">650 ₽</p></div>
+                            <button onclick="buyItem(this)" class="bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl font-semibold">Mua ngay</button>
+                        </div>
+                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex justify-between items-center">
+                            <div><p class="font-bold text-xs">🍷 Rượu vang đỏ Krym</p><p class="text-[10px] text-slate-500">Ủ gỗ sồi hảo hạng</p><p class="text-xs font-bold text-pink-600 mt-1">3,200 ₽</p></div>
+                            <button onclick="buyItem(this)" class="bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl font-semibold">Mua ngay</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. SECRET VAULT (EMIL ONLY) -->
+                <div id="app-secret" class="app-screen bg-black text-red-500">
+                    <div class="pt-[38px] pb-2 px-4 border-b border-red-900 bg-black/90 sticky top-0 flex justify-between items-center">
+                        <h1 class="text-lg font-bold"><i class="fa-solid fa-skull mr-2"></i>Red Vault</h1>
+                        <span class="text-[9px] bg-red-950 text-red-400 px-2 py-0.5 rounded border border-red-800">ENCRYPTED</span>
+                    </div>
+                    <div class="p-3.5 hide-scroll h-full pb-16 space-y-3">
+                        <div class="bg-red-950/40 border border-red-900/60 p-3 rounded-2xl text-xs">
+                            <p class="font-bold text-red-300">Diễn đàn kín (Private Club)</p>
+                            <p class="text-[10px] text-red-400 mt-1">Chủ đề: "Cách kiểm soát bạn đời và tẩu tán tài sản tại nước ngoài..."</p>
+                        </div>
+                        <div class="bg-red-950/40 border border-red-900/60 p-3 rounded-2xl text-xs">
+                            <p class="font-bold text-red-300">Giao dịch tiền ảo ẩn danh</p>
+                            <p class="text-[10px] text-red-400 mt-1">Đã chuyển 0.15 BTC sang ví ẩn. Nội dung: Đặt phòng VIP Lux Kazan.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CALL SCREEN OVERLAY -->
+                <div id="call-screen" class="absolute inset-0 bg-black/95 text-white z-[100] flex flex-col justify-between items-center py-14 transition-opacity duration-300 opacity-0 pointer-events-none">
+                    <div class="text-center w-full mt-6">
+                        <div class="w-16 h-16 bg-purple-900/50 border border-purple-500 rounded-full mx-auto mb-2 flex justify-center items-center text-2xl font-bold" id="call-avatar">?</div>
+                        <h2 id="calling-name" class="text-xl font-light">Name</h2>
+                        <p class="text-[11px] mt-1 animate-pulse text-purple-300" id="call-status-text">Đang gọi...</p>
+                    </div>
+                    <div class="w-14 h-14 bg-rose-600 rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-90 transition-transform shadow-lg" onclick="endCall()"><i class="fa-solid fa-phone-slash"></i></div>
+                </div>
+
+            </div> <!-- End Screen Container -->
+
+            <!-- HOME BAR -->
+            <div class="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-[100px] h-[4px] bg-white opacity-50 rounded-full cursor-pointer z-50 hover:opacity-100 transition-opacity" onclick="goHome()"></div>
+
+            <!-- MODAL NỘI BỘ (Thay thế cho window.prompt để tránh lỗi sandbox) -->
+            <div id="custom-modal" class="absolute inset-0 bg-black/70 z-[250] hidden items-center justify-center p-4">
+                <div class="bg-white rounded-2xl p-4 w-full max-w-[280px] shadow-2xl text-slate-800">
+                    <h3 class="text-xs font-bold mb-2" id="modal-title">Sửa tên liên hệ</h3>
+                    <input type="text" id="modal-input" class="w-full border border-slate-300 rounded-lg p-2 text-xs mb-3 outline-none focus:border-purple-600">
+                    <div class="flex justify-end space-x-2">
+                        <button onclick="closeModal()" class="px-3 py-1 text-xs text-slate-600 font-semibold">Hủy</button>
+                        <button onclick="confirmModal()" class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs font-semibold">Lưu</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOAST THÔNG BÁO NỘI BỘ (Thay thế cho window.alert) -->
+            <div id="custom-toast" class="absolute top-12 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-purple-500/40 text-white text-[11px] px-3.5 py-1.5 rounded-full shadow-lg z-[260] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center">
+                <i class="fa-solid fa-circle-info text-purple-400 mr-1.5"></i>
+                <span id="toast-text">Thông báo</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- DỮ LIỆU CỐT TRUYỆN CỦA 3 NHÂN VẬT ---
+        const profiles = {
+            user: {
+                balance: "185,400 ₽",
+                isReadOnly: false,
+                notifTitle: "Emil Kulikov",
+                notifDesc: "Tối nay anh về muộn, đừng chờ cơm...",
+                messages: [
+                    { name: "Chồng tồi (Emil)", status: "Vừa xong", preview: "Tối nay anh bận họp đối tác...", chat: [
+                        { sender: "them", text: "Tối nay anh bận họp với đối tác Kazan, không về ăn cơm được." },
+                        { sender: "me", text: "Lại họp? Tuần này anh họp 4 lần rồi đấy Emil." },
+                        { sender: "them", text: "Đừng có cằn nhằn nữa, anh đi kiếm tiền chứ đi chơi à? Ngủ sớm đi." }
+                    ]},
+                    { name: "Ba Rudolf", status: "15 phút trước", preview: "Con gái, hôm nay Kazan có tuyết lạnh...", chat: [
+                        { sender: "them", text: "Con gái, hôm nay Kazan có tuyết lạnh buốt đấy, ra ngoài nhớ mang găng tay và khăn len nhé." },
+                        { sender: "them", text: "Ta vừa chuyển chút tiền tiêu vặt vào thẻ con rồi đấy, thích ăn bánh gì thì cứ mua." },
+                        { sender: "me", text: "Dạ con cảm ơn Ba Rudolf nhiều ạ! Ba giữ ấm nhé." }
+                    ]}
+                ],
+                contacts: [
+                    { id: "c1", name: "Chồng tồi (Emil)", phone: "+7 (917) 442-88-12" },
+                    { id: "c2", name: "Ba Rudolf", phone: "+7 (987) 221-00-99" },
+                    { id: "c3", name: "Tiệm bánh Kazan Mart", phone: "+7 (843) 555-12-34" }
+                ],
+                bankTransactions: [
+                    { title: "Rudolf Korolyov chuyển tiền", desc: "Hôm nay, 10:15", amount: "+50,000 ₽", color: "text-emerald-400" },
+                    { title: "Kazan Mart - Mua bánh", desc: "Hôm qua", amount: "-650 ₽", color: "text-slate-300" },
+                    { title: "Tiệm cà phê tuyết", desc: "25 Tháng 10", amount: "-320 ₽", color: "text-slate-300" }
+                ],
+                notes: [
+                    { title: "Danh sách đồ cần mua", content: "Kem dưỡng ẩm chống nẻ Kazan, trà đen dâu tây, áo len mới." },
+                    { title: "Lịch tuần này", content: "Thứ Sáu đi ăn tối với Ba Rudolf tại quán súp Borscht." }
+                ]
+            },
+            emil: {
+                balance: "2,450,000 ₽",
+                isReadOnly: true,
+                notifTitle: "Anya (Client A)",
+                notifDesc: "Khách sạn Lux phòng 402 nhé anh yêu...",
+                messages: [
+                    { name: "Client A (Anya)", status: "Đang hoạt động", preview: "Phòng 402 nhé anh...", chat: [
+                        { sender: "them", text: "Anh yêu, túi xách Chanel hôm nọ đẹp lắm, em thích lắm!" },
+                        { sender: "me", text: "Em thích là được rồi. Tối nay ở Lux Kazan phòng cũ nhé, anh nói dối vợ là đi họp rồi." },
+                        { sender: "them", text: "Dạ vâng, em chờ anh..." }
+                    ]},
+                    { name: "Nhà cung cấp xi măng (Quán bar)", status: "Hôm qua", preview: "Bàn VIP đã chuẩn bị xong...", chat: [
+                        { sender: "them", text: "Anh Kulikov, bàn VIP Nocturne Bar đã giữ chỗ cho anh và bạn bè." }
+                    ]}
+                ],
+                contacts: [
+                    { id: "c_e1", name: "Client A (Thật ra là Anya - Bồ)", phone: "+7 (927) 888-11-22" },
+                    { id: "c_e2", name: "Nhà cung cấp vật liệu (Quán rượu)", phone: "+7 (843) 999-00-11" },
+                    { id: "c_e3", name: "Vợ (Phiền phức)", phone: "+7 (917) 000-44-33" }
+                ],
+                bankTransactions: [
+                    { title: "Chanel Boutique Kazan", desc: "Hôm nay, 14:20", amount: "-85,000 ₽", color: "text-rose-400" },
+                    { title: "Khách sạn Lux Kazan", desc: "Hôm nay, 11:00", amount: "-28,000 ₽", color: "text-rose-400" },
+                    { title: "Nocturne Bar & Lounge", desc: "Hôm qua", amount: "-14,500 ₽", color: "text-rose-400" }
+                ],
+                notes: [
+                    { title: "Mật khẩu két sắt & Vault", content: "Không được để con bé phát hiện thẻ phụ ngân hàng ở Thụy Sĩ." },
+                    { title: "Kế hoạch tuần", content: "Báo với công ty đi công tác Moscow nhưng thực chất đi nghỉ dưỡng Sochi." }
+                ]
+            },
+            rudolf: {
+                balance: "890,000 ₽",
+                isReadOnly: true,
+                notifTitle: "Viện Giáo Dục Kazan",
+                notifDesc: "Lịch giảng bài tuần tới...",
+                messages: [
+                    { name: "Con gái nhỏ", status: "Hôm nay", preview: "Dạ con cảm ơn Ba Rudolf nhiều ạ...", chat: [
+                        { sender: "me", text: "Con gái, hôm nay trời Kazan lạnh buốt đấy, ra ngoài nhớ quàng khăn ấm nhé." },
+                        { sender: "me", text: "Ta vừa chuyển tiền tiêu vặt rồi đấy." },
+                        { sender: "them", text: "Dạ con cảm ơn Ba Rudolf nhiều ạ! Ba giữ ấm nhé." }
+                    ]},
+                    { name: "Hiệu trưởng Lambert", status: "Hôm qua", preview: "Tài liệu nghiên cứu đã duyệt...", chat: [
+                        { sender: "them", text: "Giáo sư Rudolf, hội đồng đã duyệt đề cương của thầy." }
+                    ]}
+                ],
+                contacts: [
+                    { id: "c_r1", name: "Con gái nhỏ yêu quý", phone: "+7 (917) 000-44-33" },
+                    { id: "c_r2", name: "Hiệu trưởng Lambert", phone: "+7 (843) 111-22-33" },
+                    { id: "c_r3", name: "Bác sĩ tim mạch Kazan", phone: "+7 (843) 777-88-99" }
+                ],
+                bankTransactions: [
+                    { title: "Chuyển cho con gái", desc: "Hôm nay, 10:15", amount: "-50,000 ₽", color: "text-rose-400" },
+                    { title: "Hiệu sách Kazan Central", desc: "26 Tháng 10", amount: "-3,200 ₽", color: "text-slate-300" },
+                    { title: "Tiệm thực phẩm sạch hữu cơ", desc: "24 Tháng 10", amount: "-4,800 ₽", color: "text-slate-300" }
+                ],
+                notes: [
+                    { title: "Sở thích của con gái", content: "Cỡ giày: 37. Dị ứng: tôm, phấn hoa cúc. Món yêu thích: Súp củ dền Borscht ít béo, bánh Medovik nhiều kem mật ong." },
+                    { title: "Lịch mua thuốc định kỳ", content: "Thuốc bổ huyết và trà hoa cúc giữ ấm phổi mùa đông." }
+                ]
+            }
+        };
+
+        let currentProfileKey = 'user';
+        let currentEditingContactId = null;
+
+        // --- HÀM THỜI GIAN ---
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = timeStr;
+            document.getElementById('widget-time').innerText = timeStr;
+            document.getElementById('lock-time').innerText = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // --- CÁC HÀM BẬT / TẮT / KHÓA MÀN HÌNH ---
+        function wakePhone() {
+            document.getElementById('screen-off').style.opacity = '0';
+            setTimeout(() => { document.getElementById('screen-off').style.display = 'none'; }, 300);
+        }
+
+        function unlockPhone() {
+            const lockScreen = document.getElementById('lock-screen');
+            lockScreen.style.transform = 'translateY(-100%)';
+            setTimeout(() => { lockScreen.style.display = 'none'; }, 300);
+        }
+
+        function togglePower() {
+            const screenOff = document.getElementById('screen-off');
+            const lockScreen = document.getElementById('lock-screen');
+            if (screenOff.style.display === 'none') {
+                // Tắt màn hình
+                screenOff.style.display = 'flex';
+                setTimeout(() => screenOff.style.opacity = '1', 10);
+                // Đóng hết app về lock screen
+                goHome();
+                lockScreen.style.display = 'flex';
+                lockScreen.style.transform = 'translateY(0)';
+            } else {
+                // Bật sáng lên Lock Screen
+                wakePhone();
+            }
+        }
+
+        // --- ĐỔI PROFILE NHÂN VẬT ---
+        function switchProfile(profileKey) {
+            currentProfileKey = profileKey;
+            ['user', 'emil', 'rudolf'].forEach(k => {
+                const btn = document.getElementById('btn-' + k);
+                if (k === profileKey) {
+                    btn.classList.add('bg-purple-600', 'text-white');
+                    btn.classList.remove('text-slate-400');
+                } else {
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+
+            const data = profiles[profileKey];
+            
+            // Cập nhật Màn hình khóa
+            document.getElementById('lock-notif-title').innerText = data.notifTitle;
+            document.getElementById('lock-notif-desc').innerText = data.notifDesc;
+
+            // Cập nhật App hiển thị
+            const kmart = document.getElementById('grid-item-kmart');
+            const vault = document.getElementById('grid-item-vault');
+            if (profileKey === 'emil') {
+                kmart.classList.add('hidden');
+                vault.classList.remove('hidden');
+                vault.classList.add('flex');
+            } else if (profileKey === 'user') {
+                kmart.classList.remove('hidden');
+                kmart.classList.add('flex');
+                vault.classList.add('hidden');
+            } else {
+                kmart.classList.add('hidden');
+                vault.classList.add('hidden');
+            }
+
+            // Phân quyền Read-only: Ẩn/Hiện nút gọi và ô nhập tin nhắn
+            const callBtn = document.getElementById('chat-call-btn');
+            const inputBar = document.getElementById('chat-input-bar');
+            if (data.isReadOnly) {
+                callBtn.classList.add('hidden');
+                inputBar.classList.add('hidden');
+            } else {
+                callBtn.classList.remove('hidden');
+                inputBar.classList.remove('hidden');
+            }
+
+            // Đổ dữ liệu Bank
+            document.getElementById('bank-balance').innerText = data.balance;
+            const bankBox = document.getElementById('bank-transactions');
+            bankBox.innerHTML = '';
+            data.bankTransactions.forEach(t => {
+                bankBox.innerHTML += `
+                    <div class="bg-white/5 border border-white/5 p-2.5 rounded-xl flex justify-between items-center">
+                        <div><p class="font-bold text-xs">${t.title}</p><p class="text-[9px] text-slate-400">${t.desc}</p></div>
+                        <span class="text-xs font-bold ${t.color}">${t.amount}</span>
+                    </div>`;
+            });
+
+            // Đổ dữ liệu Notes
+            const notesBox = document.getElementById('notes-list');
+            notesBox.innerHTML = '';
+            data.notes.forEach(n => {
+                notesBox.innerHTML += `
+                    <div class="bg-amber-100/90 border border-amber-200/80 p-3 rounded-2xl shadow-sm">
+                        <h2 class="font-bold text-amber-900 text-xs mb-1">${n.title}</h2>
+                        <p class="text-[11px] text-amber-800 leading-relaxed">${n.content}</p>
+                    </div>`;
+            });
+
+            // Đổ dữ liệu Danh bạ (Contacts)
+            renderContacts();
+
+            // Đổ danh sách tin nhắn
+            renderMessages();
+
+            goHome();
+            showToast(`Đã chuyển sang điện thoại của: ${profileKey === 'user' ? 'Tôi' : (profileKey === 'emil' ? 'Emil' : 'Rudolf')}`);
+        }
+
+        function renderContacts() {
+            const list = document.getElementById('contacts-list');
+            list.innerHTML = '';
+            const data = profiles[currentProfileKey];
+            data.contacts.forEach(c => {
+                list.innerHTML += `
+                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-2xl flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex justify-center items-center font-bold text-xs mr-2.5">${c.name.charAt(0)}</div>
+                            <div><p class="font-bold text-xs" id="${c.id}">${c.name}</p><p class="text-[10px] text-slate-400">${c.phone}</p></div>
+                        </div>
+                        ${!data.isReadOnly ? `<button onclick="openEditModal('${c.id}')" class="text-slate-400 hover:text-purple-600 text-xs p-1"><i class="fa-solid fa-pen"></i></button>` : ''}
+                    </div>`;
+            });
+        }
+
+        function renderMessages() {
+            const list = document.getElementById('msg-list');
+            list.innerHTML = '';
+            const data = profiles[currentProfileKey];
+            data.messages.forEach((m, idx) => {
+                list.innerHTML += `
+                    <div class="flex items-center p-2.5 rounded-2xl hover:bg-slate-100 cursor-pointer active:scale-98 transition-all" onclick="openChatByIndex(${idx})">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex justify-center items-center font-bold text-sm mr-3">${m.name.charAt(0)}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline"><h3 class="font-bold text-xs truncate">${m.name}</h3><span class="text-[9px] text-slate-400">${m.status}</span></div>
+                            <p class="text-[10px] text-slate-500 truncate mt-0.5">${m.preview}</p>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // --- ĐIỀU HƯỚNG APP ---
+        function openApp(appId) { document.getElementById(appId).classList.add('open'); }
+        function goHome() { document.querySelectorAll('.app-screen, .chat-screen').forEach(el => el.classList.remove('open')); }
+
+        function openChatByIndex(idx) {
+            const data = profiles[currentProfileKey];
+            const chatData = data.messages[idx];
+            document.getElementById('chat-name').innerText = chatData.name;
+            document.getElementById('chat-status').innerText = chatData.status;
+
+            const bubbles = document.getElementById('chat-bubbles');
+            bubbles.innerHTML = '';
+            chatData.chat.forEach(msg => {
+                const isMe = msg.sender === 'me';
+                bubbles.innerHTML += `
+                    <div class="${isMe ? 'self-end bg-purple-600 text-white rounded-br-sm' : 'self-start bg-slate-200 text-slate-800 rounded-bl-sm'} px-3 py-1.5 rounded-2xl max-w-[82%] text-xs shadow-sm leading-relaxed">
+                        ${msg.text}
+                    </div>`;
+            });
+            document.getElementById('chat-view').classList.add('open');
+            bubbles.scrollTop = bubbles.scrollHeight;
+        }
+
+        function closeChat() { document.getElementById('chat-view').classList.remove('open'); }
+
+        // --- GỬI TIN NHẮN TƯƠNG TÁC THẬT ---
+        function sendRealMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            const bubbles = document.getElementById('chat-bubbles');
+            const div = document.createElement('div');
+            div.className = "self-end bg-purple-600 text-white px-3 py-1.5 rounded-2xl rounded-br-sm max-w-[82%] text-xs shadow-sm mt-1";
+            div.innerText = text;
+            bubbles.appendChild(div);
+            input.value = '';
+            bubbles.scrollTop = bubbles.scrollHeight;
+        }
+
+        function buyItem(btn) {
+            btn.innerText = 'Đã mua ✓';
+            btn.classList.replace('bg-slate-900', 'bg-emerald-600');
+            btn.disabled = true;
+            showToast("Giao dịch mua hàng thành công!");
+        }
+
+        // --- GỌI ĐIỆN GIẢ LẬP ---
+        function startCall(name) {
+            const cs = document.getElementById('call-screen');
+            document.getElementById('calling-name').innerText = name;
+            document.getElementById('call-avatar').innerText = name.charAt(0);
+            cs.style.pointerEvents = 'auto';
+            cs.classList.remove('opacity-0');
+            setTimeout(() => {
+                document.getElementById('call-status-text').innerText = "Đã kết nối (Chuyển sang RP Text)...";
+            }, 2500);
+        }
+
+        function endCall() {
+            const cs = document.getElementById('call-screen');
+            cs.classList.add('opacity-0');
+            cs.style.pointerEvents = 'none';
+            document.getElementById('call-status-text').innerText = "Đang gọi...";
+            showToast("Cuộc gọi đã kết thúc");
+        }
+
+        // --- MODAL NỘI BỘ (Thay prompt) ---
+        function openEditModal(contactId) {
+            currentEditingContactId = contactId;
+            const currentName = document.getElementById(contactId).innerText;
+            document.getElementById('modal-input').value = currentName;
+            const modal = document.getElementById('custom-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('custom-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentEditingContactId = null;
+        }
+
+        function confirmModal() {
+            const val = document.getElementById('modal-input').value.trim();
+            if (val && currentEditingContactId) {
+                document.getElementById(currentEditingContactId).innerText = val;
+                showToast("Đã đổi tên liên hệ thành công!");
+            }
+            closeModal();
+        }
+
+        // --- TOAST NOTIFICATION NỘI BỘ (Thay alert) ---
+        function showToast(text) {
+            const toast = document.getElementById('custom-toast');
+            document.getElementById('toast-text').innerText = text;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => { toast.classList.add('opacity-0'); }, 2500);
+        }
+
+        // Khởi động dữ liệu ban đầu
+        switchProfile('user');
+    </script>
+</body>
+</html>
