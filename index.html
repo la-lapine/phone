@@ -158,7 +158,7 @@
                 <div class="flex space-x-1.5 items-center text-[10px]">
                     <i class="fa-solid fa-signal"></i>
                     <i class="fa-solid fa-wifi"></i>
-                    <span class="text-[9px] font-mono text-emerald-400">94%</span>
+                    <span class="text-[9px] font-mono text-emerald-400">95%</span>
                     <i class="fa-solid fa-battery-three-quarters text-xs text-emerald-400"></i>
                 </div>
             </div>
@@ -262,6 +262,7 @@
             <div id="app-messages" class="app-surface text-slate-900">
                 <div class="app-header-fixed bg-slate-50">
                     <button onclick="goHome()" class="flex items-center text-xs text-purple-600 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <!-- Bộ lọc thư mục: Hộp thư / Đã xóa gần đây (ĐÃ SỬA LỖI ĐỘC LẬP TỪNG NGƯỜI) -->
                     <div class="flex bg-slate-200 p-0.5 rounded-lg text-[9px] font-bold">
                         <button onclick="filterMessages('inbox')" id="tab-inbox" class="px-2 py-0.5 rounded-md bg-white text-purple-700 shadow-sm">Hộp thư</button>
                         <button onclick="filterMessages('trash')" id="tab-trash" class="px-2 py-0.5 rounded-md text-slate-600 hover:text-rose-600">🗑️ Đã xóa (<span id="trash-count">0</span>)</button>
@@ -508,7 +509,7 @@
     </div>
 
     <script>
-        // ================= KHO BÀI ĐĂNG DIỄN ĐÀN ĐỒ SỘ & SỐNG ĐỘNG (NOCTURNE NET) =================
+        // ================= KHO BÀI ĐĂNG DIỄN ĐÀN ĐỒ SỘ (NOCTURNE NET) =================
         const comprehensiveForumThreads = [
             {
                 id: "ft_emil_1",
@@ -520,8 +521,7 @@
                 title: "Làm sao tẩu tán 2 triệu Rúp sang ví lạnh Dubai trước khi ly hôn? Cần tìm luật sư kín ở Kazan.",
                 snippet: "Vợ tôi bắt đầu nghi ngờ vì mấy tuần nay tôi vắng nhà liên tục. Tôi đang chuẩn bị đường lui để dứt áo ra đi...",
                 body: "Chào anh em hội kín. Vợ tôi dạo này bắt đầu cằn nhằn về chuyện đi sớm về muộn. Tôi đã gom được hơn 2 triệu Rúp tiền mặt từ công ty. Tôi muốn chuyển toàn bộ sang Bitcoin rút vào ví lạnh Ledger cất riêng. Nếu nộp đơn ly hôn ra tòa án Kazan thì tòa có thể sao kê được địa chỉ ví tiền ảo không? Tuyệt đối không để con bé ở nhà đụng vào một xu nào.",
-                likes: 92,
-                views: 1840,
+                likes: 92, views: 1840,
                 comments: [
                     { user: "Zurich_Broker", time: "30 phút trước", text: "Chỉ cần không nạp tiền qua thẻ ngân hàng Nga là an toàn 100%. Tôi đã giúp hơn 20 anh em Kazan chuyển trót lọt." },
                     { user: "KazanWolf_91 (Emil)", time: "25 phút trước", text: "Cảm ơn bác. Tôi đang giấu chiếc ví lạnh Ledger trong cốp xe Mercedes rồi." },
@@ -538,8 +538,7 @@
                 title: "CẢNH BÁO: Khách sạn Lux Kazan dạo này có thám tử tư lởn vởn ở sảnh, anh em dẫn bồ cẩn thận!",
                 snippet: "Tôi vừa thấy một gã thám tử cầm máy ảnh ống kính tele ngồi ở quán cà phê đối diện cổng Khách sạn Lux...",
                 body: "Anh em hay dắt bồ qua phòng Suite 402 hoặc các phòng VIP ở Lux Hotel chú ý cao độ! Hôm qua tôi thấy 2 người ăn mặc lịch sự chụp hình lại toàn bộ biển số xe vào bãi đỗ ngầm. Nghi ngờ có bà vợ nhà nào thuê thám tử săn bằng chứng ngoại tình.",
-                likes: 154,
-                views: 3200,
+                likes: 154, views: 3200,
                 comments: [
                     { user: "Nocturne_Night", time: "1 giờ trước", text: "Toi rồi, đêm qua tôi vừa đỗ con xe ở đó. Không biết có bị dính biển số không!" },
                     { user: "KazanWolf_91 (Emil)", time: "50 phút trước", text: "Bác có nhớ họ đi xe gì không? Xe Mercedes E200 biển 777 có bị dòm ngó không?!" },
@@ -556,8 +555,7 @@
                 title: "Nhận xuất hóa đơn đỏ công tác Moscow giả để sếp đi nghỉ dưỡng Sochi cùng thư ký",
                 snippet: "Xuất hóa đơn vé máy bay, phòng khách sạn đóng dấu công ty kiểm toán chuẩn chỉ 100%...",
                 body: "Anh em nào muốn dẫn bồ nhí đi Sochi hoặc Dubai xả hơi mà cần bằng chứng 'đi công tác khẩn cấp' nộp cho vợ và phòng kế toán thì liên hệ. Bao trọn gói từ giấy điều động công tác đến hóa đơn ăn uống ở Moscow.",
-                likes: 78,
-                views: 1450,
+                likes: 78, views: 1450,
                 comments: [
                     { user: "KazanWolf_91 (Emil)", time: "Hôm nay 11:00", text: "Đã làm bên bác chuyến bay Sochi 4 ngày. Công nhận giấy tờ chuẩn, vợ ở nhà không mảy may nghi ngờ." }
                 ]
@@ -572,8 +570,7 @@
                 title: "CẤP CỨU: Bị bé sinh viên dọa gửi ảnh phòng 402 cho bố vợ, anh em có số đội dằn mặt kín ở Kazan không?",
                 snippet: "Nó phát hiện tôi dắt cô thư ký đi nghỉ dưỡng Sochi nên nổi điên, đòi tống tiền 1 triệu Rúp...",
                 body: "Con bé sinh viên tôi bao nuôi ở chung cư Magnolia phát hiện tôi đi Sochi với em thư ký Elena. Giờ nó quay ra đe dọa đòi 1 triệu Rúp, nếu không sẽ gửi toàn bộ ảnh nhạy cảm chụp ở khách sạn Lux cho bố vợ tôi. Anh em có số mối nào xử lý kín miệng hoặc dằn mặt cho nó xóa ảnh không?",
-                likes: 112,
-                views: 2900,
+                likes: 112, views: 2900,
                 comments: [
                     { user: "Iron_Fist_KZN", time: "Hôm qua", text: "Đừng dại mà thuê giang hồ bác ơi, thời buổi này dính vào hình sự là mất trắng sự nghiệp." },
                     { user: "Old_Wolf", time: "Hôm qua", text: "Càng chuyển tiền nó càng vòi. Tìm cách lấy điện thoại nó mà xóa sạch đi bác." }
@@ -589,8 +586,7 @@
                 title: "Kinh nghiệm 5 năm bao 2 bồ cùng lúc mà vợ ở nhà vẫn tưởng chồng là trụ cột mẫu mực",
                 snippet: "Tuyệt chiêu: Luôn luôn chủ động gắt gỏng trước mỗi khi bước chân vào nhà...",
                 body: "Bước 1: Về đến cửa là mặt mày nhăn nhó, kêu mệt mỏi vì họp hành kiếm tiền. Bước 2: Vợ vừa hé miệng hỏi 'Anh đi đâu về muộn thế?' là gắt lên ngay: 'Tôi đi kiếm tiền nuôi cái nhà này mà cô còn tra khảo à?'. Bước 3: Lập tức vợ sẽ thấy có lỗi và đi rót nước nấu canh cho các bác.",
-                likes: 245,
-                views: 4500,
+                likes: 245, views: 4500,
                 comments: [
                     { user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đang áp dụng chiêu này hàng ngày, cực kỳ hiệu quả. Con vợ tôi không dám hé răng câu thứ hai." }
                 ]
@@ -605,8 +601,7 @@
                 title: "Bán thiết bị quét sóng GPS phát hiện định vị lén gắn trên xe hơi và máy phá sóng mini",
                 snippet: "Thiết bị cầm tay chuyên quét tìm thiết bị nghe lén, AirTag hoặc nam châm GPS gắn gầm xe...",
                 body: "Dạo này các bà vợ hay lén gắn AirTag hoặc thiết bị GPS của thám tử tư dưới gầm xe các sếp. Thiết bị bên em rà một lượt là tít còi báo động ngay. Nhỏ gọn bằng bao thuốc lá.",
-                likes: 89,
-                views: 1600,
+                likes: 89, views: 1600,
                 comments: [
                     { user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đã nhận hàng. Vừa rà dưới gầm con Mercedes thì phát hiện có vật lạ gắn nam châm thật! May mà có máy quét!" }
                 ]
@@ -621,8 +616,7 @@
                 title: "Nhận đổi tiền mặt sang USDT ẩn danh tại quán cà phê phố Bauman, giao dịch tiền tươi",
                 snippet: "Bảo mật tuyệt đối, không yêu cầu KYC, không lưu camera, tỷ giá tốt nhất Tatarstan...",
                 body: "Anh em cần rút quỹ đen công ty hoặc giấu tiền trước khi phân chia tài sản cứ mang tiền mặt qua điểm hẹn. Đổi thẳng sang ví lạnh cá nhân trong vòng 5 phút.",
-                likes: 67,
-                views: 1120,
+                likes: 67, views: 1120,
                 comments: [
                     { user: "KazanWolf_91 (Emil)", time: "2 ngày trước", text: "Đã giao dịch 500k Rúp thành công. Rất uy tín." }
                 ]
@@ -631,7 +625,7 @@
 
         let currentForumCategory = 'all';
 
-        // ================= CƠ CHẾ ĐỒNG BỘ THỜI GIAN THỰC TẾ & TÌNH TIẾT TỰ NHIÊN =================
+        // ================= CƠ CHẾ ĐỒNG BỘ THỜI GIAN THẬT & DANH BẠ ĐỘC QUYỀN =================
         const dynamicMistresses = [
             { name: "Anya", role: "Sinh viên năm 3", phone: "+7 (927) 888-11-22", loc: "Chung cư Magnolia", cost: "120,000 ₽" },
             { name: "Elena", role: "Thư ký chi nhánh", phone: "+7 (919) 444-55-66", loc: "Biệt thự ven hồ", cost: "185,000 ₽" },
@@ -658,8 +652,13 @@
 
             let timeHint = "Kazan, Tatarstan • -5°C Tuyết rơi dày";
             let weatherBadge = "Kazan • Mặt đường đóng băng";
-            let nightText = `${mistress.name}: Anh yêu, phòng 402 em lấy thẻ rồi nhé, qua nhanh đi...`;
-            let emilExcuse = "Tối nay anh bận họp đối tác ở trung tâm Kazan, không về ăn cơm.";
+            let mistressNightText = `${mistress.name}: Anh yêu, phòng 402 em lấy thẻ rồi nhé, qua nhanh đi...`;
+            
+            // LỜI NÓI DỐI CỦA EMIL GỬI CHO VỢ (KHÔNG BAO GIỜ LẪN VỚI TIN NHẮN BỒ NHÍ)
+            let emilExcuseToWife = "Tối nay anh bận họp đối tác ở trung tâm Kazan, không về ăn cơm.";
+            if (hour >= 22 || hour < 6) {
+                emilExcuseToWife = "Họp muộn quá anh ngủ lại khách sạn gần đối tác, em đừng chờ cơm.";
+            }
 
             if (hour >= 6 && hour < 12) {
                 timeHint = "Buổi sáng ở Kazan • Rudolf dậy sớm đọc sách, Emil đi làm";
@@ -672,16 +671,17 @@
                 weatherBadge = "Đêm muộn • Bar & Khách sạn lên đèn";
             }
 
-            return { mistress, timeHint, weatherBadge, nightText, emilExcuse, hour };
+            return { mistress, timeHint, weatherBadge, mistressNightText, emilExcuseToWife, hour };
         }
 
         let ctx = getNaturalContext();
 
+        // MỖI PROFILE CÓ MẢNG TIN NHẮN VÀ THÙNG RÁC HOÀN TOÀN TÁCH BIỆT (ĐÃ FIX LỖI ĐỒNG BỘ)
         let activeStoryState = {
             vaultPhotos: [],
             vaultMistresses: [],
             chats: { user: [], emil: [], rudolf: [] },
-            deletedChats: []
+            deletedChats: { user: [], emil: [], rudolf: [] }
         };
 
         function buildNaturalState() {
@@ -694,56 +694,105 @@
                 { title: `[ẢNH MẬT: Hóa đơn Chanel Boutique Kazan]`, desc: `Biên lai thanh toán 85,000 ₽ mua túi xách tặng bồ nhí giấu dưới ghế phụ xe.`, tag: "Hóa đơn đen" }
             ];
 
-            // 2. Sổ tay nhân tình
+            // 2. Sổ tay nhân tình của Emil
             activeStoryState.vaultMistresses = [
                 { name: `${ctx.mistress.name} (${ctx.mistress.role})`, phone: ctx.mistress.phone, monthlyCost: ctx.mistress.cost, address: ctx.mistress.loc, note: "Nhân tình đang hẹn hò thường xuyên" },
                 { name: "Elena (Thư ký công ty)", phone: "+7 (919) 444-55-66", monthlyCost: "Hoa hồng lậu", address: "Biệt thự ven hồ", note: "Cùng đi nghỉ dưỡng Sochi" },
                 { name: "Anya (Sinh viên)", phone: "+7 (927) 888-11-22", monthlyCost: "120,000 ₽", address: "Chung cư Magnolia", note: "Thích quà cáp đắt tiền" }
             ];
 
-            // 3. Tin nhắn
-            const emilText = (ctx.hour >= 18 || ctx.hour < 6) ? ctx.nightText : ctx.emilExcuse;
-            
+            // 3. TIN NHẮN TỪNG MÁY (ĐÃ SỬA: EMIL NÓI DỐI VỢ, ELENA CHỈ NHẮN VỚI EMIL)
+            // A. MÁY CỦA TÔI (USER)
             activeStoryState.chats.user = [
-                { id: "emil", name: "Chồng (Emil)", sub: "Trực tuyến", preview: emilText, history: [
-                    { me: false, text: emilText },
+                { id: "emil", name: "Chồng (Emil)", sub: "Trực tuyến", preview: ctx.emilExcuseToWife, history: [
+                    { me: false, text: ctx.emilExcuseToWife },
                     { me: true, text: "Lại họp? Tuần này 4 lần rồi đấy Emil." },
                     { me: false, text: "Đừng cằn nhằn nữa, lo ngủ sớm đi!" }
                 ]},
                 { id: "rudolf", name: "Ba Rudolf", sub: "Vừa xong", preview: "Con gái, ngoài trời tuyết rơi lạnh lắm...", history: [
                     { me: false, text: "Con gái, ngoài trời tuyết rơi lạnh lắm, ba vừa gửi súp củ dền nóng qua Kazan Go đấy." },
-                    { me: false, text: "Nếu thiếu tiền cứ bảo ba ngay nhé con gái." }
+                    { me: false, text: "Nếu thiếu tiền tiêu cứ bảo ba ngay nhé con gái." },
+                    { me: true, text: "Dạ con cảm ơn Ba Rudolf nhiều ạ!" }
+                ]},
+                { id: "dmitry", name: "Dmitry (Bạn Emil)", sub: "1 giờ trước", preview: "Chị dâu tìm Emil à?", history: [
+                    { me: false, text: "Chào chị dâu, thằng Emil nó vừa ra ngoài gặp đối tác một chút, chị đừng lo nhé." }
+                ]},
+                { id: "viktor", name: "Bác Viktor (Bạn của Ba)", sub: "Hôm qua", preview: "Cháu gái, hôm nay bố cháu ghé chơi...", history: [
+                    { me: false, text: "Cháu gái, hôm nay bố cháu ghé Viện Hàn Lâm chơi cờ với bác, thấy ông ấy nhắc cháu suốt." },
+                    { me: true, text: "Dạ cháu cảm ơn Bác Viktor ạ, hôm nào cháu sang thăm bác nhé." }
                 ]}
             ];
 
+            // B. MÁY CỦA EMIL
             activeStoryState.chats.emil = [
-                { id: "mistress", name: ctx.mistress.name, sub: "Đang hoạt động", preview: ctx.nightText, history: [
-                    { me: false, text: ctx.nightText },
+                { id: "wife", name: "Vợ (Ở nhà)", sub: "1 giờ trước", preview: "Lại họp? Tuần này 4 lần rồi...", history: [
+                    { me: true, text: ctx.emilExcuseToWife },
+                    { me: false, text: "Lại họp? Tuần này 4 lần rồi đấy Emil." },
+                    { me: true, text: "Đừng cằn nhằn nữa, lo ngủ sớm đi!" }
+                ]},
+                { id: "mistress", name: ctx.mistress.name, sub: "Đang hoạt động", preview: ctx.mistressNightText, history: [
+                    { me: false, text: ctx.mistressNightText },
                     { me: true, text: "Anh biết rồi, chờ anh một chút." }
                 ]},
-                { id: "dmitry", name: "Dmitry (Bạn nhậu)", sub: "1 giờ trước", preview: "Tao nói dối con vợ mày rồi đấy.", history: [
-                    { me: false, text: "Tao vừa bảo con vợ mày là mày đang họp với sếp rồi, yên tâm quẩy nhé!" }
+                { id: "boss", name: "Sếp Arkady (Tổng Giám Đốc)", sub: "Hôm nay", preview: "Báo cáo kiểm toán quý này chưa nộp...", history: [
+                    { me: false, text: "Emil, báo cáo kiểm toán chi nhánh quý này chưa khớp số liệu, sáng mai nộp ngay cho tôi!" },
+                    { me: true, text: "Dạ vâng thưa sếp, em đang hoàn thiện nốt ạ." }
+                ]},
+                { id: "dmitry", name: "Dmitry (Chiến hữu)", sub: "1 giờ trước", preview: "Tao nói dối con vợ mày rồi đấy.", history: [
+                    { me: false, text: "Tao vừa bảo con vợ mày là mày đang họp với sếp rồi, yên tâm quẩy nhé!" },
+                    { me: true, text: "Khá lắm bạn hiền. Tối nay chầu rượu Nocturne tao bao." }
                 ]}
             ];
 
+            // C. MÁY CỦA BA RUDOLF
             activeStoryState.chats.rudolf = [
-                { id: "user_r", name: "Con gái nhỏ", sub: "Hôm nay", preview: "Con nhớ giữ ấm nhé...", history: [
-                    { me: true, text: "Con gái, ngoài trời tuyết lạnh lắm, nhớ mặc ấm nhé." }
+                { id: "user_r", name: "Con gái nhỏ yêu quý", sub: "Hôm nay", preview: "Con nhớ giữ ấm nhé...", history: [
+                    { me: true, text: "Con gái, ngoài trời tuyết lạnh lắm, nhớ mặc ấm nhé." },
+                    { me: false, text: "Dạ con cảm ơn Ba Rudolf nhiều ạ!" }
+                ]},
+                { id: "emil_r", name: "Con rể (Emil Kulikov)", sub: "Hôm qua", preview: "Emil, hôm nay tôi gọi cậu không được...", history: [
+                    { me: true, text: "Emil, hôm nay tôi gọi vào máy cậu 3 lần không được. Đừng tưởng cậu làm gì ở Kazan này tôi không biết." }
+                ]},
+                { id: "viktor_r", name: "Viktor Petrov (Bạn thân)", sub: "Sáng nay", preview: "Chiều nay qua viện hàn lâm chơi cờ nhé...", history: [
+                    { me: false, text: "Rudolf, chiều nay qua Viện Hàn Lâm chơi cờ nhé. Vụ việc của con gái ông, tôi đã cho người xác minh giấy tờ bên công ty thằng rể rồi." },
+                    { me: true, text: "Cảm ơn ông bạn già. Chiều tôi qua sớm." }
+                ]},
+                { id: "lawyer_r", name: "Luật sư Tarasov", sub: "Hôm qua", preview: "Hồ sơ ly hôn đã hoàn tất...", history: [
+                    { me: false, text: "Giáo sư Rudolf, hồ sơ đóng băng tài sản và đơn ly hôn đơn phương có bằng chứng ngoại tình của Emil đã hoàn tất." },
+                    { me: true, text: "Tốt lắm. Hãy bảo đảm con gái tôi nhận được 100% tài sản căn hộ và tiền bồi thường danh dự." }
                 ]}
             ];
 
-            activeStoryState.deletedChats = [
-                { id: "del_1", name: `🗑️ ${ctx.mistress.name}`, sub: "Đã xóa 1 giờ trước", preview: "Anh nhớ chùi vết son môi...", history: [
-                    { me: false, text: "Lúc nãy em lỡ làm dính son môi trên cổ áo sơ mi đấy, chùi sạch chưa?" },
-                    { me: true, text: "Anh chùi rồi, em yên tâm." }
+            // 4. THÙNG RÁC (ĐÃ SỬA: ĐỘC LẬP TỪNG NGƯỜI, KHÔNG BỊ ĐỒNG BỘ NỮA)
+            // Máy của bạn: Chỉ có thư rác thông thường
+            activeStoryState.deletedChats.user = [
+                { id: "del_u1", name: "Spam - Thẩm mỹ viện Kazan", sub: "3 ngày trước", preview: "Ưu đãi 20% chăm sóc da mùa đông...", history: [{ me: false, text: "Ưu đãi 20% dịch vụ xông hơi và phục hồi da mùa tuyết lạnh." }] }
+            ];
+
+            // Máy của Emil: CHỨA TOÀN BỘ TIN NHẮN NGOẠI TÌNH HẮN LÉN XÓA
+            activeStoryState.deletedChats.emil = [
+                { id: "del_e1", name: `🗑️ Client A (${ctx.mistress.name})`, sub: "Đã xóa 1 giờ trước", preview: "Anh nhớ chùi vết son môi trên áo...", history: [
+                    { me: false, text: "Lúc nãy em lỡ làm dính son môi trên cổ áo sơ mi đấy, chùi sạch chưa? Coi chừng mụ vợ ở nhà phát hiện!" },
+                    { me: true, text: "Anh chùi rồi, em yên tâm. Mai anh lại ghé đưa em đi mua sắm." }
+                ]},
+                { id: "del_e2", name: "🗑️ Đối tác Elena (Sochi)", sub: "Đã xóa đêm qua", preview: "Vé bay khoang thương gia...", history: [
+                    { me: false, text: "Vé khoang thương gia đi Sochi em in xong rồi, gặp anh ở sảnh VIP nhé anh yêu." }
+                ]},
+                { id: "del_e3", name: "🗑️ Lễ tân Khách sạn Lux", sub: "Đã xóa 2 ngày trước", preview: "Xác nhận đặt phòng Suite 402...", history: [
+                    { me: false, text: "Quý khách Emil Kulikov đã hoàn tất đặt phòng Suite 402 kèm rượu vang Krym." }
                 ]}
+            ];
+
+            // Máy của Ba Rudolf: Chỉ có thông báo thư viện
+            activeStoryState.deletedChats.rudolf = [
+                { id: "del_r1", name: "🗑️ Thư viện ĐH Kazan", sub: "Tuần trước", preview: "Xác nhận gia hạn sách...", history: [{ me: false, text: "Sách 'Văn học Nga cổ điển' của Giáo sư đã được gia hạn thêm 30 ngày." }] }
             ];
 
             // Cập nhật giao diện tự nhiên
             document.getElementById('home-story-badge').innerText = ctx.weatherBadge;
             document.getElementById('lock-timeline-hint').innerText = ctx.timeHint;
-            document.getElementById('lock-sender').innerText = ctx.mistress.name;
-            document.getElementById('lock-snippet').innerText = ctx.nightText;
+            document.getElementById('lock-sender').innerText = (activeProfile === 'emil') ? ctx.mistress.name : (activeProfile === 'rudolf' ? "Viktor Petrov" : "Ba Rudolf");
+            document.getElementById('lock-snippet').innerText = (activeProfile === 'emil') ? ctx.mistressNightText : (activeProfile === 'rudolf' ? "Chiều nay qua viện hàn lâm chơi cờ nhé..." : "Con gái, ngoài trời tuyết rơi lạnh lắm...");
         }
 
         // ================= KAZAN GO / PHOTOS / BANKING =================
@@ -768,10 +817,54 @@
 
         const mediaPlaying = { user: "Lana Del Rey - Young and Beautiful", emil: "Deep Dark Techno - Nocturne Live", rudolf: "Tchaikovsky - Nutcracker Suite" };
 
+        // DANH BẠ ĐỘC QUYỀN MỞ RỘNG CHO CẢ 3 MÁY THEO ĐÚNG YÊU CẦU
         const db = {
-            user: { readOnly: false, contacts: [{ id: "c_u1", key: "emil", name: "Chồng (Emil)", phone: "+7 (917) 442-88-12", tag: "Chồng", notes: "Lén lút, giấu giếm các chuyến đi." }, { id: "c_u2", key: "rudolf", name: "Ba Rudolf", phone: "+7 (987) 221-00-99", tag: "Cha", notes: "Bảo bọc, đang âm thầm thuê thám tử giúp con gái." }], bank: [{ title: "Rudolf chuyển tiền", time: "Sáng nay", val: "+50,000 ₽", plus: true }], notes: [{ title: "Cần sắm", body: "Kem nẻ Siberi, áo dạ mới." }] },
-            emil: { readOnly: true, contacts: [{ id: "c_e1", key: "mistress", name: "Nhân tình hiện tại", phone: "+7 (927) 888-11-22", tag: "Bồ nhí", notes: "Giấu kín trong danh bạ phụ." }], bank: [{ title: "Khách sạn Lux phòng 402", time: "Đêm qua", val: "-28,000 ₽", plus: false }], notes: [{ title: "Ví Ledger", body: "Giấu trong hộc xe Mercedes." }] },
-            rudolf: { readOnly: true, contacts: [{ id: "c_r1", key: "user_r", name: "Con gái nhỏ", phone: "+7 (917) 000-44-33", tag: "Gia đình", notes: "Cần bảo vệ khỏi kẻ lừa đảo Emil." }, { id: "c_r2", key: "lawyer", name: "Luật sư Tarasov", phone: "+7 (843) 999-11-22", tag: "Luật sư", notes: "Chuyên gia ly hôn và tranh chấp tài sản." }], bank: [{ title: "Thuê thám tử tư Kazan", time: "Hôm nay", val: "-50,000 ₽", plus: false }], notes: [{ title: "Chứng cứ thu thập", body: "Lịch trình đi khách sạn Lux và các chuyến bay đêm." }] }
+            // 1. MÁY CỦA TÔI (USER)
+            user: {
+                readOnly: false,
+                contacts: [
+                    { id: "c_u1", key: "emil", name: "Chồng (Emil)", phone: "+7 (917) 442-88-12", tag: "Chồng", notes: "Hay đi sớm về muộn, giấu các hóa đơn thẻ." },
+                    { id: "c_u2", key: "rudolf", name: "Ba Rudolf", phone: "+7 (987) 221-00-99", tag: "Cha", notes: "Luôn bảo bọc, dặn dò ăn uống và chu cấp tiền." },
+                    { id: "c_u3", key: "dmitry", name: "Dmitry (Bạn của Emil)", phone: "+7 (927) 333-77-88", tag: "Bạn của chồng", notes: "Bạn cùng hội xe hơi và quán rượu với Emil." },
+                    { id: "c_u4", key: "viktor", name: "Bác Viktor (Bạn thân của Ba)", phone: "+7 (917) 555-88-11", tag: "Bạn của Ba", notes: "Viện sĩ Viện Hàn Lâm, rất yêu quý gia đình mình." },
+                    { id: "c_u5", key: "mikhail", name: "Bác sĩ Mikhail", phone: "+7 (843) 222-33-44", tag: "Bác sĩ gia đình", notes: "Bạn chơi cờ của Ba Rudolf, bác sĩ tim mạch." },
+                    { id: "c_u6", key: "mart", name: "Tiệm Bánh Kazan Mart", phone: "+7 (843) 555-12-34", tag: "Cửa hàng", notes: "Giao bánh Medovik nóng hổi mỗi sáng." }
+                ],
+                bank: [{ title: "Rudolf chuyển tiền", time: "Sáng nay", val: "+50,000 ₽", plus: true }],
+                notes: [{ title: "Cần sắm", body: "Kem nẻ Siberi, áo dạ mới." }]
+            },
+            // 2. MÁY CỦA EMIL
+            emil: {
+                readOnly: true,
+                contacts: [
+                    { id: "c_e1", key: "wife", name: "Vợ (Ở nhà)", phone: "+7 (917) 000-44-33", tag: "Vợ", notes: "Phải che giấu số dư tài khoản nước ngoài." },
+                    { id: "c_e2", key: "boss", name: "Sếp Arkady (Tổng Giám Đốc)", phone: "+7 (917) 111-00-01", tag: "Lãnh đạo", notes: "Tập đoàn StroiKazan. Cần luồn cúi lấy lòng." },
+                    { id: "c_e3", key: "anya", name: "Client A (Anya - Bồ nhí)", phone: "+7 (927) 888-11-22", tag: "Nhân tình 1", notes: "Bí mật. Tặng túi Chanel và căn hộ Magnolia." },
+                    { id: "c_e4", key: "elena", name: "Đối tác Elena (Thư ký)", phone: "+7 (919) 444-55-66", tag: "Nhân tình 2", notes: "Đi Sochi cùng Emil, làm hợp đồng khống." },
+                    { id: "c_e5", key: "polina", name: "Polina (Nocturne Club)", phone: "+7 (927) 111-99-00", tag: "Quán bar", notes: "Vũ nữ quen ở phòng VIP." },
+                    { id: "c_e6", key: "dmitry_e", name: "Dmitry (Chiến hữu)", phone: "+7 (927) 333-77-88", tag: "Bạn thân", notes: "Chuyên bao che các vụ đi ăn chơi ngoại tình." },
+                    { id: "c_e7", key: "garage", name: "Garage sửa xe Mercedes Kazan", phone: "+7 (843) 777-66-55", tag: "Dịch vụ", notes: "Bảo dưỡng xe và kiểm tra gầm." },
+                    { id: "c_e8", key: "p2p", name: "Dịch vụ đổi tiền P2P Bauman", phone: "+7 (999) 444-12-34", tag: "Rửa tiền", notes: "Đổi tiền mặt sang USDT ẩn danh." },
+                    { id: "c_e9", key: "ticket", name: "Cò vé máy bay ngầm", phone: "+7 (903) 888-99-00", tag: "Dịch vụ", notes: "Xuất hóa đơn công tác giả đi Sochi." }
+                ],
+                bank: [{ title: "Khách sạn Lux phòng 402", time: "Đêm qua", val: "-28,000 ₽", plus: false }],
+                notes: [{ title: "Ví Ledger", body: "Giấu trong hộc xe Mercedes." }]
+            },
+            // 3. MÁY CỦA BA RUDOLF
+            rudolf: {
+                readOnly: true,
+                contacts: [
+                    { id: "c_r1", key: "user_r", name: "Con gái nhỏ yêu quý", phone: "+7 (917) 000-44-33", tag: "Gia đình", notes: "Cần bảo vệ khỏi kẻ lừa đảo Emil." },
+                    { id: "c_r2", key: "emil_r", name: "Con rể (Emil Kulikov)", phone: "+7 (917) 442-88-12", tag: "Con rể", notes: "Thằng lừa đảo, đang bị thám tử theo dõi chặt chẽ." },
+                    { id: "c_r3", key: "viktor_r", name: "Viktor Petrov (Bạn thân)", phone: "+7 (917) 555-88-11", tag: "Bạn thân chí cốt", notes: "Viện sĩ Viện Hàn Lâm, hỗ trợ điều tra Emil." },
+                    { id: "c_r4", key: "mikhail_r", name: "Bác sĩ Mikhail (Bạn thân)", phone: "+7 (843) 222-33-44", tag: "Bạn thân", notes: "Bác sĩ tim mạch, bạn chơi cờ vua 20 năm." },
+                    { id: "c_r5", key: "lawyer", name: "Luật sư Tarasov", phone: "+7 (843) 999-11-22", tag: "Luật sư", notes: "Chuyên gia ly hôn và tranh chấp tài sản hàng đầu Kazan." },
+                    { id: "c_r6", key: "lambert", name: "Hiệu trưởng Lambert", phone: "+7 (843) 111-22-33", tag: "Đồng nghiệp", notes: "Đại học Tổng hợp Kazan." },
+                    { id: "c_r7", key: "detective", name: "Thám tử tư Morozov (Học trò cũ)", phone: "+7 (905) 333-22-11", tag: "Thám tử", notes: "Chuyên thu thập bằng chứng ngoại tình của Emil." }
+                ],
+                bank: [{ title: "Thuê thám tử tư Kazan", time: "Hôm nay", val: "-50,000 ₽", plus: false }],
+                notes: [{ title: "Chứng cứ thu thập", body: "Lịch trình đi khách sạn Lux và các chuyến bay đêm." }]
+            }
         };
 
         function clickSound() {
@@ -1111,6 +1204,7 @@
             });
         }
 
+        // ================= ĐÃ SỬA: LỌC TIN NHẮN TỪNG NGƯỜI VÀ HIỂN THỊ THÙNG RÁC ĐỘC LẬP =================
         function filterMessages(tab) {
             clickSound();
             currentMessageFilter = tab;
@@ -1129,12 +1223,14 @@
         function renderMessagesInbox() {
             const list = document.getElementById('inbox-list');
             list.innerHTML = '';
-            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats;
+            
+            // LẤY ĐÚNG DANH SÁCH TIN NHẮN HOẶC THÙNG RÁC CỦA MÁY ĐANG CHỌN (activeProfile)
+            const chatList = (currentMessageFilter === 'inbox') ? (activeStoryState.chats[activeProfile] || []) : (activeStoryState.deletedChats[activeProfile] || []);
 
-            document.getElementById('trash-count').innerText = activeStoryState.deletedChats.length;
+            document.getElementById('trash-count').innerText = (activeStoryState.deletedChats[activeProfile] || []).length;
 
             if (!chatList || chatList.length === 0) {
-                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">Hộp thư trống.</p>`;
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">${currentMessageFilter === 'trash' ? 'Thùng rác trống (Không có tin nhắn nào bị xóa).' : 'Hộp thư trống.'}</p>`;
                 return;
             }
 
@@ -1153,7 +1249,7 @@
         function openChatThread(idx) {
             clickSound();
             currentChatIndex = idx;
-            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats;
+            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats[activeProfile];
             const chat = chatList[idx];
             document.getElementById('chatting-name').innerText = chat.name;
 
@@ -1171,7 +1267,7 @@
         }
 
         function renderChatBubbles() {
-            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats;
+            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats[activeProfile];
             const chat = chatList[currentChatIndex];
             const box = document.getElementById('bubbles-area');
             box.innerHTML = '';
@@ -1193,7 +1289,7 @@
             clickSound();
             let callerName = "Ba Rudolf";
             let script = [
-                "Con gái à, ba Rudolf đây... Ngoài trời Kazan bão tuyết âm 5 độ rồi đấy.",
+                "Con gái à, ba Rudolf đây... Ngoài trời Kazan tuyết rơi lạnh lắm.",
                 "Ba vừa gửi chuyển phát âu súp củ dền nóng qua Kazan Go cho con đấy.",
                 "Có chuyện gì cứ gọi cho ba ngay nhé, đừng chịu đựng một mình..."
             ];
@@ -1360,6 +1456,7 @@
             });
         }
 
+        // RENDER DANH BẠ MỞ RỘNG ĐỘC QUYỀN CHO TỪNG NHÂN VẬT
         function renderContactsApp() {
             const list = document.getElementById('contacts-book');
             list.innerHTML = '';
@@ -1480,6 +1577,8 @@
                     } else {
                         reply = "Tôi đang bận, đừng nhắn nữa phiền phức.";
                     }
+                } else if (chat.id === 'viktor') {
+                    reply = "Bác chào cháu gái nhé. Bác vừa nhắc bố cháu nhớ uống trà quế giữ ấm cổ họng đấy.";
                 } else {
                     reply = "Đã nhận tin nhắn.";
                 }
