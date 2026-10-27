@@ -3,326 +3,504 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roleplay Interactive Smartphone</title>
+    <title>Kazan OS - Interactive Roleplay Smartphone</title>
     <!-- Tailwind CSS & FontAwesome CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --border-phone: #1f2333;
-            --bg-phone: linear-gradient(180deg, #121524 0%, #0a0b12 100%);
-            --shadow-theme: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-            --primary: #c084fc;
+            --phone-w: 350px;
+            --phone-h: 700px;
+            --screen-bg: linear-gradient(180deg, #0e1220 0%, #060810 100%);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; user-select: none; }
         body {
-            width: 100vw; min-height: 100vh; background-color: #05060a;
+            width: 100vw; min-height: 100vh; background-color: #030408;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            overflow-x: hidden; padding: 15px 0;
+            padding: 6px 0; overflow-x: hidden;
         }
 
-        .hide-scroll { overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
+        /* KHUNG VỎ KIM LOẠI TITANIUM */
+        .phone-chassis {
+            position: relative; padding: 10px;
+            background: linear-gradient(145deg, #32374a, #151821);
+            border-radius: 54px;
+            box-shadow: 0 30px 70px -15px rgba(0,0,0,0.9), inset 0 1px 2px rgba(255,255,255,0.25);
+        }
 
-        /* KHUNG ĐIỆN THOẠI */
-        .phone-wrapper { position: relative; }
-        .phone {
-            width: 360px; height: 710px;
-            background: var(--bg-phone);
-            border: 8px solid var(--border-phone);
-            border-radius: 48px;
-            box-shadow: var(--shadow-theme);
+        /* NÚT VẬT LÝ HAI BÊN SƯỜN */
+        .side-key { position: absolute; background: #2b3042; border-radius: 3px; cursor: pointer; transition: transform 0.08s; }
+        .side-key:active { transform: scaleX(0.7); }
+        .key-pwr { right: -5px; top: 155px; width: 5px; height: 50px; }
+        .key-up  { left: -5px; top: 135px; width: 5px; height: 40px; }
+        .key-dn  { left: -5px; top: 185px; width: 5px; height: 40px; }
+
+        /* MÀN HÌNH CHÍNH */
+        .phone-display {
+            width: var(--phone-w); height: var(--phone-h);
+            background: var(--screen-bg);
+            border-radius: 44px;
+            border: 4px solid #000;
             position: relative;
-            display: flex; flex-direction: column;
             overflow: hidden;
+            display: flex; flex-direction: column;
         }
-
-        /* NÚT VẬT LÝ BÊN CẠNH SƯỜN (NÚT NGUỒN) */
-        .power-btn {
-            position: absolute; right: -12px; top: 140px;
-            width: 4px; height: 50px;
-            background: #3b4259; border-radius: 0 3px 3px 0;
-            cursor: pointer; transition: transform 0.1s;
-        }
-        .power-btn:active { transform: scaleX(0.7); }
 
         /* DYNAMIC ISLAND */
-        .island {
-            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-            width: 105px; height: 25px; background: #000; border-radius: 20px;
-            z-index: 120; display: flex; align-items: center; justify-content: space-between;
+        .speaker-hole {
+            position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+            width: 48px; height: 3px; background: #1a1c24; border-radius: 3px; z-index: 150;
+        }
+        .dynamic-island {
+            position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+            width: 114px; height: 26px; background: #000; border-radius: 20px;
+            z-index: 145; display: flex; align-items: center; justify-content: space-between;
             padding: 0 10px; border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.35s cubic-bezier(0.3, 1.25, 0.4, 1);
+            cursor: pointer;
         }
-        .island-cam { width: 9px; height: 9px; background: #1a1a1a; border-radius: 50%; border: 1.5px solid #333; }
-        .island-pulse { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 8px var(--primary); }
+        .cam-dot { width: 9px; height: 9px; background: #111; border-radius: 50%; border: 1.5px solid #292929; }
+        .island-media { display: flex; align-items: center; space-x: 2px; }
+        .sound-bar { width: 2px; height: 8px; background: #a855f7; border-radius: 1px; animation: soundWave 0.8s infinite ease-in-out alternate; }
+        .sound-bar:nth-child(2) { animation-delay: 0.2s; height: 12px; }
+        .sound-bar:nth-child(3) { animation-delay: 0.4s; height: 6px; }
+        @keyframes soundWave { 0% { height: 3px; } 100% { height: 13px; } }
 
-        /* CHUYỂN CẢNH MÀN HÌNH */
-        .app-screen, .chat-screen {
-            position: absolute; inset: 0; z-index: 30;
-            transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+        /* BANNER THÔNG BÁO */
+        .banner-push {
+            position: absolute; top: 9px; left: 10px; right: 10px;
+            background: rgba(18, 20, 28, 0.96); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 24px;
+            padding: 10px 14px; z-index: 140; color: white;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+            transform: translateY(-135%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .app-screen.open, .chat-screen.open { transform: translateX(0); }
-        .glass-dock { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
-        .glass-nav { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px); }
+        .banner-push.show { transform: translateY(0); }
+
+        /* CẤU TRÚC APP CHUẨN: CHỐNG LỆCH FORM */
+        .app-surface {
+            position: absolute; top: 38px; bottom: 38px; left: 0; right: 0;
+            background: #ffffff; z-index: 30;
+            transform: translateX(100%); transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.4, 1);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        .app-surface.open { transform: translateX(0); }
+
+        .app-header-fixed {
+            height: 42px; min-height: 42px; max-height: 42px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px; border-bottom: 1px solid #e5e7eb; flex-shrink: 0;
+        }
+        .app-body-scroll {
+            flex: 1 1 0%; min-height: 0; overflow-y: auto; overflow-x: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        .hide-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+
+        .typing-bubble { display: flex; align-items: center; space-x: 3px; padding: 8px 12px; }
+        .typing-dot { width: 5px; height: 5px; background: #888; border-radius: 50%; animation: blink 1.2s infinite; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 100% { opacity: 0.2; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-2px); } }
     </style>
 </head>
 <body>
 
-    <!-- THANH CHỌN NHÂN VẬT DÀNH CHO ROLEPLAY -->
-    <div class="mb-3 flex items-center bg-slate-900/90 border border-slate-700 p-1.5 rounded-2xl shadow-lg z-50">
-        <button onclick="switchProfile('user')" id="btn-user" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-purple-600 transition-all">📱 Máy của Tôi</button>
-        <button onclick="switchProfile('emil')" id="btn-emil" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">🥀 Emil Kulikov</button>
-        <button onclick="switchProfile('rudolf')" id="btn-rudolf" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">☕ Rudolf Korolyov</button>
+    <!-- THANH CHỌN DANH TÍNH TỰ NHIÊN -->
+    <div class="mb-2 flex items-center bg-slate-900/90 border border-slate-700/80 p-1 rounded-2xl shadow-xl z-50 scale-95">
+        <button onclick="changeProfile('user')" id="btn-user" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-purple-600 transition-all flex items-center"><i class="fa-solid fa-user mr-1.5"></i>Máy của Tôi</button>
+        <button onclick="changeProfile('emil')" id="btn-emil" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center"><i class="fa-solid fa-wine-glass mr-1.5"></i>Emil (Xem)</button>
+        <button onclick="changeProfile('rudolf')" id="btn-rudolf" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all flex items-center"><i class="fa-solid fa-mug-hot mr-1.5"></i>Rudolf (Xem)</button>
     </div>
 
-    <!-- WRAPPER CHỨA ĐIỆN THOẠI & NÚT VẬT LÝ -->
-    <div class="phone-wrapper">
-        <!-- Nút nguồn vật lý để tắt/bật -->
-        <div class="power-btn" title="Bấm để Tắt/Bật màn hình" onclick="togglePower()"></div>
+    <!-- KHUNG ĐIỆN THOẠI -->
+    <div class="phone-chassis">
+        <div class="side-key key-pwr" title="Nút nguồn" onclick="togglePower()"></div>
+        <div class="side-key key-up" onclick="clickSound()"></div>
+        <div class="side-key key-dn" onclick="clickSound()"></div>
 
-        <div class="phone" id="phoneContainer">
-            
+        <div class="phone-display" id="phoneBody">
+            <div class="speaker-hole"></div>
+
             <!-- Dynamic Island -->
-            <div class="island">
-                <div class="island-cam"></div>
-                <div class="island-pulse"></div>
-            </div>
-
-            <!-- Status Bar -->
-            <div class="absolute top-0 w-full h-[40px] flex justify-between items-center px-6 text-white text-[11px] font-semibold z-40">
-                <span id="clock">12:00</span> 
-                <div class="flex space-x-1.5 items-center">
-                    <i class="fa-solid fa-signal text-[9px]"></i>
-                    <i class="fa-solid fa-wifi text-[9px]"></i>
-                    <i class="fa-solid fa-battery-full text-xs"></i>
+            <div class="dynamic-island" id="islandBar" onclick="toggleMediaInfo()">
+                <div class="cam-dot"></div>
+                <div class="island-media" title="Bấm để xem bài hát đang phát">
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
+                    <div class="sound-bar"></div>
                 </div>
             </div>
 
-            <!-- 1. MÀN HÌNH TẮT HOÀN TOÀN (SCREEN-OFF) -->
-            <div id="screen-off" class="absolute inset-0 bg-black z-[190] flex flex-col justify-end items-center pb-12 cursor-pointer transition-opacity duration-300" onclick="wakePhone()">
+            <!-- NOTIFICATION DROPDOWN TỰ ĐỘNG -->
+            <div class="banner-push" id="pushBanner">
+                <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center space-x-1.5">
+                        <div class="w-4 h-4 rounded-md bg-purple-600 flex items-center justify-center text-[9px] text-white" id="pushIcon"><i class="fa-solid fa-comment"></i></div>
+                        <span class="text-[10px] font-bold text-purple-300" id="pushApp">Messages</span>
+                    </div>
+                    <span class="text-[9px] text-slate-400">Vừa xong</span>
+                </div>
+                <p class="font-bold text-xs" id="pushTitle">Người gửi</p>
+                <p class="text-[11px] text-slate-200 truncate mt-0.5" id="pushBody">Nội dung thông báo...</p>
+            </div>
+
+            <!-- TOP STATUS BAR -->
+            <div class="h-[38px] px-5 pt-1 flex justify-between items-center text-white text-[11px] font-semibold z-40">
+                <div class="flex items-center space-x-1">
+                    <span id="stat-clock">--:--</span>
+                    <span class="text-[9px] text-purple-300 opacity-80" id="stat-kazan-clock">(Kazan --:--)</span>
+                </div>
+                <div class="flex space-x-1.5 items-center text-[10px]">
+                    <i class="fa-solid fa-signal"></i>
+                    <i class="fa-solid fa-wifi"></i>
+                    <span class="text-[9px] font-mono text-emerald-400">94%</span>
+                    <i class="fa-solid fa-battery-three-quarters text-xs text-emerald-400"></i>
+                </div>
+            </div>
+
+            <!-- 1. MÀN HÌNH TẮT HOÀN TOÀN -->
+            <div id="screen-off" class="absolute inset-0 bg-black z-[180] flex flex-col justify-end items-center pb-12 cursor-pointer transition-opacity duration-200" onclick="wakePhone()">
                 <div class="text-slate-600 text-xs flex flex-col items-center animate-pulse">
-                    <i class="fa-solid fa-fingerprint text-2xl mb-1 text-slate-500"></i>
+                    <i class="fa-solid fa-fingerprint text-2xl mb-1.5 text-slate-500"></i>
                     <span>Chạm để bật màn hình</span>
                 </div>
             </div>
 
-            <!-- 2. MÀN HÌNH KHÓA (LOCK SCREEN) -->
-            <div id="lock-screen" class="absolute inset-0 z-[140] bg-cover bg-center flex flex-col justify-between pt-16 pb-8 px-6 text-white cursor-pointer transition-all duration-300" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80')" onclick="unlockPhone()">
-                <div class="text-center mt-6">
-                    <i class="fa-solid fa-lock text-sm text-slate-300 mb-1"></i>
-                    <h1 class="text-5xl font-light tracking-tight" id="lock-time">12:00</h1>
-                    <p class="text-xs text-purple-200 mt-1" id="lock-date">Thứ Ba, 27 Tháng 10</p>
+            <!-- 2. MÀN HÌNH KHÓA TỰ NHIÊN -->
+            <div id="lock-screen" class="absolute inset-0 z-[130] bg-cover bg-center flex flex-col justify-between pt-14 pb-12 px-5 text-white cursor-pointer transition-transform duration-300" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80')" onclick="unlockPhone()">
+                <div class="text-center mt-2">
+                    <i class="fa-solid fa-lock text-xs text-slate-300"></i>
+                    <h1 class="text-5xl font-light tracking-tight mt-1" id="lock-clock">--:--</h1>
+                    <p class="text-[11px] text-purple-200 mt-1 capitalize" id="lock-real-date">Đang tải ngày...</p>
+                    <p class="text-[10px] text-slate-300 mt-0.5" id="lock-timeline-hint">Kazan, Tatarstan • -5°C Tuyết</p>
                 </div>
 
-                <!-- Thẻ thông báo trên màn hình khóa -->
-                <div id="lock-notification" class="bg-black/40 backdrop-blur-md p-3.5 rounded-2xl border border-white/10 shadow-lg text-left">
-                    <div class="flex justify-between items-center text-[10px] text-purple-300 mb-1">
-                        <span class="font-bold flex items-center"><i class="fa-solid fa-comment mr-1"></i> Tin nhắn mới</span>
-                        <span>Vừa xong</span>
+                <div class="bg-black/50 backdrop-blur-md p-3 rounded-2xl border border-white/10 text-left">
+                    <div class="flex justify-between items-center text-[10px] text-purple-300 mb-0.5">
+                        <span class="font-bold flex items-center"><i class="fa-solid fa-envelope mr-1"></i> Thông báo mới</span>
+                        <span id="lock-time-ago">Vừa xong</span>
                     </div>
-                    <p class="text-xs font-semibold" id="lock-notif-title">Emil Kulikov</p>
-                    <p class="text-[11px] text-slate-200 truncate" id="lock-notif-desc">Tối nay anh về muộn, đừng chờ cơm...</p>
+                    <p class="text-xs font-semibold" id="lock-sender">Người gửi</p>
+                    <p class="text-[11px] text-slate-300 truncate" id="lock-snippet">Nội dung tóm tắt...</p>
                 </div>
 
-                <div class="text-center text-[11px] text-slate-300 animate-bounce">
+                <div class="text-center text-[11px] text-slate-300 animate-bounce flex flex-col items-center">
                     <i class="fa-solid fa-chevron-up text-xs mb-1"></i>
-                    <p>Chạm vào màn hình để mở khóa</p>
+                    <span>Chạm để mở khóa</span>
                 </div>
             </div>
 
-            <!-- SCREEN CONTAINER (MÀN HÌNH CHÍNH) -->
-            <div class="relative w-full h-full pt-[42px] pb-[18px] hide-scroll flex flex-col justify-between">
-                
-                <!-- HOME SCREEN -->
-                <div id="home-screen" class="h-full flex flex-col justify-between p-4 text-white">
-                    <div>
-                        <!-- Widget Thời Tiết Kazan -->
-                        <div class="mt-2 p-3.5 rounded-[22px] bg-white/10 backdrop-blur-md border border-white/10 flex justify-between items-center shadow-lg">
-                            <div>
-                                <p class="text-2xl font-light text-white" id="widget-time">12:00</p>
-                                <p class="text-[11px] text-purple-200 mt-0.5">Kazan, Russia</p>
-                            </div>
-                            <div class="text-right flex flex-col items-end">
-                                <i class="fa-solid fa-snowflake text-2xl text-purple-300"></i>
-                                <p class="text-xs font-bold text-white mt-1">-5°C Tuyết nhẹ</p>
-                            </div>
+            <!-- 3. MÀN HÌNH CHÍNH (HOME SCREEN) -->
+            <div id="home-screen" class="flex-1 flex flex-col justify-between px-3.5 pt-1 pb-1 text-white overflow-hidden">
+                <div>
+                    <!-- Widget Thời tiết Kazan tự nhiên -->
+                    <div class="p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex justify-between items-center shadow-lg">
+                        <div>
+                            <p class="text-xl font-light" id="home-clock">--:--</p>
+                            <p class="text-[10px] text-purple-200" id="home-story-badge">Kazan • Mặt đường đóng băng</p>
                         </div>
-
-                        <!-- Lưới Ứng Dụng -->
-                        <div class="grid grid-cols-4 gap-3.5 mt-6 px-1" id="app-grid">
-                            <!-- App Ngân hàng -->
-                            <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-bank')">
-                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-blue-500 to-indigo-700 rounded-2xl flex justify-center items-center text-xl text-white shadow-lg"><i class="fa-solid fa-building-columns"></i></div>
-                                <span class="text-white text-[10.5px] mt-1.5 font-medium">T-Bank</span>
-                            </div>
-                            <!-- App Ghi Chú -->
-                            <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-notes')">
-                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-amber-400 to-orange-500 rounded-2xl flex justify-center items-center text-xl text-yellow-950 shadow-lg"><i class="fa-solid fa-note-sticky"></i></div>
-                                <span class="text-white text-[10.5px] mt-1.5 font-medium">Notes</span>
-                            </div>
-                            <!-- App Mua sắm (Chỉ User) -->
-                            <div id="grid-item-kmart" class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-shopping')">
-                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-pink-400 to-rose-600 rounded-2xl flex justify-center items-center text-xl text-white shadow-lg"><i class="fa-solid fa-bag-shopping"></i></div>
-                                <span class="text-white text-[10.5px] mt-1.5 font-medium">K-Mart</span>
-                            </div>
-                            <!-- App Bí mật (Chỉ Emil) -->
-                            <div id="grid-item-vault" class="hidden flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-secret')">
-                                <div class="w-[50px] h-[50px] bg-gradient-to-b from-red-600 to-rose-950 rounded-2xl flex justify-center items-center text-xl text-white shadow-lg shadow-red-950/50"><i class="fa-solid fa-lock"></i></div>
-                                <span class="text-red-400 text-[10.5px] mt-1.5 font-medium">Vault</span>
-                            </div>
+                        <div class="text-right">
+                            <i class="fa-solid fa-snowflake text-lg text-purple-300"></i>
+                            <p class="text-[11px] font-bold">-5°C Tuyết</p>
                         </div>
                     </div>
 
-                    <!-- Dock Bar -->
-                    <div class="w-full h-[72px] mb-2 glass-dock rounded-[26px] flex justify-around items-center px-4 shadow-xl border border-white/10">
-                        <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-messages')">
-                            <div class="w-[48px] h-[48px] bg-gradient-to-b from-emerald-400 to-teal-600 rounded-[18px] flex justify-center items-center text-xl text-white relative shadow-md">
-                                <i class="fa-solid fa-comment"></i>
-                                <div class="absolute -top-1 -right-1 bg-rose-500 w-4 h-4 rounded-full border border-white flex justify-center items-center text-[9px] font-bold" id="unread-count">1</div>
-                            </div>
+                    <!-- Lưới ứng dụng chính -->
+                    <div class="grid grid-cols-4 gap-3 mt-4 text-center">
+                        <div class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-bank')">
+                            <div class="w-12 h-12 bg-gradient-to-b from-blue-500 to-indigo-700 rounded-2xl flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-building-columns"></i></div>
+                            <span class="text-[10px] mt-1 font-medium">T-Bank</span>
                         </div>
-                        <div class="flex flex-col items-center cursor-pointer active:scale-95 transition-transform" onclick="openApp('app-contacts')">
-                            <div class="w-[48px] h-[48px] bg-gradient-to-b from-slate-200 to-slate-400 rounded-[18px] flex justify-center items-center text-xl text-slate-800 shadow-md">
-                                <i class="fa-solid fa-address-book"></i>
-                            </div>
+                        <div class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-notes')">
+                            <div class="w-12 h-12 bg-gradient-to-b from-amber-400 to-orange-500 text-yellow-950 rounded-2xl flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-note-sticky"></i></div>
+                            <span class="text-[10px] mt-1 font-medium">Notes</span>
+                        </div>
+                        <div class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-photos')">
+                            <div class="w-12 h-12 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-images"></i></div>
+                            <span class="text-[10px] mt-1 font-medium">Photos</span>
+                        </div>
+                        <div class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-kazango')">
+                            <div class="w-12 h-12 bg-gradient-to-b from-yellow-400 to-amber-600 text-slate-950 rounded-2xl flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-taxi"></i></div>
+                            <span class="text-[10px] mt-1 font-medium">Kazan Go</span>
+                        </div>
+                        <div id="grid-kmart" class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-kmart')">
+                            <div class="w-12 h-12 bg-gradient-to-b from-pink-400 to-rose-600 rounded-2xl flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-bag-shopping"></i></div>
+                            <span class="text-[10px] mt-1 font-medium">K-Mart</span>
+                        </div>
+                        <!-- RED VAULT CỦA EMIL -->
+                        <div id="grid-vault" class="hidden flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-vault')">
+                            <div class="w-12 h-12 bg-gradient-to-b from-red-600 to-rose-950 rounded-2xl flex items-center justify-center text-lg shadow-md shadow-red-950/70 border border-red-500/30"><i class="fa-solid fa-lock"></i></div>
+                            <span class="text-[10px] mt-1 font-medium text-red-400">Vault</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 1. MESSAGES APP -->
-                <div id="app-messages" class="app-screen bg-white text-slate-900">
-                    <div class="pt-[38px] pb-2 px-4 border-b glass-nav absolute w-full z-10 flex justify-between items-center">
-                        <h1 class="text-xl font-bold tracking-tight">Messages</h1>
-                        <i class="fa-solid fa-pen-to-square text-purple-600 text-base cursor-pointer"></i>
-                    </div>
-                    <div class="pt-[78px] pb-[35px] px-3 hide-scroll h-full">
-                        <div id="msg-list" class="space-y-1"></div>
-                    </div>
-                </div>
-
-                <!-- CHAT VIEW DETAIL -->
-                <div id="chat-view" class="chat-screen bg-slate-50 text-slate-900 flex flex-col justify-between">
-                    <div class="glass-nav pt-[38px] pb-2 px-3 border-b flex items-center justify-between shadow-sm z-10 w-full">
-                        <div class="flex items-center cursor-pointer" onclick="closeChat()">
-                            <i class="fa-solid fa-chevron-left text-purple-600 text-lg mr-2"></i>
-                            <div>
-                                <h2 id="chat-name" class="font-bold text-xs">Name</h2>
-                                <p id="chat-status" class="text-[9px] text-slate-500">Đang hoạt động</p>
-                            </div>
-                        </div>
-                        <i id="chat-call-btn" class="fa-solid fa-phone text-purple-600 text-base mr-1 cursor-pointer active:scale-90 transition-transform" onclick="startCall(document.getElementById('chat-name').innerText)"></i>
-                    </div>
-                    
-                    <div id="chat-bubbles" class="flex-1 p-3.5 hide-scroll flex flex-col space-y-2.5 overflow-y-auto"></div>
-
-                    <!-- Ô nhập tin nhắn -->
-                    <div id="chat-input-bar" class="w-full bg-[#f3f4f6] border-t p-2 flex items-center">
-                        <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." class="flex-1 bg-white border border-slate-300 rounded-full px-3 py-1.5 text-xs outline-none focus:border-purple-500" onkeypress="if(event.key==='Enter') sendRealMessage()">
-                        <button onclick="sendRealMessage()" class="ml-2 w-7 h-7 bg-purple-600 rounded-full text-white flex justify-center items-center active:scale-90 transition-transform"><i class="fa-solid fa-arrow-up text-xs"></i></button>
-                    </div>
-                </div>
-
-                <!-- 2. CONTACTS APP -->
-                <div id="app-contacts" class="app-screen bg-white text-slate-900">
-                    <div class="pt-[38px] pb-2 px-4 border-b glass-nav z-10 sticky top-0"><h1 class="text-xl font-bold">Contacts</h1></div>
-                    <div class="p-3 hide-scroll h-full space-y-2 pb-16" id="contacts-list"></div>
-                </div>
-
-                <!-- 3. BANKING APP -->
-                <div id="app-bank" class="app-screen bg-[#121212] text-white">
-                    <div class="pt-[38px] pb-2 px-4 z-10 sticky top-0 bg-[#121212]/90 backdrop-blur-md"><h1 class="text-lg font-bold text-center">T-Bank</h1></div>
-                    <div class="p-4 hide-scroll h-full pb-16">
-                        <div class="bg-gradient-to-br from-purple-700 via-indigo-800 to-slate-900 rounded-[20px] p-4 shadow-xl mb-4 border border-white/10">
-                            <p class="text-[10px] text-purple-200">Số dư khả dụng</p>
-                            <h2 class="text-2xl font-extrabold tracking-tight mt-0.5" id="bank-balance">0 ₽</h2>
-                            <div class="mt-4 flex justify-between items-end">
-                                <p class="font-mono text-xs tracking-widest text-purple-300">**** 8892</p>
-                                <i class="fa-brands fa-cc-visa text-2xl opacity-80"></i>
-                            </div>
-                        </div>
-                        <h3 class="text-xs font-bold mb-2 text-slate-400">Giao dịch gần đây</h3>
-                        <div class="space-y-2" id="bank-transactions"></div>
-                    </div>
-                </div>
-
-                <!-- 4. NOTES APP -->
-                <div id="app-notes" class="app-screen bg-[#fdfaf6] text-slate-900">
-                    <div class="pt-[38px] pb-2 px-4 border-b border-yellow-200 bg-[#fdfaf6]/90 backdrop-blur-md z-10 sticky top-0"><h1 class="text-xl font-bold text-amber-600">Notes</h1></div>
-                    <div class="p-3.5 hide-scroll h-full space-y-3 pb-16" id="notes-list"></div>
-                </div>
-
-                <!-- 5. SHOPPING (K-MART) -->
-                <div id="app-shopping" class="app-screen bg-[#fdf2f8] text-slate-900">
-                    <div class="pt-[38px] pb-2 px-4 border-b border-pink-200 bg-white/90 backdrop-blur-md z-10 sticky top-0 flex justify-between items-center">
-                        <h1 class="text-xl font-extrabold text-pink-600"><i class="fa-solid fa-store mr-1.5"></i>K-Mart</h1>
-                        <span class="text-[9px] text-pink-600 bg-pink-100 px-2 py-0.5 rounded-full font-bold">Kazan Mart</span>
-                    </div>
-                    <div class="p-3.5 hide-scroll h-full pb-16 space-y-2.5">
-                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex justify-between items-center">
-                            <div><p class="font-bold text-xs">👗 Váy dạ hội Kazan</p><p class="text-[10px] text-slate-500">Nhung đỏ nhạt, giữ ấm cực tốt</p><p class="text-xs font-bold text-pink-600 mt-1">4,500 ₽</p></div>
-                            <button onclick="buyItem(this)" class="bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl font-semibold">Mua ngay</button>
-                        </div>
-                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex justify-between items-center">
-                            <div><p class="font-bold text-xs">🍰 Bánh mật ong Medovik</p><p class="text-[10px] text-slate-500">Vị ngọt thanh từ tiệm bánh Rudolf thích</p><p class="text-xs font-bold text-pink-600 mt-1">650 ₽</p></div>
-                            <button onclick="buyItem(this)" class="bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl font-semibold">Mua ngay</button>
-                        </div>
-                        <div class="bg-white p-3 rounded-2xl shadow-sm border border-pink-100 flex justify-between items-center">
-                            <div><p class="font-bold text-xs">🍷 Rượu vang đỏ Krym</p><p class="text-[10px] text-slate-500">Ủ gỗ sồi hảo hạng</p><p class="text-xs font-bold text-pink-600 mt-1">3,200 ₽</p></div>
-                            <button onclick="buyItem(this)" class="bg-slate-900 text-white text-[10px] px-3 py-1.5 rounded-xl font-semibold">Mua ngay</button>
+                <!-- Dock Bar -->
+                <div class="h-[62px] mb-1 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 flex justify-around items-center px-4">
+                    <div class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-messages')">
+                        <div class="w-11 h-11 bg-gradient-to-b from-emerald-400 to-teal-600 rounded-xl flex items-center justify-center text-lg relative shadow-md">
+                            <i class="fa-solid fa-comment"></i>
+                            <div class="absolute -top-1 -right-1 bg-rose-500 w-4 h-4 rounded-full border border-white text-[8px] flex items-center justify-center font-bold" id="badge-msg">1</div>
                         </div>
                     </div>
-                </div>
-
-                <!-- 6. SECRET VAULT (EMIL ONLY) -->
-                <div id="app-secret" class="app-screen bg-black text-red-500">
-                    <div class="pt-[38px] pb-2 px-4 border-b border-red-900 bg-black/90 sticky top-0 flex justify-between items-center">
-                        <h1 class="text-lg font-bold"><i class="fa-solid fa-skull mr-2"></i>Red Vault</h1>
-                        <span class="text-[9px] bg-red-950 text-red-400 px-2 py-0.5 rounded border border-red-800">ENCRYPTED</span>
-                    </div>
-                    <div class="p-3.5 hide-scroll h-full pb-16 space-y-3">
-                        <div class="bg-red-950/40 border border-red-900/60 p-3 rounded-2xl text-xs">
-                            <p class="font-bold text-red-300">Diễn đàn kín (Private Club)</p>
-                            <p class="text-[10px] text-red-400 mt-1">Chủ đề: "Cách kiểm soát bạn đời và tẩu tán tài sản tại nước ngoài..."</p>
+                    <div class="flex flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-contacts')">
+                        <div class="w-11 h-11 bg-gradient-to-b from-slate-200 to-slate-400 text-slate-800 rounded-xl flex items-center justify-center text-lg shadow-md">
+                            <i class="fa-solid fa-address-book"></i>
                         </div>
-                        <div class="bg-red-950/40 border border-red-900/60 p-3 rounded-2xl text-xs">
-                            <p class="font-bold text-red-300">Giao dịch tiền ảo ẩn danh</p>
-                            <p class="text-[10px] text-red-400 mt-1">Đã chuyển 0.15 BTC sang ví ẩn. Nội dung: Đặt phòng VIP Lux Kazan.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CALL SCREEN OVERLAY -->
-                <div id="call-screen" class="absolute inset-0 bg-black/95 text-white z-[100] flex flex-col justify-between items-center py-14 transition-opacity duration-300 opacity-0 pointer-events-none">
-                    <div class="text-center w-full mt-6">
-                        <div class="w-16 h-16 bg-purple-900/50 border border-purple-500 rounded-full mx-auto mb-2 flex justify-center items-center text-2xl font-bold" id="call-avatar">?</div>
-                        <h2 id="calling-name" class="text-xl font-light">Name</h2>
-                        <p class="text-[11px] mt-1 animate-pulse text-purple-300" id="call-status-text">Đang gọi...</p>
-                    </div>
-                    <div class="w-14 h-14 bg-rose-600 rounded-full flex justify-center items-center text-xl cursor-pointer active:scale-90 transition-transform shadow-lg" onclick="endCall()"><i class="fa-solid fa-phone-slash"></i></div>
-                </div>
-
-            </div> <!-- End Screen Container -->
-
-            <!-- HOME BAR -->
-            <div class="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-[100px] h-[4px] bg-white opacity-50 rounded-full cursor-pointer z-50 hover:opacity-100 transition-opacity" onclick="goHome()"></div>
-
-            <!-- MODAL NỘI BỘ (Thay thế cho window.prompt để tránh lỗi sandbox) -->
-            <div id="custom-modal" class="absolute inset-0 bg-black/70 z-[250] hidden items-center justify-center p-4">
-                <div class="bg-white rounded-2xl p-4 w-full max-w-[280px] shadow-2xl text-slate-800">
-                    <h3 class="text-xs font-bold mb-2" id="modal-title">Sửa tên liên hệ</h3>
-                    <input type="text" id="modal-input" class="w-full border border-slate-300 rounded-lg p-2 text-xs mb-3 outline-none focus:border-purple-600">
-                    <div class="flex justify-end space-x-2">
-                        <button onclick="closeModal()" class="px-3 py-1 text-xs text-slate-600 font-semibold">Hủy</button>
-                        <button onclick="confirmModal()" class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs font-semibold">Lưu</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TOAST THÔNG BÁO NỘI BỘ (Thay thế cho window.alert) -->
-            <div id="custom-toast" class="absolute top-12 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-purple-500/40 text-white text-[11px] px-3.5 py-1.5 rounded-full shadow-lg z-[260] pointer-events-none opacity-0 transition-opacity duration-300 flex items-center">
-                <i class="fa-solid fa-circle-info text-purple-400 mr-1.5"></i>
+            <!-- ================= CÁC APP CHÍNH ================= -->
+
+            <!-- 1. MESSAGES APP -->
+            <div id="app-messages" class="app-surface text-slate-900">
+                <div class="app-header-fixed bg-slate-50">
+                    <button onclick="goHome()" class="flex items-center text-xs text-purple-600 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <div class="flex bg-slate-200 p-0.5 rounded-lg text-[9px] font-bold">
+                        <button onclick="filterMessages('inbox')" id="tab-inbox" class="px-2 py-0.5 rounded-md bg-white text-purple-700 shadow-sm">Hộp thư</button>
+                        <button onclick="filterMessages('trash')" id="tab-trash" class="px-2 py-0.5 rounded-md text-slate-600 hover:text-rose-600">🗑️ Đã xóa (<span id="trash-count">0</span>)</button>
+                    </div>
+                    <i class="fa-solid fa-pen-to-square text-purple-600 text-xs"></i>
+                </div>
+                <div class="app-body-scroll p-2 space-y-1 hide-scroll" id="inbox-list"></div>
+            </div>
+
+            <!-- CHAT SUB-VIEW -->
+            <div id="chat-subview" class="app-surface text-slate-900 z-40">
+                <div class="app-header-fixed bg-slate-50">
+                    <button onclick="backToMessages()" class="flex items-center text-xs text-purple-600 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Tin nhắn</button>
+                    <div class="text-center">
+                        <p id="chatting-name" class="font-bold text-[11px]">Tên</p>
+                        <p class="text-[9px] text-slate-400" id="chatting-sub">Trực tuyến</p>
+                    </div>
+                    <button id="btn-call-action" onclick="makeCall(document.getElementById('chatting-name').innerText)" class="text-purple-600 text-xs p-1"><i class="fa-solid fa-phone"></i></button>
+                    <div id="btn-call-placeholder" class="w-5 hidden"></div>
+                </div>
+                <div id="bubbles-area" class="app-body-scroll p-3 space-y-2 hide-scroll text-xs"></div>
+                <div id="chat-composer" class="h-11 px-2 border-t bg-slate-100 flex items-center space-x-1.5 flex-shrink-0">
+                    <input type="text" id="composer-text" placeholder="Nhắn tin..." class="flex-1 h-7 bg-white border border-slate-300 rounded-full px-3 text-[11px] outline-none focus:border-purple-600" onkeypress="if(event.key==='Enter') executeSendMessage()">
+                    <button onclick="executeSendMessage()" class="w-7 h-7 bg-purple-600 text-white rounded-full flex items-center justify-center text-xs active:scale-90"><i class="fa-solid fa-arrow-up"></i></button>
+                </div>
+                <div id="chat-readonly-banner" class="h-9 border-t bg-slate-100 text-slate-500 text-[10px] hidden items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-lock mr-1.5"></i> Chế độ chỉ xem tin nhắn (Read-Only)
+                </div>
+            </div>
+
+            <!-- 2. CONTACTS APP -->
+            <div id="app-contacts" class="app-surface text-slate-900">
+                <div class="app-header-fixed bg-slate-50">
+                    <button onclick="goHome()" class="flex items-center text-xs text-purple-600 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <span class="font-bold text-xs">Danh bạ</span>
+                    <span class="w-10"></span>
+                </div>
+                <div class="app-body-scroll p-2 space-y-1.5 hide-scroll" id="contacts-book"></div>
+            </div>
+
+            <!-- CONTACT DETAIL CARD -->
+            <div id="contact-detail-sheet" class="app-surface text-slate-900 z-40 bg-slate-50">
+                <div class="app-header-fixed bg-white">
+                    <button onclick="closeContactDetail()" class="flex items-center text-xs text-purple-600 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Danh bạ</button>
+                    <span class="font-bold text-xs">Thông tin</span>
+                    <button id="btn-edit-contact-trigger" onclick="promptEditContact()" class="text-purple-600 text-xs font-semibold">Sửa</button>
+                    <div id="btn-edit-placeholder" class="w-6 hidden"></div>
+                </div>
+                <div class="app-body-scroll p-4 flex flex-col items-center text-center hide-scroll">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center text-2xl font-bold shadow-lg mb-2" id="detail-avatar">?</div>
+                    <h2 class="text-base font-bold" id="detail-name">Tên</h2>
+                    <p class="text-xs text-slate-400 mt-0.5" id="detail-phone">+7 999 000-00-00</p>
+                    <p class="text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full mt-2 font-medium" id="detail-tag">Mối quan hệ</p>
+
+                    <div class="flex space-x-4 mt-5" id="detail-actions">
+                        <button onclick="jumpToChatFromContact()" class="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center shadow-sm text-purple-600 active:scale-95">
+                            <i class="fa-solid fa-comment text-sm"></i>
+                            <span class="text-[8px] mt-1 font-bold text-slate-600">Nhắn tin</span>
+                        </button>
+                        <button onclick="jumpToCallFromContact()" class="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center shadow-sm text-purple-600 active:scale-95">
+                            <i class="fa-solid fa-phone text-sm"></i>
+                            <span class="text-[8px] mt-1 font-bold text-slate-600">Gọi điện</span>
+                        </button>
+                    </div>
+
+                    <div class="w-full mt-6 p-3 bg-white border rounded-2xl text-left space-y-1">
+                        <p class="text-[10px] font-bold text-slate-400">Ghi chú riêng tư</p>
+                        <p class="text-[11px] text-slate-600 leading-relaxed" id="detail-notes">Không có ghi chú.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. T-BANK APP -->
+            <div id="app-bank" class="app-surface bg-[#0f1118] text-white">
+                <div class="app-header-fixed bg-black/40 border-white/10">
+                    <button onclick="goHome()" class="flex items-center text-xs text-purple-400 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <span class="font-bold text-xs">T-Bank Kazan</span>
+                    <span class="w-10"></span>
+                </div>
+                <div class="app-body-scroll p-3 hide-scroll">
+                    <div class="p-3 rounded-2xl bg-gradient-to-tr from-purple-800 to-indigo-900 border border-white/10 shadow-lg flex-shrink-0">
+                        <div class="flex justify-between items-center">
+                            <p class="text-[9px] text-purple-200">Số dư khả dụng</p>
+                            <span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-mono">LIVE SYNC</span>
+                        </div>
+                        <h2 class="text-xl font-black mt-0.5 tracking-tight" id="bank-funds">0 ₽</h2>
+                        <div class="mt-3 flex justify-between items-center text-[10px] text-purple-300">
+                            <span>MIR Card •••• 4412</span>
+                            <i class="fa-brands fa-cc-visa text-lg"></i>
+                        </div>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-400 mt-3 mb-1.5 uppercase">Lịch sử biến động số dư</p>
+                    <div class="space-y-1.5" id="bank-ledger"></div>
+                </div>
+            </div>
+
+            <!-- 4. NOTES APP -->
+            <div id="app-notes" class="app-surface bg-[#fbf8f2] text-slate-900">
+                <div class="app-header-fixed bg-amber-50 border-amber-200">
+                    <button onclick="goHome()" class="flex items-center text-xs text-amber-700 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <span class="font-bold text-xs text-amber-900">Ghi chú</span>
+                    <span class="w-10"></span>
+                </div>
+                <div class="app-body-scroll p-2.5 space-y-2 hide-scroll" id="notes-shelf"></div>
+            </div>
+
+            <!-- 5. PHOTOS APP -->
+            <div id="app-photos" class="app-surface bg-slate-900 text-white">
+                <div class="app-header-fixed bg-black/50 border-white/10">
+                    <button onclick="goHome()" class="flex items-center text-xs text-cyan-400 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <div class="flex bg-slate-800 p-0.5 rounded-lg text-[9px] font-bold">
+                        <button onclick="switchPhotoAlbum('all')" id="btn-photo-all" class="px-2 py-0.5 rounded-md bg-slate-700 text-cyan-300">Tất cả</button>
+                        <button onclick="switchPhotoAlbum('deleted')" id="btn-photo-del" class="px-2 py-0.5 rounded-md text-slate-400 hover:text-rose-400">🗑️ Đã xóa</button>
+                    </div>
+                    <span class="text-[9px] text-slate-400" id="photo-album-tag">Mục</span>
+                </div>
+                <div class="app-body-scroll p-2 hide-scroll">
+                    <div class="grid grid-cols-2 gap-2" id="photos-grid"></div>
+                </div>
+            </div>
+
+            <!-- 6. KAZAN GO -->
+            <div id="app-kazango" class="app-surface bg-slate-900 text-white">
+                <div class="app-header-fixed bg-slate-950 border-white/10">
+                    <button onclick="goHome()" class="flex items-center text-xs text-amber-400 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <div class="flex bg-slate-800 p-0.5 rounded-lg text-[9px] font-bold">
+                        <button onclick="switchKazanGoTab('rides')" id="tab-go-rides" class="px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950">Chuyến đi Taxi</button>
+                        <button onclick="switchKazanGoTab('delivery')" id="tab-go-delivery" class="px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white">Giao hàng & Hoa</button>
+                    </div>
+                    <span class="w-8"></span>
+                </div>
+                <div class="app-body-scroll p-2.5 space-y-2 hide-scroll" id="kazango-content"></div>
+            </div>
+
+            <!-- 7. K-MART APP -->
+            <div id="app-kmart" class="app-surface bg-[#fff5f8] text-slate-900">
+                <div class="app-header-fixed bg-pink-50 border-pink-200">
+                    <button onclick="goHome()" class="flex items-center text-xs text-pink-600 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <span class="font-bold text-xs text-pink-700"><i class="fa-solid fa-store mr-1"></i>Kazan Mart</span>
+                    <span class="text-[9px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full" id="kmart-user-balance">-- ₽</span>
+                </div>
+                <div class="app-body-scroll p-2 space-y-1.5 hide-scroll" id="kmart-items-container"></div>
+            </div>
+
+            <!-- 8. RED VAULT CỦA EMIL (DIỄN ĐÀN NGẦM MỞ RỘNG VƯỢT BẬC) -->
+            <div id="app-vault" class="app-surface bg-[#0a0a0f] text-slate-200">
+                <div class="app-header-fixed bg-[#141420] border-b border-red-900/40">
+                    <button onclick="goHome()" class="flex items-center text-xs text-red-500 font-bold active:opacity-60"><i class="fa-solid fa-chevron-left mr-1"></i> Trang chủ</button>
+                    <div class="flex items-center space-x-1.5">
+                        <i class="fa-solid fa-lock text-red-500 text-xs animate-pulse"></i>
+                        <span class="font-extrabold text-xs text-red-500 tracking-wider">RED VAULT</span>
+                    </div>
+                    <span class="text-[8px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded border border-red-800">ENCRYPTED</span>
+                </div>
+
+                <!-- 3 TAB VAULT -->
+                <div class="p-2 bg-[#10101a] border-b border-white/5 flex justify-around text-[10px] font-bold flex-shrink-0">
+                    <button onclick="switchVaultSubTab('photos')" id="vtab-photos" class="px-2.5 py-1 rounded-xl text-slate-400 hover:text-white flex items-center"><i class="fa-solid fa-file-image mr-1"></i>Ảnh mật (<span id="vphoto-count">0</span>)</button>
+                    <button onclick="switchVaultSubTab('forum')" id="vtab-forum" class="px-2.5 py-1 rounded-xl bg-red-600 text-white shadow-sm font-bold flex items-center"><i class="fa-solid fa-skull mr-1"></i>Diễn đàn ngầm (<span id="vforum-count">7</span>)</button>
+                    <button onclick="switchVaultSubTab('mistresses')" id="vtab-mistresses" class="px-2.5 py-1 rounded-xl text-slate-400 hover:text-white flex items-center"><i class="fa-solid fa-address-book mr-1"></i>Nhân tình</button>
+                </div>
+
+                <!-- BỘ LỌC CHUYÊN SÂU CỦA DIỄN ĐÀN -->
+                <div id="forum-filter-bar" class="px-2.5 py-1.5 bg-[#0d0d15] border-b border-white/5 flex space-x-1.5 overflow-x-auto hide-scroll text-[9px] font-semibold flex-shrink-0">
+                    <button onclick="filterForumFeed('all')" id="ff-all" class="px-2 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap">🔥 Tất cả bài đăng</button>
+                    <button onclick="filterForumFeed('emil')" id="ff-emil" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">👤 Bài của Emil</button>
+                    <button onclick="filterForumFeed('warning')" id="ff-warning" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">⚠️ Cảnh báo thám tử</button>
+                    <button onclick="filterForumFeed('tips')" id="ff-tips" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">🤫 Mẹo giấu vợ</button>
+                </div>
+
+                <!-- NỘI DUNG VAULT -->
+                <div class="app-body-scroll p-2.5 space-y-2.5 hide-scroll" id="vault-main-content"></div>
+
+                <div class="h-7 border-t border-red-950 bg-black text-red-500 text-[9px] flex items-center justify-center space-x-1 flex-shrink-0">
+                    <i class="fa-solid fa-eye mr-1"></i> Toàn bộ nội dung Vault của Emil đang ở chế độ Chỉ đọc (Read-Only)
+                </div>
+            </div>
+
+            <!-- FORUM DETAIL MODAL -->
+            <div id="forum-detail-view" class="app-surface bg-[#0a0a0f] text-slate-200 z-50">
+                <div class="app-header-fixed bg-[#12121c] border-b border-red-900/40">
+                    <button onclick="closeForumDetail()" class="flex items-center text-xs text-red-500 font-bold"><i class="fa-solid fa-chevron-left mr-1"></i> Diễn đàn</button>
+                    <span class="font-bold text-xs text-slate-300">Chi tiết thảo luận</span>
+                    <span class="w-10"></span>
+                </div>
+                <div class="app-body-scroll p-3 space-y-3 hide-scroll" id="forum-detail-content"></div>
+            </div>
+
+            <!-- OVERLAYS CUỘC GỌI -->
+            <div id="incoming-call-layer" class="absolute inset-0 bg-black/95 text-white z-[120] flex flex-col justify-between items-center py-12 transition-opacity duration-200 hidden">
+                <div class="text-center mt-6">
+                    <div class="w-16 h-16 bg-purple-900/70 border border-purple-400 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl font-bold shadow-lg" id="incoming-avatar">?</div>
+                    <h3 class="text-lg font-light" id="incoming-caller-name">Người gọi</h3>
+                    <p class="text-[10px] text-purple-300 mt-1 animate-pulse">Cuộc gọi thoại đến từ Kazan...</p>
+                </div>
+                <div class="flex justify-around w-full px-12 mb-4">
+                    <button onclick="declineIncomingCall()" class="w-14 h-14 bg-rose-600 rounded-full flex items-center justify-center text-xl shadow-lg active:scale-90 transition-transform"><i class="fa-solid fa-phone-slash"></i></button>
+                    <button onclick="acceptIncomingCall()" class="w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center text-xl shadow-lg active:scale-90 transition-transform animate-bounce"><i class="fa-solid fa-phone"></i></button>
+                </div>
+            </div>
+
+            <div id="call-layer" class="absolute inset-0 bg-black/95 text-white z-[110] flex flex-col justify-between items-center py-10 transition-opacity duration-200 opacity-0 pointer-events-none">
+                <div class="text-center w-full px-4">
+                    <div class="w-14 h-14 bg-purple-900/60 border border-purple-500 rounded-full mx-auto mb-1.5 flex items-center justify-center text-xl font-bold" id="call-ava">?</div>
+                    <h3 class="text-base font-light" id="call-target">Name</h3>
+                    <p class="text-[10px] text-emerald-400 font-mono mt-0.5" id="call-timer">00:00</p>
+                </div>
+
+                <div class="w-[90%] bg-white/10 backdrop-blur-md border border-white/15 p-3 rounded-2xl my-auto text-left shadow-2xl">
+                    <div class="flex items-center space-x-1.5 text-[9px] text-purple-300 mb-1 font-bold">
+                        <i class="fa-solid fa-waveform-lines animate-pulse"></i>
+                        <span>TRỰC TIẾP TỪ CUỘC GỌI</span>
+                    </div>
+                    <p class="text-[11px] text-slate-100 leading-relaxed font-normal" id="call-subtitle-text">Đang kết nối tín hiệu âm thanh...</p>
+                </div>
+
+                <button onclick="terminateCall()" class="w-12 h-12 bg-rose-600 rounded-full flex items-center justify-center text-lg active:scale-90 transition-transform shadow-lg"><i class="fa-solid fa-phone-slash"></i></button>
+            </div>
+
+            <!-- THANH ĐIỀU HƯỚNG ĐÁY MÀN HÌNH -->
+            <div class="h-[38px] bg-black/95 border-t border-white/10 flex justify-around items-center px-6 z-[100] text-slate-400">
+                <button onclick="navBack()" title="Quay lại" class="p-2 hover:text-white active:scale-75 transition-all text-xs"><i class="fa-solid fa-chevron-left"></i></button>
+                <button onclick="goHome()" title="Trang chủ" class="p-2 hover:text-white active:scale-75 transition-all text-sm"><i class="fa-solid fa-circle"></i></button>
+                <button onclick="togglePower()" title="Khóa màn hình" class="p-2 hover:text-white active:scale-75 transition-all text-xs"><i class="fa-solid fa-power-off"></i></button>
+            </div>
+
+            <!-- MODAL SỬA TÊN DANH BẠ NỘI BỘ -->
+            <div id="edit-modal" class="absolute inset-0 bg-black/70 z-[220] hidden items-center justify-center p-4">
+                <div class="bg-white rounded-2xl p-3.5 w-full max-w-[250px] text-slate-900">
+                    <p class="text-xs font-bold mb-2">Đổi tên danh bạ</p>
+                    <input type="text" id="modal-edit-input" class="w-full border border-slate-300 rounded-lg p-1.5 text-xs mb-2.5 outline-none focus:border-purple-600">
+                    <div class="flex justify-end space-x-1.5">
+                        <button onclick="closeEditModal()" class="px-2.5 py-1 text-xs text-slate-500 font-semibold">Hủy</button>
+                        <button onclick="confirmEditContact()" class="px-2.5 py-1 bg-purple-600 text-white rounded-lg text-xs font-semibold">Lưu</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toast-pill" class="absolute top-11 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-purple-500/50 text-white text-[10px] px-3 py-1 rounded-full z-[230] opacity-0 pointer-events-none transition-opacity duration-200">
                 <span id="toast-text">Thông báo</span>
             </div>
 
@@ -330,359 +508,1102 @@
     </div>
 
     <script>
-        // --- DỮ LIỆU CỐT TRUYỆN CỦA 3 NHÂN VẬT ---
-        const profiles = {
-            user: {
-                balance: "185,400 ₽",
-                isReadOnly: false,
-                notifTitle: "Emil Kulikov",
-                notifDesc: "Tối nay anh về muộn, đừng chờ cơm...",
-                messages: [
-                    { name: "Chồng tồi (Emil)", status: "Vừa xong", preview: "Tối nay anh bận họp đối tác...", chat: [
-                        { sender: "them", text: "Tối nay anh bận họp với đối tác Kazan, không về ăn cơm được." },
-                        { sender: "me", text: "Lại họp? Tuần này anh họp 4 lần rồi đấy Emil." },
-                        { sender: "them", text: "Đừng có cằn nhằn nữa, anh đi kiếm tiền chứ đi chơi à? Ngủ sớm đi." }
-                    ]},
-                    { name: "Ba Rudolf", status: "15 phút trước", preview: "Con gái, hôm nay Kazan có tuyết lạnh...", chat: [
-                        { sender: "them", text: "Con gái, hôm nay Kazan có tuyết lạnh buốt đấy, ra ngoài nhớ mang găng tay và khăn len nhé." },
-                        { sender: "them", text: "Ta vừa chuyển chút tiền tiêu vặt vào thẻ con rồi đấy, thích ăn bánh gì thì cứ mua." },
-                        { sender: "me", text: "Dạ con cảm ơn Ba Rudolf nhiều ạ! Ba giữ ấm nhé." }
-                    ]}
-                ],
-                contacts: [
-                    { id: "c1", name: "Chồng tồi (Emil)", phone: "+7 (917) 442-88-12" },
-                    { id: "c2", name: "Ba Rudolf", phone: "+7 (987) 221-00-99" },
-                    { id: "c3", name: "Tiệm bánh Kazan Mart", phone: "+7 (843) 555-12-34" }
-                ],
-                bankTransactions: [
-                    { title: "Rudolf Korolyov chuyển tiền", desc: "Hôm nay, 10:15", amount: "+50,000 ₽", color: "text-emerald-400" },
-                    { title: "Kazan Mart - Mua bánh", desc: "Hôm qua", amount: "-650 ₽", color: "text-slate-300" },
-                    { title: "Tiệm cà phê tuyết", desc: "25 Tháng 10", amount: "-320 ₽", color: "text-slate-300" }
-                ],
-                notes: [
-                    { title: "Danh sách đồ cần mua", content: "Kem dưỡng ẩm chống nẻ Kazan, trà đen dâu tây, áo len mới." },
-                    { title: "Lịch tuần này", content: "Thứ Sáu đi ăn tối với Ba Rudolf tại quán súp Borscht." }
+        // ================= KHO BÀI ĐĂNG DIỄN ĐÀN ĐỒ SỘ & SỐNG ĐỘNG (NOCTURNE NET) =================
+        const comprehensiveForumThreads = [
+            {
+                id: "ft_emil_1",
+                category: "emil",
+                tag: "Tài chính ngầm",
+                author: "KazanWolf_91 (Emil)",
+                badge: "VIP Diamond",
+                time: "45 phút trước",
+                title: "Làm sao tẩu tán 2 triệu Rúp sang ví lạnh Dubai trước khi ly hôn? Cần tìm luật sư kín ở Kazan.",
+                snippet: "Vợ tôi bắt đầu nghi ngờ vì mấy tuần nay tôi vắng nhà liên tục. Tôi đang chuẩn bị đường lui để dứt áo ra đi...",
+                body: "Chào anh em hội kín. Vợ tôi dạo này bắt đầu cằn nhằn về chuyện đi sớm về muộn. Tôi đã gom được hơn 2 triệu Rúp tiền mặt từ công ty. Tôi muốn chuyển toàn bộ sang Bitcoin rút vào ví lạnh Ledger cất riêng. Nếu nộp đơn ly hôn ra tòa án Kazan thì tòa có thể sao kê được địa chỉ ví tiền ảo không? Tuyệt đối không để con bé ở nhà đụng vào một xu nào.",
+                likes: 92,
+                views: 1840,
+                comments: [
+                    { user: "Zurich_Broker", time: "30 phút trước", text: "Chỉ cần không nạp tiền qua thẻ ngân hàng Nga là an toàn 100%. Tôi đã giúp hơn 20 anh em Kazan chuyển trót lọt." },
+                    { user: "KazanWolf_91 (Emil)", time: "25 phút trước", text: "Cảm ơn bác. Tôi đang giấu chiếc ví lạnh Ledger trong cốp xe Mercedes rồi." },
+                    { user: "Dark_Lawyer_KZN", time: "10 phút trước", text: "Cẩn thận bố vợ bác nhé, nghe bảo ông già là giáo sư có tiếng quen biết rộng lắm đấy." }
                 ]
             },
-            emil: {
-                balance: "2,450,000 ₽",
-                isReadOnly: true,
-                notifTitle: "Anya (Client A)",
-                notifDesc: "Khách sạn Lux phòng 402 nhé anh yêu...",
-                messages: [
-                    { name: "Client A (Anya)", status: "Đang hoạt động", preview: "Phòng 402 nhé anh...", chat: [
-                        { sender: "them", text: "Anh yêu, túi xách Chanel hôm nọ đẹp lắm, em thích lắm!" },
-                        { sender: "me", text: "Em thích là được rồi. Tối nay ở Lux Kazan phòng cũ nhé, anh nói dối vợ là đi họp rồi." },
-                        { sender: "them", text: "Dạ vâng, em chờ anh..." }
-                    ]},
-                    { name: "Nhà cung cấp xi măng (Quán bar)", status: "Hôm qua", preview: "Bàn VIP đã chuẩn bị xong...", chat: [
-                        { sender: "them", text: "Anh Kulikov, bàn VIP Nocturne Bar đã giữ chỗ cho anh và bạn bè." }
-                    ]}
-                ],
-                contacts: [
-                    { id: "c_e1", name: "Client A (Thật ra là Anya - Bồ)", phone: "+7 (927) 888-11-22" },
-                    { id: "c_e2", name: "Nhà cung cấp vật liệu (Quán rượu)", phone: "+7 (843) 999-00-11" },
-                    { id: "c_e3", name: "Vợ (Phiền phức)", phone: "+7 (917) 000-44-33" }
-                ],
-                bankTransactions: [
-                    { title: "Chanel Boutique Kazan", desc: "Hôm nay, 14:20", amount: "-85,000 ₽", color: "text-rose-400" },
-                    { title: "Khách sạn Lux Kazan", desc: "Hôm nay, 11:00", amount: "-28,000 ₽", color: "text-rose-400" },
-                    { title: "Nocturne Bar & Lounge", desc: "Hôm qua", amount: "-14,500 ₽", color: "text-rose-400" }
-                ],
-                notes: [
-                    { title: "Mật khẩu két sắt & Vault", content: "Không được để con bé phát hiện thẻ phụ ngân hàng ở Thụy Sĩ." },
-                    { title: "Kế hoạch tuần", content: "Báo với công ty đi công tác Moscow nhưng thực chất đi nghỉ dưỡng Sochi." }
+            {
+                id: "ft_warn_1",
+                category: "warning",
+                tag: "Cảnh báo khẩn",
+                author: "Shadow_Spotter",
+                badge: "Thành viên uy tín",
+                time: "2 giờ trước",
+                title: "CẢNH BÁO: Khách sạn Lux Kazan dạo này có thám tử tư lởn vởn ở sảnh, anh em dẫn bồ cẩn thận!",
+                snippet: "Tôi vừa thấy một gã thám tử cầm máy ảnh ống kính tele ngồi ở quán cà phê đối diện cổng Khách sạn Lux...",
+                body: "Anh em hay dắt bồ qua phòng Suite 402 hoặc các phòng VIP ở Lux Hotel chú ý cao độ! Hôm qua tôi thấy 2 người ăn mặc lịch sự chụp hình lại toàn bộ biển số xe vào bãi đỗ ngầm. Nghi ngờ có bà vợ nhà nào thuê thám tử săn bằng chứng ngoại tình.",
+                likes: 154,
+                views: 3200,
+                comments: [
+                    { user: "Nocturne_Night", time: "1 giờ trước", text: "Toi rồi, đêm qua tôi vừa đỗ con xe ở đó. Không biết có bị dính biển số không!" },
+                    { user: "KazanWolf_91 (Emil)", time: "50 phút trước", text: "Bác có nhớ họ đi xe gì không? Xe Mercedes E200 biển 777 có bị dòm ngó không?!" },
+                    { user: "Shadow_Spotter", time: "40 phút trước", text: "@KazanWolf_91 Có thấy họ ghi chép một con Mec đen đấy bác, cẩn thận củi lửa!" }
                 ]
             },
-            rudolf: {
-                balance: "890,000 ₽",
-                isReadOnly: true,
-                notifTitle: "Viện Giáo Dục Kazan",
-                notifDesc: "Lịch giảng bài tuần tới...",
-                messages: [
-                    { name: "Con gái nhỏ", status: "Hôm nay", preview: "Dạ con cảm ơn Ba Rudolf nhiều ạ...", chat: [
-                        { sender: "me", text: "Con gái, hôm nay trời Kazan lạnh buốt đấy, ra ngoài nhớ quàng khăn ấm nhé." },
-                        { sender: "me", text: "Ta vừa chuyển tiền tiêu vặt rồi đấy." },
-                        { sender: "them", text: "Dạ con cảm ơn Ba Rudolf nhiều ạ! Ba giữ ấm nhé." }
-                    ]},
-                    { name: "Hiệu trưởng Lambert", status: "Hôm qua", preview: "Tài liệu nghiên cứu đã duyệt...", chat: [
-                        { sender: "them", text: "Giáo sư Rudolf, hội đồng đã duyệt đề cương của thầy." }
-                    ]}
-                ],
-                contacts: [
-                    { id: "c_r1", name: "Con gái nhỏ yêu quý", phone: "+7 (917) 000-44-33" },
-                    { id: "c_r2", name: "Hiệu trưởng Lambert", phone: "+7 (843) 111-22-33" },
-                    { id: "c_r3", name: "Bác sĩ tim mạch Kazan", phone: "+7 (843) 777-88-99" }
-                ],
-                bankTransactions: [
-                    { title: "Chuyển cho con gái", desc: "Hôm nay, 10:15", amount: "-50,000 ₽", color: "text-rose-400" },
-                    { title: "Hiệu sách Kazan Central", desc: "26 Tháng 10", amount: "-3,200 ₽", color: "text-slate-300" },
-                    { title: "Tiệm thực phẩm sạch hữu cơ", desc: "24 Tháng 10", amount: "-4,800 ₽", color: "text-slate-300" }
-                ],
-                notes: [
-                    { title: "Sở thích của con gái", content: "Cỡ giày: 37. Dị ứng: tôm, phấn hoa cúc. Món yêu thích: Súp củ dền Borscht ít béo, bánh Medovik nhiều kem mật ong." },
-                    { title: "Lịch mua thuốc định kỳ", content: "Thuốc bổ huyết và trà hoa cúc giữ ấm phổi mùa đông." }
+            {
+                id: "ft_service_1",
+                category: "tips",
+                tag: "Dịch vụ đen",
+                author: "Aero_Ticket_Fake",
+                badge: "Thương gia",
+                time: "Hôm nay 10:15",
+                title: "Nhận xuất hóa đơn đỏ công tác Moscow giả để sếp đi nghỉ dưỡng Sochi cùng thư ký",
+                snippet: "Xuất hóa đơn vé máy bay, phòng khách sạn đóng dấu công ty kiểm toán chuẩn chỉ 100%...",
+                body: "Anh em nào muốn dẫn bồ nhí đi Sochi hoặc Dubai xả hơi mà cần bằng chứng 'đi công tác khẩn cấp' nộp cho vợ và phòng kế toán thì liên hệ. Bao trọn gói từ giấy điều động công tác đến hóa đơn ăn uống ở Moscow.",
+                likes: 78,
+                views: 1450,
+                comments: [
+                    { user: "KazanWolf_91 (Emil)", time: "Hôm nay 11:00", text: "Đã làm bên bác chuyến bay Sochi 4 ngày. Công nhận giấy tờ chuẩn, vợ ở nhà không mảy may nghi ngờ." }
+                ]
+            },
+            {
+                id: "ft_emil_2",
+                category: "emil",
+                tag: "Cấp cứu",
+                author: "KazanWolf_91 (Emil)",
+                badge: "VIP Diamond",
+                time: "Hôm qua",
+                title: "CẤP CỨU: Bị bé sinh viên dọa gửi ảnh phòng 402 cho bố vợ, anh em có số đội dằn mặt kín ở Kazan không?",
+                snippet: "Nó phát hiện tôi dắt cô thư ký đi nghỉ dưỡng Sochi nên nổi điên, đòi tống tiền 1 triệu Rúp...",
+                body: "Con bé sinh viên tôi bao nuôi ở chung cư Magnolia phát hiện tôi đi Sochi với em thư ký Elena. Giờ nó quay ra đe dọa đòi 1 triệu Rúp, nếu không sẽ gửi toàn bộ ảnh nhạy cảm chụp ở khách sạn Lux cho bố vợ tôi. Anh em có số mối nào xử lý kín miệng hoặc dằn mặt cho nó xóa ảnh không?",
+                likes: 112,
+                views: 2900,
+                comments: [
+                    { user: "Iron_Fist_KZN", time: "Hôm qua", text: "Đừng dại mà thuê giang hồ bác ơi, thời buổi này dính vào hình sự là mất trắng sự nghiệp." },
+                    { user: "Old_Wolf", time: "Hôm qua", text: "Càng chuyển tiền nó càng vòi. Tìm cách lấy điện thoại nó mà xóa sạch đi bác." }
+                ]
+            },
+            {
+                id: "ft_tips_1",
+                category: "tips",
+                tag: "Kinh nghiệm",
+                author: "Master_Gaslight",
+                badge: "Hội viên vàng",
+                time: "Hôm qua",
+                title: "Kinh nghiệm 5 năm bao 2 bồ cùng lúc mà vợ ở nhà vẫn tưởng chồng là trụ cột mẫu mực",
+                snippet: "Tuyệt chiêu: Luôn luôn chủ động gắt gỏng trước mỗi khi bước chân vào nhà...",
+                body: "Bước 1: Về đến cửa là mặt mày nhăn nhó, kêu mệt mỏi vì họp hành kiếm tiền. Bước 2: Vợ vừa hé miệng hỏi 'Anh đi đâu về muộn thế?' là gắt lên ngay: 'Tôi đi kiếm tiền nuôi cái nhà này mà cô còn tra khảo à?'. Bước 3: Lập tức vợ sẽ thấy có lỗi và đi rót nước nấu canh cho các bác.",
+                likes: 245,
+                views: 4500,
+                comments: [
+                    { user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đang áp dụng chiêu này hàng ngày, cực kỳ hiệu quả. Con vợ tôi không dám hé răng câu thứ hai." }
+                ]
+            },
+            {
+                id: "ft_blackmarket_1",
+                category: "tips",
+                tag: "Chợ đen",
+                author: "Spy_Gadgets_Rus",
+                badge: "Thương gia",
+                time: "2 ngày trước",
+                title: "Bán thiết bị quét sóng GPS phát hiện định vị lén gắn trên xe hơi và máy phá sóng mini",
+                snippet: "Thiết bị cầm tay chuyên quét tìm thiết bị nghe lén, AirTag hoặc nam châm GPS gắn gầm xe...",
+                body: "Dạo này các bà vợ hay lén gắn AirTag hoặc thiết bị GPS của thám tử tư dưới gầm xe các sếp. Thiết bị bên em rà một lượt là tít còi báo động ngay. Nhỏ gọn bằng bao thuốc lá.",
+                likes: 89,
+                views: 1600,
+                comments: [
+                    { user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đã nhận hàng. Vừa rà dưới gầm con Mercedes thì phát hiện có vật lạ gắn nam châm thật! May mà có máy quét!" }
+                ]
+            },
+            {
+                id: "ft_crypto_1",
+                category: "emil",
+                tag: "Rửa tiền",
+                author: "Crypto_Kazan_P2P",
+                badge: "Uy tín",
+                time: "3 ngày trước",
+                title: "Nhận đổi tiền mặt sang USDT ẩn danh tại quán cà phê phố Bauman, giao dịch tiền tươi",
+                snippet: "Bảo mật tuyệt đối, không yêu cầu KYC, không lưu camera, tỷ giá tốt nhất Tatarstan...",
+                body: "Anh em cần rút quỹ đen công ty hoặc giấu tiền trước khi phân chia tài sản cứ mang tiền mặt qua điểm hẹn. Đổi thẳng sang ví lạnh cá nhân trong vòng 5 phút.",
+                likes: 67,
+                views: 1120,
+                comments: [
+                    { user: "KazanWolf_91 (Emil)", time: "2 ngày trước", text: "Đã giao dịch 500k Rúp thành công. Rất uy tín." }
                 ]
             }
+        ];
+
+        let currentForumCategory = 'all';
+
+        // ================= CƠ CHẾ ĐỒNG BỘ THỜI GIAN THỰC TẾ & TÌNH TIẾT TỰ NHIÊN =================
+        const dynamicMistresses = [
+            { name: "Anya", role: "Sinh viên năm 3", phone: "+7 (927) 888-11-22", loc: "Chung cư Magnolia", cost: "120,000 ₽" },
+            { name: "Elena", role: "Thư ký chi nhánh", phone: "+7 (919) 444-55-66", loc: "Biệt thự ven hồ", cost: "185,000 ₽" },
+            { name: "Polina", role: "Vũ nữ Nocturne Club", phone: "+7 (927) 111-99-00", loc: "Quán bar ngầm", cost: "95,000 ₽" }
+        ];
+
+        let activeProfile = 'user';
+        let currentVaultSubTab = 'photos';
+        let currentChatIndex = null;
+        let selectedContactObj = null;
+        let currentMessageFilter = 'inbox';
+        let currentPhotoAlbum = 'all';
+        let currentKazanGoTab = 'rides';
+        let callTimerInterval = null;
+        let callSeconds = 0;
+
+        const accountBalances = { user: 85400, emil: 2450000, rudolf: 890000 };
+
+        function getNaturalContext() {
+            const now = new Date();
+            const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            const mistress = dynamicMistresses[dayOfYear % dynamicMistresses.length];
+            const hour = now.getHours();
+
+            let timeHint = "Kazan, Tatarstan • -5°C Tuyết rơi dày";
+            let weatherBadge = "Kazan • Mặt đường đóng băng";
+            let nightText = `${mistress.name}: Anh yêu, phòng 402 em lấy thẻ rồi nhé, qua nhanh đi...`;
+            let emilExcuse = "Tối nay anh bận họp đối tác ở trung tâm Kazan, không về ăn cơm.";
+
+            if (hour >= 6 && hour < 12) {
+                timeHint = "Buổi sáng ở Kazan • Rudolf dậy sớm đọc sách, Emil đi làm";
+                weatherBadge = "Buổi sáng • Tuyết phủ trắng phố";
+            } else if (hour >= 12 && hour < 18) {
+                timeHint = "Buổi chiều ở Kazan • Emil bàn việc mờ ám, Rudolf lên giảng đường";
+                weatherBadge = "Buổi chiều • Gió lạnh âm 5 độ";
+            } else {
+                timeHint = "Đêm muộn ở Kazan • Emil đi bar Nocturne hoặc khách sạn Lux";
+                weatherBadge = "Đêm muộn • Bar & Khách sạn lên đèn";
+            }
+
+            return { mistress, timeHint, weatherBadge, nightText, emilExcuse, hour };
+        }
+
+        let ctx = getNaturalContext();
+
+        let activeStoryState = {
+            vaultPhotos: [],
+            vaultMistresses: [],
+            chats: { user: [], emil: [], rudolf: [] },
+            deletedChats: []
         };
 
-        let currentProfileKey = 'user';
-        let currentEditingContactId = null;
+        function buildNaturalState() {
+            ctx = getNaturalContext();
 
-        // --- HÀM THỜI GIAN ---
-        function updateTime() {
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('clock').innerText = timeStr;
-            document.getElementById('widget-time').innerText = timeStr;
-            document.getElementById('lock-time').innerText = timeStr;
+            // 1. Ảnh Vault
+            activeStoryState.vaultPhotos = [
+                { title: `[ẢNH MẬT: ${ctx.mistress.name} tại Khách sạn Lux]`, desc: `${ctx.mistress.name} mặc váy ngủ lụa đỏ chụp trước gương phòng 402, cổ đeo sợi dây chuyền kim cương vừa được Emil tặng.`, tag: "Phòng 402" },
+                { title: `[ẢNH MẬT: Xe Mercedes Emil tại ${ctx.mistress.loc}]`, desc: `Ảnh chụp biển số xe Mercedes đỗ lén lút ngoài căn hộ của ${ctx.mistress.name} lúc 23:40.`, tag: "Lén lút" },
+                { title: `[ẢNH MẬT: Hóa đơn Chanel Boutique Kazan]`, desc: `Biên lai thanh toán 85,000 ₽ mua túi xách tặng bồ nhí giấu dưới ghế phụ xe.`, tag: "Hóa đơn đen" }
+            ];
+
+            // 2. Sổ tay nhân tình
+            activeStoryState.vaultMistresses = [
+                { name: `${ctx.mistress.name} (${ctx.mistress.role})`, phone: ctx.mistress.phone, monthlyCost: ctx.mistress.cost, address: ctx.mistress.loc, note: "Nhân tình đang hẹn hò thường xuyên" },
+                { name: "Elena (Thư ký công ty)", phone: "+7 (919) 444-55-66", monthlyCost: "Hoa hồng lậu", address: "Biệt thự ven hồ", note: "Cùng đi nghỉ dưỡng Sochi" },
+                { name: "Anya (Sinh viên)", phone: "+7 (927) 888-11-22", monthlyCost: "120,000 ₽", address: "Chung cư Magnolia", note: "Thích quà cáp đắt tiền" }
+            ];
+
+            // 3. Tin nhắn
+            const emilText = (ctx.hour >= 18 || ctx.hour < 6) ? ctx.nightText : ctx.emilExcuse;
+            
+            activeStoryState.chats.user = [
+                { id: "emil", name: "Chồng (Emil)", sub: "Trực tuyến", preview: emilText, history: [
+                    { me: false, text: emilText },
+                    { me: true, text: "Lại họp? Tuần này 4 lần rồi đấy Emil." },
+                    { me: false, text: "Đừng cằn nhằn nữa, lo ngủ sớm đi!" }
+                ]},
+                { id: "rudolf", name: "Ba Rudolf", sub: "Vừa xong", preview: "Con gái, ngoài trời tuyết rơi lạnh lắm...", history: [
+                    { me: false, text: "Con gái, ngoài trời tuyết rơi lạnh lắm, ba vừa gửi súp củ dền nóng qua Kazan Go đấy." },
+                    { me: false, text: "Nếu thiếu tiền cứ bảo ba ngay nhé con gái." }
+                ]}
+            ];
+
+            activeStoryState.chats.emil = [
+                { id: "mistress", name: ctx.mistress.name, sub: "Đang hoạt động", preview: ctx.nightText, history: [
+                    { me: false, text: ctx.nightText },
+                    { me: true, text: "Anh biết rồi, chờ anh một chút." }
+                ]},
+                { id: "dmitry", name: "Dmitry (Bạn nhậu)", sub: "1 giờ trước", preview: "Tao nói dối con vợ mày rồi đấy.", history: [
+                    { me: false, text: "Tao vừa bảo con vợ mày là mày đang họp với sếp rồi, yên tâm quẩy nhé!" }
+                ]}
+            ];
+
+            activeStoryState.chats.rudolf = [
+                { id: "user_r", name: "Con gái nhỏ", sub: "Hôm nay", preview: "Con nhớ giữ ấm nhé...", history: [
+                    { me: true, text: "Con gái, ngoài trời tuyết lạnh lắm, nhớ mặc ấm nhé." }
+                ]}
+            ];
+
+            activeStoryState.deletedChats = [
+                { id: "del_1", name: `🗑️ ${ctx.mistress.name}`, sub: "Đã xóa 1 giờ trước", preview: "Anh nhớ chùi vết son môi...", history: [
+                    { me: false, text: "Lúc nãy em lỡ làm dính son môi trên cổ áo sơ mi đấy, chùi sạch chưa?" },
+                    { me: true, text: "Anh chùi rồi, em yên tâm." }
+                ]}
+            ];
+
+            // Cập nhật giao diện tự nhiên
+            document.getElementById('home-story-badge').innerText = ctx.weatherBadge;
+            document.getElementById('lock-timeline-hint').innerText = ctx.timeHint;
+            document.getElementById('lock-sender').innerText = ctx.mistress.name;
+            document.getElementById('lock-snippet').innerText = ctx.nightText;
         }
-        setInterval(updateTime, 1000);
-        updateTime();
 
-        // --- CÁC HÀM BẬT / TẮT / KHÓA MÀN HÌNH ---
+        // ================= KAZAN GO / PHOTOS / BANKING =================
+        const kazanGoData = {
+            user: { rides: [{ time: "18:30", from: "Kazan Mart", to: "Căn hộ số 14", cost: "320 ₽", car: "Yandex Comfort" }], delivery: [{ time: "10:30", item: "Súp Borscht nóng", from: "Ba Rudolf", status: "Đã giao ✓" }] },
+            emil: { rides: [{ time: "01:15 Đêm", from: "Nocturne Bar", to: "Khách sạn Lux", cost: "480 ₽", car: "Mercedes E200" }], delivery: [{ time: "15:20", item: "Bó hoa hồng 99 bông", from: "Flora Kazan", to: "Chung cư Magnolia", status: "Đã ký nhận ✓" }] },
+            rudolf: { rides: [{ time: "08:00 Sáng", from: "Nhà riêng", to: "Đại học Kazan", cost: "250 ₽", car: "Yandex Comfort" }], delivery: [{ time: "10:15 Sáng", item: "Súp củ dền", from: "Tiệm súp", to: "Nhà con gái", status: "Đã giao ✓" }] }
+        };
+
+        const kmartCatalog = [
+            { id: 1, name: "👗 Váy dạ hội nhung Kazan", cat: "Thời trang", desc: "Nhung đỏ ấm áp đi tiệc", price: 4500 },
+            { id: 2, name: "🧥 Áo khoác dạ Cashmere", cat: "Thời trang", desc: "Giữ ấm âm 20 độ tuyết", price: 12800 },
+            { id: 3, name: "🧴 Kem nẻ thảo mộc Siberi", cat: "Mỹ phẩm", desc: "Dầu tuyết tùng", price: 850 },
+            { id: 4, name: "🍰 Bánh mật ong Medovik", cat: "Ẩm thực", desc: "Vị ngọt dịu truyền thống", price: 650 }
+        ];
+
+        const photosDb = {
+            user: { all: [{ title: "Tuyết rơi đầu mùa", url: "https://images.unsplash.com/photo-1517299321909-50939c8127b9?auto=format&fit=crop&w=300&q=80", tag: "Kỷ niệm" }], deleted: [] },
+            emil: { all: [{ title: "Bàn VIP Nocturne Bar", url: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=300&q=80", tag: "Nocturne" }], deleted: [] },
+            rudolf: { all: [{ title: "Đại học Kazan", url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=300&q=80", tag: "Giảng dạy" }], deleted: [] }
+        };
+
+        const mediaPlaying = { user: "Lana Del Rey - Young and Beautiful", emil: "Deep Dark Techno - Nocturne Live", rudolf: "Tchaikovsky - Nutcracker Suite" };
+
+        const db = {
+            user: { readOnly: false, contacts: [{ id: "c_u1", key: "emil", name: "Chồng (Emil)", phone: "+7 (917) 442-88-12", tag: "Chồng", notes: "Lén lút, giấu giếm các chuyến đi." }, { id: "c_u2", key: "rudolf", name: "Ba Rudolf", phone: "+7 (987) 221-00-99", tag: "Cha", notes: "Bảo bọc, đang âm thầm thuê thám tử giúp con gái." }], bank: [{ title: "Rudolf chuyển tiền", time: "Sáng nay", val: "+50,000 ₽", plus: true }], notes: [{ title: "Cần sắm", body: "Kem nẻ Siberi, áo dạ mới." }] },
+            emil: { readOnly: true, contacts: [{ id: "c_e1", key: "mistress", name: "Nhân tình hiện tại", phone: "+7 (927) 888-11-22", tag: "Bồ nhí", notes: "Giấu kín trong danh bạ phụ." }], bank: [{ title: "Khách sạn Lux phòng 402", time: "Đêm qua", val: "-28,000 ₽", plus: false }], notes: [{ title: "Ví Ledger", body: "Giấu trong hộc xe Mercedes." }] },
+            rudolf: { readOnly: true, contacts: [{ id: "c_r1", key: "user_r", name: "Con gái nhỏ", phone: "+7 (917) 000-44-33", tag: "Gia đình", notes: "Cần bảo vệ khỏi kẻ lừa đảo Emil." }, { id: "c_r2", key: "lawyer", name: "Luật sư Tarasov", phone: "+7 (843) 999-11-22", tag: "Luật sư", notes: "Chuyên gia ly hôn và tranh chấp tài sản." }], bank: [{ title: "Thuê thám tử tư Kazan", time: "Hôm nay", val: "-50,000 ₽", plus: false }], notes: [{ title: "Chứng cứ thu thập", body: "Lịch trình đi khách sạn Lux và các chuyến bay đêm." }] }
+        };
+
+        function clickSound() {
+            try {
+                const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctxAudio.createOscillator();
+                const g = ctxAudio.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(450, ctxAudio.currentTime);
+                g.gain.setValueAtTime(0.03, ctxAudio.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, ctxAudio.currentTime + 0.04);
+                osc.connect(g);
+                g.connect(ctxAudio.destination);
+                osc.start();
+                osc.stop(ctxAudio.currentTime + 0.04);
+            } catch(e){}
+        }
+
+        function updateRealTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('stat-clock').innerText = timeStr;
+            document.getElementById('lock-clock').innerText = timeStr;
+            document.getElementById('home-clock').innerText = timeStr;
+
+            const kazanDate = new Date(now.getTime() - (4 * 60 * 60 * 1000));
+            const kazanHours = kazanDate.getHours().toString().padStart(2, '0');
+            const kazanMins = kazanDate.getMinutes().toString().padStart(2, '0');
+            document.getElementById('stat-kazan-clock').innerText = `(Kazan ${kazanHours}:${kazanMins})`;
+
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('lock-real-date').innerText = now.toLocaleDateString('vi-VN', options);
+        }
+        setInterval(updateRealTime, 1000);
+        updateRealTime();
+
         function wakePhone() {
-            document.getElementById('screen-off').style.opacity = '0';
-            setTimeout(() => { document.getElementById('screen-off').style.display = 'none'; }, 300);
+            clickSound();
+            const off = document.getElementById('screen-off');
+            off.style.opacity = '0';
+            setTimeout(() => off.style.display = 'none', 200);
         }
 
         function unlockPhone() {
-            const lockScreen = document.getElementById('lock-screen');
-            lockScreen.style.transform = 'translateY(-100%)';
-            setTimeout(() => { lockScreen.style.display = 'none'; }, 300);
+            clickSound();
+            const lock = document.getElementById('lock-screen');
+            lock.style.transform = 'translateY(-100%)';
+            setTimeout(() => lock.style.display = 'none', 300);
         }
 
         function togglePower() {
-            const screenOff = document.getElementById('screen-off');
-            const lockScreen = document.getElementById('lock-screen');
-            if (screenOff.style.display === 'none') {
-                // Tắt màn hình
-                screenOff.style.display = 'flex';
-                setTimeout(() => screenOff.style.opacity = '1', 10);
-                // Đóng hết app về lock screen
+            clickSound();
+            const off = document.getElementById('screen-off');
+            const lock = document.getElementById('lock-screen');
+            if (off.style.display === 'none') {
                 goHome();
-                lockScreen.style.display = 'flex';
-                lockScreen.style.transform = 'translateY(0)';
+                off.style.display = 'flex';
+                setTimeout(() => off.style.opacity = '1', 10);
+                lock.style.display = 'flex';
+                lock.style.transform = 'translateY(0)';
             } else {
-                // Bật sáng lên Lock Screen
                 wakePhone();
             }
         }
 
-        // --- ĐỔI PROFILE NHÂN VẬT ---
-        function switchProfile(profileKey) {
-            currentProfileKey = profileKey;
-            ['user', 'emil', 'rudolf'].forEach(k => {
-                const btn = document.getElementById('btn-' + k);
-                if (k === profileKey) {
-                    btn.classList.add('bg-purple-600', 'text-white');
-                    btn.classList.remove('text-slate-400');
+        function openAppScreen(id) {
+            clickSound();
+            document.getElementById(id).classList.add('open');
+            if (id === 'app-vault') renderVaultMain();
+        }
+
+        function goHome() {
+            clickSound();
+            document.querySelectorAll('.app-surface').forEach(s => s.classList.remove('open'));
+        }
+
+        function navBack() {
+            clickSound();
+            if (document.getElementById('forum-detail-view').classList.contains('open')) {
+                closeForumDetail();
+                return;
+            }
+            if (document.getElementById('contact-detail-sheet').classList.contains('open')) {
+                closeContactDetail();
+                return;
+            }
+            if (document.getElementById('chat-subview').classList.contains('open')) {
+                backToMessages();
+                return;
+            }
+            const opens = document.querySelectorAll('.app-surface.open');
+            if (opens.length > 0) {
+                goHome();
+                return;
+            }
+            togglePower();
+        }
+
+        function backToMessages() {
+            clickSound();
+            document.getElementById('chat-subview').classList.remove('open');
+        }
+
+        function toggleMediaInfo() {
+            clickSound();
+            triggerToast(`🎵 Đang phát: ${mediaPlaying[activeProfile]}`);
+        }
+
+        // ================= RENDER RED VAULT & DIỄN ĐÀN NGẦM MỞ RỘNG =================
+        function switchVaultSubTab(tab) {
+            clickSound();
+            currentVaultSubTab = tab;
+            const filterBar = document.getElementById('forum-filter-bar');
+            
+            ['photos', 'forum', 'mistresses'].forEach(t => {
+                const btn = document.getElementById('vtab-' + t);
+                if (t === tab) {
+                    btn.className = "px-2.5 py-1 rounded-xl bg-red-600 text-white shadow-sm font-bold flex items-center";
                 } else {
-                    btn.classList.remove('bg-purple-600', 'text-white');
-                    btn.classList.add('text-slate-400');
+                    btn.className = "px-2.5 py-1 rounded-xl text-slate-400 hover:text-white font-bold flex items-center";
                 }
             });
 
-            const data = profiles[profileKey];
+            if (tab === 'forum') {
+                filterBar.classList.remove('hidden');
+                filterBar.classList.add('flex');
+            } else {
+                filterBar.classList.add('hidden');
+                filterBar.classList.remove('flex');
+            }
+
+            renderVaultMain();
+        }
+
+        function filterForumFeed(cat) {
+            clickSound();
+            currentForumCategory = cat;
+            ['all', 'emil', 'warning', 'tips'].forEach(c => {
+                const btn = document.getElementById('ff-' + c);
+                if (c === cat) {
+                    btn.className = "px-2 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap font-bold shadow-sm";
+                } else {
+                    btn.className = "px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap";
+                }
+            });
+            renderVaultMain();
+        }
+
+        function renderVaultMain() {
+            const container = document.getElementById('vault-main-content');
+            container.innerHTML = '';
+            document.getElementById('vphoto-count').innerText = activeStoryState.vaultPhotos.length;
+
+            if (currentVaultSubTab === 'photos') {
+                container.innerHTML += `<p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mb-1"><i class="fa-solid fa-camera mr-1"></i>Album ảnh mật bị mã hóa (${activeStoryState.vaultPhotos.length} Mục)</p>`;
+                activeStoryState.vaultPhotos.forEach(p => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-[#141422] rounded-2xl border border-red-950/70 shadow-sm space-y-1.5">
+                            <div class="flex justify-between items-center text-[10px]">
+                                <span class="font-bold text-red-300 flex items-center"><i class="fa-solid fa-image mr-1 text-red-500"></i>${p.title}</span>
+                                <span class="text-[8px] bg-red-950 text-red-400 px-1.5 py-0.5 rounded border border-red-900">${p.tag}</span>
+                            </div>
+                            <div class="p-2 bg-black/60 rounded-xl border border-white/5 text-[11px] text-slate-300 leading-relaxed italic">
+                                "${p.desc}"
+                            </div>
+                        </div>`;
+                });
+            } else if (currentVaultSubTab === 'forum') {
+                let posts = comprehensiveForumThreads;
+                if (currentForumCategory !== 'all') {
+                    posts = comprehensiveForumThreads.filter(p => p.category === currentForumCategory);
+                }
+
+                container.innerHTML += `
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 mb-1">
+                        <span class="font-bold text-red-400"><i class="fa-solid fa-skull mr-1"></i>Nocturne DarkNet • @KazanWolf_91</span>
+                        <span class="text-emerald-400">1,420 Online</span>
+                    </div>`;
+
+                posts.forEach(post => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-[#13131e] rounded-2xl border border-red-950/60 hover:border-red-700/80 cursor-pointer transition-all active:scale-98 shadow-sm space-y-1" onclick="openForumDetailModal('${post.id}')">
+                            <div class="flex justify-between items-center text-[9px] text-slate-400">
+                                <span class="font-bold ${post.author.includes('Emil') ? 'text-red-400' : 'text-slate-300'}">${post.author}</span>
+                                <span class="text-[8px] bg-red-950 text-red-300 px-1 py-0.2 rounded border border-red-900">${post.tag}</span>
+                            </div>
+                            <h3 class="text-xs font-bold text-white hover:text-red-400 transition-colors leading-snug">${post.title}</h3>
+                            <p class="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">${post.snippet}</p>
+                            <div class="mt-2 flex items-center space-x-3 text-[9px] text-slate-500 border-t border-white/5 pt-1.5">
+                                <span class="text-red-400 font-bold"><i class="fa-solid fa-arrow-up mr-1"></i>${post.likes}</span>
+                                <span><i class="fa-solid fa-comment mr-1"></i>${post.comments.length} Bình luận</span>
+                                <span><i class="fa-solid fa-eye mr-1"></i>${post.views}</span>
+                            </div>
+                        </div>`;
+                });
+            } else if (currentVaultSubTab === 'mistresses') {
+                container.innerHTML += `<p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mb-1"><i class="fa-solid fa-address-book mr-1"></i>Danh sách nhân tình & Chi phí bí mật</p>`;
+                activeStoryState.vaultMistresses.forEach(m => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-[#151522] rounded-2xl border border-red-900/40 shadow-sm space-y-1 text-xs">
+                            <div class="flex justify-between items-center">
+                                <p class="font-bold text-red-300">${m.name}</p>
+                                <span class="text-[10px] font-mono text-emerald-400 font-bold">${m.monthlyCost}</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400"><i class="fa-solid fa-phone mr-1"></i>${m.phone}</p>
+                            <p class="text-[10px] text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${m.address}</p>
+                            <div class="mt-1 p-1.5 bg-black/50 rounded-lg text-[10px] text-red-300/80 italic border border-red-950">Ghi chú: ${m.note}</div>
+                        </div>`;
+                });
+            }
+        }
+
+        function openForumDetailModal(postId) {
+            clickSound();
+            const post = comprehensiveForumThreads.find(p => p.id === postId);
+            if (!post) return;
+
+            const box = document.getElementById('forum-detail-content');
+            let commentsHtml = '';
+            post.comments.forEach(c => {
+                commentsHtml += `
+                    <div class="p-2.5 bg-[#151522] rounded-xl border border-white/5 text-[11px] space-y-1">
+                        <div class="flex justify-between text-[9px]">
+                            <span class="font-bold ${c.user.includes('Emil') ? 'text-red-400' : 'text-slate-400'}">${c.user}</span>
+                            <span class="text-slate-500">${c.time}</span>
+                        </div>
+                        <p class="text-slate-300 leading-relaxed">${c.text}</p>
+                    </div>`;
+            });
+
+            box.innerHTML = `
+                <div class="p-3 bg-[#13131e] rounded-2xl border border-red-950/80 space-y-2">
+                    <div class="flex justify-between items-center text-[10px]">
+                        <span class="font-bold text-red-400">${post.author}</span>
+                        <span class="text-[8px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded border border-red-900">${post.tag}</span>
+                    </div>
+                    <h2 class="text-sm font-bold text-white leading-snug">${post.title}</h2>
+                    <p class="text-xs text-slate-300 leading-relaxed border-t border-white/5 pt-2">${post.body}</p>
+                    <div class="flex space-x-3 text-[10px] text-slate-400 pt-2 border-t border-white/5">
+                        <span class="text-red-400 font-bold"><i class="fa-solid fa-arrow-up mr-1"></i>${post.likes} Upvotes</span>
+                        <span><i class="fa-solid fa-eye mr-1"></i>${post.views} Lượt đọc</span>
+                    </div>
+                </div>
+                <div class="space-y-2 pt-2">
+                    <p class="text-[10px] font-bold text-red-400 uppercase tracking-wider"><i class="fa-solid fa-comments mr-1"></i>Bình luận hội viên (${post.comments.length})</p>
+                    <div class="space-y-1.5">${commentsHtml}</div>
+                </div>`;
+
+            document.getElementById('forum-detail-view').classList.add('open');
+        }
+
+        function closeForumDetail() {
+            clickSound();
+            document.getElementById('forum-detail-view').classList.remove('open');
+        }
+
+        // ================= KAZAN GO / PHOTOS / MESSAGES / APP RENDERING =================
+        function switchKazanGoTab(tab) {
+            clickSound();
+            currentKazanGoTab = tab;
+            const tabRides = document.getElementById('tab-go-rides');
+            const tabDeliv = document.getElementById('tab-go-delivery');
+            if (tab === 'rides') {
+                tabRides.className = "px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-bold";
+                tabDeliv.className = "px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white";
+            } else {
+                tabDeliv.className = "px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-bold";
+                tabRides.className = "px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white";
+            }
+            renderKazanGoApp();
+        }
+
+        function renderKazanGoApp() {
+            const container = document.getElementById('kazango-content');
+            container.innerHTML = '';
+            const data = kazanGoData[activeProfile];
+
+            if (currentKazanGoTab === 'rides') {
+                data.rides.forEach(r => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-slate-800/80 rounded-2xl border border-white/10 text-xs shadow-sm">
+                            <div class="flex justify-between items-center text-[10px] text-amber-400 mb-1 font-bold">
+                                <span><i class="fa-solid fa-clock mr-1"></i>${r.time}</span>
+                                <span class="text-white font-mono text-xs">${r.cost}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-200">${r.from} ➔ ${r.to}</p>
+                            <p class="text-[9px] text-slate-400 mt-1">${r.car}</p>
+                        </div>`;
+                });
+            } else {
+                data.delivery.forEach(d => {
+                    container.innerHTML += `
+                        <div class="p-3 bg-slate-800/80 rounded-2xl border border-pink-500/20 text-xs shadow-sm">
+                            <p class="text-xs font-bold text-white">${d.item}</p>
+                            <p class="text-[10px] text-slate-300">${d.from} ➔ ${d.to || 'Địa chỉ nhận'}</p>
+                            ${d.note ? `<p class="mt-1 p-1.5 bg-pink-950/40 rounded text-[9px] text-pink-200 italic">${d.note}</p>` : ''}
+                        </div>`;
+                });
+            }
+        }
+
+        function switchPhotoAlbum(albumType) {
+            clickSound();
+            currentPhotoAlbum = albumType;
+            const btnAll = document.getElementById('btn-photo-all');
+            const btnDel = document.getElementById('btn-photo-del');
+            if (albumType === 'all') {
+                btnAll.className = "px-2 py-0.5 rounded-md bg-slate-700 text-cyan-300 font-bold";
+                btnDel.className = "px-2 py-0.5 rounded-md text-slate-400 hover:text-rose-400";
+            } else {
+                btnDel.className = "px-2 py-0.5 rounded-md bg-rose-900/80 text-rose-200 font-bold border border-rose-700";
+                btnAll.className = "px-2 py-0.5 rounded-md text-slate-400 hover:text-white";
+            }
+            renderPhotosApp();
+        }
+
+        function renderPhotosApp() {
+            const grid = document.getElementById('photos-grid');
+            grid.innerHTML = '';
+            const album = photosDb[activeProfile][currentPhotoAlbum] || [];
+            document.getElementById('photo-album-tag').innerText = `${album.length} Mục`;
+
+            if (album.length === 0) {
+                grid.parentElement.innerHTML = '<p class="text-xs text-slate-500 text-center py-10 col-span-2">Thư mục trống.</p>';
+                return;
+            }
+
+            album.forEach(p => {
+                grid.innerHTML += `
+                    <div class="bg-slate-800 rounded-xl overflow-hidden border border-white/10 shadow-sm flex flex-col">
+                        <img src="${p.url}" alt="${p.title}" class="w-full h-24 object-cover">
+                        <div class="p-1.5 flex flex-col justify-between flex-1">
+                            <p class="text-[10px] font-bold text-slate-200 truncate">${p.title}</p>
+                            <span class="text-[8px] bg-slate-700 text-cyan-300 px-1 py-0.5 rounded self-start mt-1">${p.tag}</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function filterMessages(tab) {
+            clickSound();
+            currentMessageFilter = tab;
+            const tabInbox = document.getElementById('tab-inbox');
+            const tabTrash = document.getElementById('tab-trash');
+            if (tab === 'inbox') {
+                tabInbox.className = "px-2 py-0.5 rounded-md bg-white text-purple-700 shadow-sm font-bold";
+                tabTrash.className = "px-2 py-0.5 rounded-md text-slate-600 hover:text-rose-600";
+            } else {
+                tabTrash.className = "px-2 py-0.5 rounded-md bg-rose-600 text-white shadow-sm font-bold";
+                tabInbox.className = "px-2 py-0.5 rounded-md text-slate-600 hover:text-purple-700";
+            }
+            renderMessagesInbox();
+        }
+
+        function renderMessagesInbox() {
+            const list = document.getElementById('inbox-list');
+            list.innerHTML = '';
+            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats;
+
+            document.getElementById('trash-count').innerText = activeStoryState.deletedChats.length;
+
+            if (!chatList || chatList.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">Hộp thư trống.</p>`;
+                return;
+            }
+
+            chatList.forEach((c, idx) => {
+                list.innerHTML += `
+                    <div class="p-2 rounded-xl hover:bg-slate-100 flex items-center space-x-2.5 cursor-pointer active:scale-98 transition-all ${currentMessageFilter === 'trash' ? 'bg-rose-50/60 border border-rose-100' : ''}" onclick="openChatThread(${idx})">
+                        <div class="w-9 h-9 rounded-full ${currentMessageFilter === 'trash' ? 'bg-rose-600' : 'bg-purple-600'} text-white flex items-center justify-center font-bold text-xs">${c.name.charAt(0)}</div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-baseline"><p class="font-bold text-[11px] truncate ${currentMessageFilter === 'trash' ? 'text-rose-700' : ''}">${c.name}</p><span class="text-[8px] text-slate-400">${c.sub}</span></div>
+                            <p class="text-[10px] text-slate-500 truncate mt-0.5">${c.preview}</p>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function openChatThread(idx) {
+            clickSound();
+            currentChatIndex = idx;
+            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats;
+            const chat = chatList[idx];
+            document.getElementById('chatting-name').innerText = chat.name;
+
+            if (currentMessageFilter === 'trash' || db[activeProfile].readOnly) {
+                document.getElementById('chat-composer').classList.add('hidden');
+                document.getElementById('chat-readonly-banner').classList.remove('hidden');
+                document.getElementById('chat-readonly-banner').classList.add('flex');
+            } else {
+                document.getElementById('chat-composer').classList.remove('hidden');
+                document.getElementById('chat-readonly-banner').classList.add('hidden');
+            }
+
+            renderChatBubbles();
+            document.getElementById('chat-subview').classList.add('open');
+        }
+
+        function renderChatBubbles() {
+            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats;
+            const chat = chatList[currentChatIndex];
+            const box = document.getElementById('bubbles-area');
+            box.innerHTML = '';
+            chat.history.forEach(c => {
+                box.innerHTML += `
+                    <div class="${c.me ? 'self-end bg-purple-600 text-white rounded-br-none' : 'self-start bg-slate-200 text-slate-900 rounded-bl-none'} px-3 py-1.5 rounded-2xl max-w-[80%] leading-relaxed text-[11px] shadow-sm">
+                        ${c.text}
+                    </div>`;
+            });
+            box.scrollTop = box.scrollHeight;
+        }
+
+        // ================= CUỘC GỌI GIẢ LẬP =================
+        let currentCallScript = [];
+        let scriptIndex = 0;
+        let scriptTimeout = null;
+
+        function simulateIncomingCall() {
+            clickSound();
+            let callerName = "Ba Rudolf";
+            let script = [
+                "Con gái à, ba Rudolf đây... Ngoài trời Kazan bão tuyết âm 5 độ rồi đấy.",
+                "Ba vừa gửi chuyển phát âu súp củ dền nóng qua Kazan Go cho con đấy.",
+                "Có chuyện gì cứ gọi cho ba ngay nhé, đừng chịu đựng một mình..."
+            ];
+
+            const rand = Math.random();
+            if (rand < 0.4) {
+                callerName = "Chồng (Emil)";
+                script = [
+                    "(Tiếng nhạc xập xình)... Alo? Tối nay tôi bận họp thâu đêm không về đâu.",
+                    "Đừng có gọi liên tục vào máy tôi nữa, phiền phức lắm. Ngủ trước đi!"
+                ];
+            } else if (rand < 0.7) {
+                callerName = `Số lạ (${ctx.mistress.name})`;
+                script = [
+                    `Alo? Chị là vợ anh Emil à? Tôi là ${ctx.mistress.name} đây...`,
+                    "Chồng chị đang ở cùng tôi, anh ấy vừa mua cho tôi quà đắt tiền đấy. Chị lo liệu mà chuẩn bị đơn ly hôn đi!"
+                ];
+            }
+
+            document.getElementById('incoming-caller-name').innerText = callerName;
+            document.getElementById('incoming-avatar').innerText = callerName.charAt(0);
+            document.getElementById('incoming-call-layer').dataset.callerName = callerName;
+            document.getElementById('incoming-call-layer').dataset.script = JSON.stringify(script);
+            document.getElementById('incoming-call-layer').classList.remove('hidden');
+        }
+
+        function declineIncomingCall() {
+            clickSound();
+            document.getElementById('incoming-call-layer').classList.add('hidden');
+            triggerToast("Đã từ chối cuộc gọi");
+        }
+
+        function acceptIncomingCall() {
+            clickSound();
+            const layer = document.getElementById('incoming-call-layer');
+            const callerName = layer.dataset.callerName;
+            const script = JSON.parse(layer.dataset.script);
+            layer.classList.add('hidden');
+
+            startVoiceCallWithSubtitles(callerName, script);
+        }
+
+        function makeCall(targetName) {
+            clickSound();
+            const script = [
+                "Alo? Anh đang bận họp với đối tác, có gì tối về nói sau nhé!",
+                "Đừng có tra khảo anh nữa, cúp máy đây!"
+            ];
+            startVoiceCallWithSubtitles(targetName, script);
+        }
+
+        function startVoiceCallWithSubtitles(name, scriptLines) {
+            const callLayer = document.getElementById('call-layer');
+            document.getElementById('call-target').innerText = name;
+            document.getElementById('call-ava').innerText = name.charAt(0);
+            document.getElementById('call-subtitle-text').innerText = "Đang kết nối tín hiệu âm thanh...";
             
-            // Cập nhật Màn hình khóa
-            document.getElementById('lock-notif-title').innerText = data.notifTitle;
-            document.getElementById('lock-notif-desc').innerText = data.notifDesc;
+            callLayer.style.pointerEvents = 'auto';
+            callLayer.classList.remove('opacity-0');
 
-            // Cập nhật App hiển thị
-            const kmart = document.getElementById('grid-item-kmart');
-            const vault = document.getElementById('grid-item-vault');
-            if (profileKey === 'emil') {
-                kmart.classList.add('hidden');
-                vault.classList.remove('hidden');
-                vault.classList.add('flex');
-            } else if (profileKey === 'user') {
-                kmart.classList.remove('hidden');
-                kmart.classList.add('flex');
-                vault.classList.add('hidden');
-            } else {
-                kmart.classList.add('hidden');
-                vault.classList.add('hidden');
+            callSeconds = 0;
+            clearInterval(callTimerInterval);
+            callTimerInterval = setInterval(() => {
+                callSeconds++;
+                const mins = Math.floor(callSeconds / 60).toString().padStart(2, '0');
+                const secs = (callSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('call-timer').innerText = `${mins}:${secs}`;
+            }, 1000);
+
+            currentCallScript = scriptLines;
+            scriptIndex = 0;
+            runSubtitleLoop();
+        }
+
+        function runSubtitleLoop() {
+            if (scriptIndex < currentCallScript.length) {
+                scriptTimeout = setTimeout(() => {
+                    const line = currentCallScript[scriptIndex];
+                    document.getElementById('call-subtitle-text').innerText = `"${line}"`;
+                    clickSound();
+                    scriptIndex++;
+                    runSubtitleLoop();
+                }, scriptIndex === 0 ? 1500 : 3800);
             }
+        }
 
-            // Phân quyền Read-only: Ẩn/Hiện nút gọi và ô nhập tin nhắn
-            const callBtn = document.getElementById('chat-call-btn');
-            const inputBar = document.getElementById('chat-input-bar');
-            if (data.isReadOnly) {
+        function terminateCall() {
+            clickSound();
+            clearInterval(callTimerInterval);
+            clearTimeout(scriptTimeout);
+            const callLayer = document.getElementById('call-layer');
+            callLayer.classList.add('opacity-0');
+            callLayer.style.pointerEvents = 'none';
+            document.getElementById('call-timer').innerText = "00:00";
+            triggerToast("Cuộc gọi đã kết thúc");
+        }
+
+        // ================= ĐỔI DANH TÍNH =================
+        function changeProfile(role) {
+            clickSound();
+            activeProfile = role;
+            ['user', 'emil', 'rudolf'].forEach(r => {
+                const b = document.getElementById('btn-' + r);
+                if (r === role) {
+                    b.classList.add('bg-purple-600', 'text-white');
+                    b.classList.remove('text-slate-400');
+                } else {
+                    b.classList.remove('bg-purple-600', 'text-white');
+                    b.classList.add('text-slate-400');
+                }
+            });
+
+            const data = db[role];
+            const composer = document.getElementById('chat-composer');
+            const callBtn = document.getElementById('btn-call-action');
+            const callPlaceholder = document.getElementById('btn-call-placeholder');
+            const readOnlyBanner = document.getElementById('chat-readonly-banner');
+
+            if (data.readOnly) {
+                composer.classList.add('hidden');
+                readOnlyBanner.classList.remove('hidden');
+                readOnlyBanner.classList.add('flex');
                 callBtn.classList.add('hidden');
-                inputBar.classList.add('hidden');
+                callPlaceholder.classList.remove('hidden');
             } else {
+                composer.classList.remove('hidden');
+                readOnlyBanner.classList.add('hidden');
+                readOnlyBanner.classList.remove('flex');
                 callBtn.classList.remove('hidden');
-                inputBar.classList.remove('hidden');
+                callPlaceholder.classList.add('hidden');
             }
 
-            // Đổ dữ liệu Bank
-            document.getElementById('bank-balance').innerText = data.balance;
-            const bankBox = document.getElementById('bank-transactions');
-            bankBox.innerHTML = '';
-            data.bankTransactions.forEach(t => {
-                bankBox.innerHTML += `
-                    <div class="bg-white/5 border border-white/5 p-2.5 rounded-xl flex justify-between items-center">
-                        <div><p class="font-bold text-xs">${t.title}</p><p class="text-[9px] text-slate-400">${t.desc}</p></div>
-                        <span class="text-xs font-bold ${t.color}">${t.amount}</span>
-                    </div>`;
-            });
+            document.getElementById('grid-kmart').className = (role === 'user') ? 'flex flex-col items-center cursor-pointer active:scale-90 transition-transform' : 'hidden';
+            document.getElementById('grid-vault').className = (role === 'emil') ? 'flex flex-col items-center cursor-pointer active:scale-90 transition-transform' : 'hidden';
 
-            // Đổ dữ liệu Notes
-            const notesBox = document.getElementById('notes-list');
-            notesBox.innerHTML = '';
-            data.notes.forEach(n => {
-                notesBox.innerHTML += `
-                    <div class="bg-amber-100/90 border border-amber-200/80 p-3 rounded-2xl shadow-sm">
-                        <h2 class="font-bold text-amber-900 text-xs mb-1">${n.title}</h2>
-                        <p class="text-[11px] text-amber-800 leading-relaxed">${n.content}</p>
-                    </div>`;
-            });
-
-            // Đổ dữ liệu Danh bạ (Contacts)
-            renderContacts();
-
-            // Đổ danh sách tin nhắn
-            renderMessages();
+            renderBankApp();
+            renderNotesApp();
+            renderPhotosApp();
+            renderContactsApp();
+            renderMessagesInbox();
+            renderKazanGoApp();
+            renderVaultMain();
+            if (role === 'user') renderKMartProducts();
 
             goHome();
-            showToast(`Đã chuyển sang điện thoại của: ${profileKey === 'user' ? 'Tôi' : (profileKey === 'emil' ? 'Emil' : 'Rudolf')}`);
+            triggerToast(`Đang xem: ${role === 'user' ? 'Máy của Tôi' : (role === 'emil' ? 'Máy Emil (Chỉ xem)' : 'Máy Rudolf (Chỉ xem)')}`);
         }
 
-        function renderContacts() {
-            const list = document.getElementById('contacts-list');
+        function renderBankApp() {
+            const currentBal = accountBalances[activeProfile];
+            document.getElementById('bank-funds').innerText = currentBal.toLocaleString('vi-VN') + " ₽";
+            if (document.getElementById('kmart-user-balance')) {
+                document.getElementById('kmart-user-balance').innerText = accountBalances.user.toLocaleString('vi-VN') + " ₽";
+            }
+
+            const bBox = document.getElementById('bank-ledger');
+            bBox.innerHTML = '';
+            db[activeProfile].bank.forEach(t => {
+                bBox.innerHTML += `
+                    <div class="p-2 bg-white/5 rounded-xl flex justify-between items-center text-xs">
+                        <div><p class="font-bold text-[11px]">${t.title}</p><p class="text-[9px] text-slate-400">${t.time}</p></div>
+                        <span class="font-bold text-[11px] ${t.plus ? 'text-emerald-400' : 'text-rose-400'}">${t.val}</span>
+                    </div>`;
+            });
+        }
+
+        function renderContactsApp() {
+            const list = document.getElementById('contacts-book');
             list.innerHTML = '';
-            const data = profiles[currentProfileKey];
-            data.contacts.forEach(c => {
+            const data = db[activeProfile];
+            data.contacts.forEach((c, idx) => {
                 list.innerHTML += `
-                    <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-2xl flex justify-between items-center">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex justify-center items-center font-bold text-xs mr-2.5">${c.name.charAt(0)}</div>
-                            <div><p class="font-bold text-xs" id="${c.id}">${c.name}</p><p class="text-[10px] text-slate-400">${c.phone}</p></div>
+                    <div class="p-2 bg-slate-50 border border-slate-100 rounded-xl flex justify-between items-center text-xs cursor-pointer hover:bg-slate-100" onclick="openContactDetail(${idx})">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-[10px]">${c.name.charAt(0)}</div>
+                            <div>
+                                <p class="font-bold text-[11px]" id="${c.id}">${c.name}</p>
+                                <p class="text-[9px] text-slate-400">${c.phone}</p>
+                            </div>
                         </div>
-                        ${!data.isReadOnly ? `<button onclick="openEditModal('${c.id}')" class="text-slate-400 hover:text-purple-600 text-xs p-1"><i class="fa-solid fa-pen"></i></button>` : ''}
+                        <span class="text-[9px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">${c.tag}</span>
                     </div>`;
             });
         }
 
-        function renderMessages() {
-            const list = document.getElementById('msg-list');
-            list.innerHTML = '';
-            const data = profiles[currentProfileKey];
-            data.messages.forEach((m, idx) => {
-                list.innerHTML += `
-                    <div class="flex items-center p-2.5 rounded-2xl hover:bg-slate-100 cursor-pointer active:scale-98 transition-all" onclick="openChatByIndex(${idx})">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex justify-center items-center font-bold text-sm mr-3">${m.name.charAt(0)}</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-baseline"><h3 class="font-bold text-xs truncate">${m.name}</h3><span class="text-[9px] text-slate-400">${m.status}</span></div>
-                            <p class="text-[10px] text-slate-500 truncate mt-0.5">${m.preview}</p>
-                        </div>
-                    </div>`;
-            });
+        function openContactDetail(idx) {
+            clickSound();
+            const contact = db[activeProfile].contacts[idx];
+            selectedContactObj = contact;
+
+            document.getElementById('detail-avatar').innerText = contact.name.charAt(0);
+            document.getElementById('detail-name').innerText = contact.name;
+            document.getElementById('detail-phone').innerText = contact.phone;
+            document.getElementById('detail-tag').innerText = contact.tag;
+            document.getElementById('detail-notes').innerText = contact.notes;
+
+            const isReadOnly = db[activeProfile].readOnly;
+            document.getElementById('btn-edit-contact-trigger').style.display = isReadOnly ? 'none' : 'block';
+            document.getElementById('btn-edit-placeholder').style.display = isReadOnly ? 'block' : 'none';
+            document.getElementById('detail-actions').style.display = isReadOnly ? 'none' : 'flex';
+
+            document.getElementById('contact-detail-sheet').classList.add('open');
         }
 
-        // --- ĐIỀU HƯỚNG APP ---
-        function openApp(appId) { document.getElementById(appId).classList.add('open'); }
-        function goHome() { document.querySelectorAll('.app-screen, .chat-screen').forEach(el => el.classList.remove('open')); }
-
-        function openChatByIndex(idx) {
-            const data = profiles[currentProfileKey];
-            const chatData = data.messages[idx];
-            document.getElementById('chat-name').innerText = chatData.name;
-            document.getElementById('chat-status').innerText = chatData.status;
-
-            const bubbles = document.getElementById('chat-bubbles');
-            bubbles.innerHTML = '';
-            chatData.chat.forEach(msg => {
-                const isMe = msg.sender === 'me';
-                bubbles.innerHTML += `
-                    <div class="${isMe ? 'self-end bg-purple-600 text-white rounded-br-sm' : 'self-start bg-slate-200 text-slate-800 rounded-bl-sm'} px-3 py-1.5 rounded-2xl max-w-[82%] text-xs shadow-sm leading-relaxed">
-                        ${msg.text}
-                    </div>`;
-            });
-            document.getElementById('chat-view').classList.add('open');
-            bubbles.scrollTop = bubbles.scrollHeight;
+        function closeContactDetail() {
+            clickSound();
+            document.getElementById('contact-detail-sheet').classList.remove('open');
+            selectedContactObj = null;
         }
 
-        function closeChat() { document.getElementById('chat-view').classList.remove('open'); }
+        function jumpToChatFromContact() {
+            if (!selectedContactObj) return;
+            const targetKey = selectedContactObj.key;
+            closeContactDetail();
+            let chatIdx = activeStoryState.chats[activeProfile].findIndex(c => c.id === targetKey);
+            if (chatIdx === -1) {
+                activeStoryState.chats[activeProfile].push({
+                    id: targetKey,
+                    name: selectedContactObj.name,
+                    sub: "Trực tuyến",
+                    preview: "Bắt đầu trò chuyện...",
+                    history: []
+                });
+                renderMessagesInbox();
+                chatIdx = activeStoryState.chats[activeProfile].length - 1;
+            }
+            openAppScreen('app-messages');
+            openChatThread(chatIdx);
+        }
 
-        // --- GỬI TIN NHẮN TƯƠNG TÁC THẬT ---
-        function sendRealMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text) return;
-            const bubbles = document.getElementById('chat-bubbles');
-            const div = document.createElement('div');
-            div.className = "self-end bg-purple-600 text-white px-3 py-1.5 rounded-2xl rounded-br-sm max-w-[82%] text-xs shadow-sm mt-1";
-            div.innerText = text;
-            bubbles.appendChild(div);
+        function jumpToCallFromContact() {
+            if (!selectedContactObj) return;
+            makeCall(selectedContactObj.name);
+        }
+
+        function executeSendMessage() {
+            const input = document.getElementById('composer-text');
+            const txt = input.value.trim();
+            if (!txt || currentChatIndex === null || db[activeProfile].readOnly) return;
+            clickSound();
+
+            const chat = activeStoryState.chats[activeProfile][currentChatIndex];
+            chat.history.push({ me: true, text: txt });
+            chat.preview = txt;
             input.value = '';
-            bubbles.scrollTop = bubbles.scrollHeight;
+            renderChatBubbles();
+            renderMessagesInbox();
+
+            if (activeProfile === 'user') {
+                processNpcChatAndMoneyFlow(chat, txt);
+            }
         }
 
-        function buyItem(btn) {
+        function processNpcChatAndMoneyFlow(chat, userMsg) {
+            const box = document.getElementById('bubbles-area');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = "self-start bg-slate-200 rounded-2xl rounded-bl-none typing-bubble mt-1";
+            typingDiv.id = "typingBubble";
+            typingDiv.innerHTML = `<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>`;
+            box.appendChild(typingDiv);
+            box.scrollTop = box.scrollHeight;
+
+            const lower = userMsg.toLowerCase();
+
+            setTimeout(() => {
+                const bubble = document.getElementById('typingBubble');
+                if (bubble) bubble.remove();
+
+                let reply = "";
+                let transferAmount = 0;
+                let transferSender = "";
+
+                if (chat.id === 'rudolf') {
+                    if (lower.includes('tiền') || lower.includes('mua') || lower.includes('hết') || lower.includes('chuyển')) {
+                        transferAmount = 50000;
+                        transferSender = "Rudolf Korolyov";
+                        reply = "Ba vừa chuyển 50,000 ₽ cho con rồi nhé. Con thích mua gì ở K-Mart cứ mua thoải mái.";
+                    } else {
+                        reply = "Con gái ngoan, đừng lo lắng gì cả. Có chuyện gì ba luôn bảo vệ con.";
+                    }
+                } else if (chat.id === 'emil') {
+                    if (lower.includes('bồ') || lower.includes('ở đâu') || lower.includes('ai')) {
+                        reply = "Tôi đã bảo là đang bận việc tập đoàn! Em thôi ngay cái thói tra khảo vớ vẩn đi!";
+                    } else {
+                        reply = "Tôi đang bận, đừng nhắn nữa phiền phức.";
+                    }
+                } else {
+                    reply = "Đã nhận tin nhắn.";
+                }
+
+                chat.history.push({ me: false, text: reply });
+                chat.preview = reply;
+                renderChatBubbles();
+                renderMessagesInbox();
+                clickSound();
+
+                if (transferAmount > 0) {
+                    accountBalances.user += transferAmount;
+                    renderBankApp();
+                    triggerPushBanner("T-Bank", "fa-building-columns", "Nhận tiền", `+${transferAmount.toLocaleString('vi-VN')} ₽ từ ${transferSender}.`);
+                }
+            }, 1400);
+        }
+
+        function renderKMartProducts() {
+            const container = document.getElementById('kmart-items-container');
+            container.innerHTML = '';
+            kmartCatalog.forEach(item => {
+                container.innerHTML += `
+                    <div class="p-2.5 bg-white rounded-2xl border border-pink-100 flex justify-between items-center shadow-sm">
+                        <div class="flex-1 pr-2">
+                            <span class="text-[8px] bg-pink-100 text-pink-700 px-1.5 py-0.5 rounded font-bold">${item.cat}</span>
+                            <p class="text-xs font-bold mt-0.5">${item.name}</p>
+                            <p class="text-[9px] text-slate-400">${item.desc}</p>
+                            <p class="text-xs font-black text-pink-600 mt-1">${item.price.toLocaleString('vi-VN')} ₽</p>
+                        </div>
+                        <button onclick="buyKMartProduct(${item.id}, ${item.price}, '${item.name}', this)" class="px-3 py-1.5 bg-slate-900 text-white rounded-xl text-[10px] font-bold active:scale-90 transition-transform">Mua</button>
+                    </div>`;
+            });
+        }
+
+        function buyKMartProduct(id, price, name, btn) {
+            clickSound();
+            if (accountBalances.user < price) {
+                triggerToast("Số dư không đủ!");
+                return;
+            }
+
+            accountBalances.user -= price;
             btn.innerText = 'Đã mua ✓';
             btn.classList.replace('bg-slate-900', 'bg-emerald-600');
             btn.disabled = true;
-            showToast("Giao dịch mua hàng thành công!");
+
+            renderBankApp();
+            triggerPushBanner("T-Bank", "fa-credit-card", "Thanh toán thành công", `-${price.toLocaleString('vi-VN')} ₽ cho "${name}".`);
         }
 
-        // --- GỌI ĐIỆN GIẢ LẬP ---
-        function startCall(name) {
-            const cs = document.getElementById('call-screen');
-            document.getElementById('calling-name').innerText = name;
-            document.getElementById('call-avatar').innerText = name.charAt(0);
-            cs.style.pointerEvents = 'auto';
-            cs.classList.remove('opacity-0');
+        function triggerPushBanner(app, icon, title, body) {
+            const banner = document.getElementById('pushBanner');
+            document.getElementById('pushApp').innerText = app;
+            document.getElementById('pushIcon').innerHTML = `<i class="fa-solid ${icon}"></i>`;
+            document.getElementById('pushTitle').innerText = title;
+            document.getElementById('pushBody').innerText = body;
+
+            const island = document.getElementById('islandBar');
+            island.style.width = "180px";
+            banner.classList.add('show');
+            clickSound();
+
             setTimeout(() => {
-                document.getElementById('call-status-text').innerText = "Đã kết nối (Chuyển sang RP Text)...";
-            }, 2500);
+                banner.classList.remove('show');
+                island.style.width = "114px";
+            }, 4500);
         }
 
-        function endCall() {
-            const cs = document.getElementById('call-screen');
-            cs.classList.add('opacity-0');
-            cs.style.pointerEvents = 'none';
-            document.getElementById('call-status-text').innerText = "Đang gọi...";
-            showToast("Cuộc gọi đã kết thúc");
+        function renderNotesApp() {
+            const nBox = document.getElementById('notes-shelf');
+            nBox.innerHTML = '';
+            const notes = db[activeProfile].notes;
+            notes.forEach(n => {
+                nBox.innerHTML += `
+                    <div class="p-2.5 bg-amber-100 rounded-xl border border-amber-200">
+                        <p class="font-bold text-amber-900 text-xs">${n.title}</p>
+                        <p class="text-[10px] text-amber-800 mt-0.5 leading-snug">${n.body}</p>
+                    </div>`;
+            });
         }
 
-        // --- MODAL NỘI BỘ (Thay prompt) ---
-        function openEditModal(contactId) {
-            currentEditingContactId = contactId;
-            const currentName = document.getElementById(contactId).innerText;
-            document.getElementById('modal-input').value = currentName;
-            const modal = document.getElementById('custom-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        function promptEditContact() {
+            if (!selectedContactObj || db[activeProfile].readOnly) return;
+            clickSound();
+            document.getElementById('modal-edit-input').value = selectedContactObj.name;
+            const m = document.getElementById('edit-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
         }
 
-        function closeModal() {
-            const modal = document.getElementById('custom-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            currentEditingContactId = null;
+        function closeEditModal() {
+            clickSound();
+            const m = document.getElementById('edit-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
         }
 
-        function confirmModal() {
-            const val = document.getElementById('modal-input').value.trim();
-            if (val && currentEditingContactId) {
-                document.getElementById(currentEditingContactId).innerText = val;
-                showToast("Đã đổi tên liên hệ thành công!");
+        function confirmEditContact() {
+            clickSound();
+            const newName = document.getElementById('modal-edit-input').value.trim();
+            if (newName && selectedContactObj) {
+                selectedContactObj.name = newName;
+                document.getElementById('detail-name').innerText = newName;
+                renderContactsApp();
+                renderMessagesInbox();
+                triggerToast("Đã lưu tên mới!");
             }
-            closeModal();
+            closeEditModal();
         }
 
-        // --- TOAST NOTIFICATION NỘI BỘ (Thay alert) ---
-        function showToast(text) {
-            const toast = document.getElementById('custom-toast');
-            document.getElementById('toast-text').innerText = text;
-            toast.classList.remove('opacity-0');
-            setTimeout(() => { toast.classList.add('opacity-0'); }, 2500);
+        function triggerToast(msg) {
+            const t = document.getElementById('toast-pill');
+            document.getElementById('toast-text').innerText = msg;
+            t.classList.remove('opacity-0');
+            setTimeout(() => t.classList.add('opacity-0'), 2200);
         }
 
-        // Khởi động dữ liệu ban đầu
-        switchProfile('user');
+        // TỰ ĐỘNG KHỞI TẠO NỘI DUNG THEO NGÀY VÀ GIỜ THẬT
+        buildNaturalState();
+        renderBankApp();
+        renderMessagesInbox();
+        renderNotesApp();
+        renderVaultMain();
     </script>
 </body>
 </html>
