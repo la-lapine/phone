@@ -232,7 +232,6 @@
                             <div class="w-12 h-12 bg-gradient-to-b from-pink-400 to-rose-600 rounded-2xl flex items-center justify-center text-lg shadow-md"><i class="fa-solid fa-bag-shopping"></i></div>
                             <span class="text-[10px] mt-1 font-medium">K-Mart</span>
                         </div>
-                        <!-- RED VAULT CỦA EMIL -->
                         <div id="grid-vault" class="hidden flex-col items-center cursor-pointer active:scale-90 transition-transform" onclick="openAppScreen('app-vault')">
                             <div class="w-12 h-12 bg-gradient-to-b from-red-600 to-rose-950 rounded-2xl flex items-center justify-center text-lg shadow-md shadow-red-950/70 border border-red-500/30"><i class="fa-solid fa-lock"></i></div>
                             <span class="text-[10px] mt-1 font-medium text-red-400">Vault</span>
@@ -310,9 +309,9 @@
                         <button onclick="closePhotoPickerSheet()" class="text-slate-400 hover:text-slate-700 text-xs"><i class="fa-solid fa-xmark"></i></button>
                     </div>
 
-                    <p class="text-[9px] text-slate-500">Chọn ảnh có sẵn hoặc tự gõ mô tả bức ảnh bạn muốn gửi:</p>
+                    <p class="text-[9px] text-slate-500">Chọn ảnh drama có sẵn hoặc tự gõ mô tả:</p>
 
-                    <!-- Danh sách ảnh kịch bản mẫu -->
+                    <!-- Danh sách ảnh kịch bản drama "Ông ăn chả bà ăn nem" -->
                     <div class="space-y-1.5 text-[10px]">
                         <button onclick="sendDescribedPhoto('🧾 [Ảnh chụp: Hóa đơn phòng 402 Khách sạn Lux rơi trong túi áo vest]')" class="w-full p-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl text-left font-semibold text-purple-900 flex items-center">
                             <i class="fa-solid fa-receipt mr-1.5 text-purple-600"></i>Hóa đơn phòng 402 Khách sạn Lux
@@ -320,11 +319,11 @@
                         <button onclick="sendDescribedPhoto('💄 [Ảnh chụp: Vết son môi đỏ thẫm dính trên cổ áo sơ mi Emil]')" class="w-full p-2 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl text-left font-semibold text-rose-900 flex items-center">
                             <i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-rose-500"></i>Vết son môi lạ trên cổ áo sơ mi
                         </button>
-                        <button onclick="sendDescribedPhoto('🍲 [Ảnh chụp: Bát súp củ dền Borscht nóng hổi vừa nấu bốc khói]')" class="w-full p-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-left font-semibold text-amber-900 flex items-center">
-                            <i class="fa-solid fa-bowl-food mr-1.5 text-amber-600"></i>Bát súp củ dền nóng hổi vừa nấu
+                        <button onclick="sendDescribedPhoto('🍷 [Ảnh chụp: Bàn ăn tối lãng mạn kèm ly rượu vang tại Nhà hàng Panorama ngắm sông Kazanka]')" class="w-full p-2 bg-pink-50 hover:bg-pink-100 border border-pink-200 rounded-xl text-left font-semibold text-pink-900 flex items-center">
+                            <i class="fa-solid fa-wine-glass mr-1.5 text-pink-600"></i>Bàn ăn tối lãng mạn tại Panorama
                         </button>
-                        <button onclick="sendDescribedPhoto('🧥 [Ảnh chụp: Chiếc áo khoác dạ tuyết Cashmere mới mua ở K-Mart]')" class="w-full p-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl text-left font-semibold text-slate-800 flex items-center">
-                            <i class="fa-solid fa-vest-patches mr-1.5 text-slate-600"></i>Áo khoác dạ mới mua ở K-Mart
+                        <button onclick="sendDescribedPhoto('🎁 [Ảnh chụp: Hộp quà thắt nơ nhung đỏ chứa chai nước hoa niche Pháp đắt tiền do Maksim tặng]')" class="w-full p-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl text-left font-semibold text-indigo-900 flex items-center">
+                            <i class="fa-solid fa-gift mr-1.5 text-indigo-600"></i>Hộp quà nước hoa Pháp đắt tiền
                         </button>
                     </div>
 
@@ -466,14 +465,12 @@
                     <span class="text-[8px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded border border-red-800">ENCRYPTED</span>
                 </div>
 
-                <!-- 3 TAB VAULT -->
                 <div class="p-2 bg-[#10101a] border-b border-white/5 flex justify-around text-[10px] font-bold flex-shrink-0">
                     <button onclick="switchVaultSubTab('photos')" id="vtab-photos" class="px-2.5 py-1 rounded-xl text-slate-400 hover:text-white flex items-center"><i class="fa-solid fa-file-image mr-1"></i>Ảnh mật (<span id="vphoto-count">0</span>)</button>
                     <button onclick="switchVaultSubTab('forum')" id="vtab-forum" class="px-2.5 py-1 rounded-xl bg-red-600 text-white shadow-sm font-bold flex items-center"><i class="fa-solid fa-skull mr-1"></i>Diễn đàn ngầm (<span id="vforum-count">7</span>)</button>
                     <button onclick="switchVaultSubTab('mistresses')" id="vtab-mistresses" class="px-2.5 py-1 rounded-xl text-slate-400 hover:text-white flex items-center"><i class="fa-solid fa-address-book mr-1"></i>Nhân tình</button>
                 </div>
 
-                <!-- BỘ LỌC CHUYÊN SÂU DIỄN ĐÀN -->
                 <div id="forum-filter-bar" class="px-2.5 py-1.5 bg-[#0d0d15] border-b border-white/5 flex space-x-1.5 overflow-x-auto hide-scroll text-[9px] font-semibold flex-shrink-0">
                     <button onclick="filterForumFeed('all')" id="ff-all" class="px-2 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap">🔥 Tất cả bài đăng</button>
                     <button onclick="filterForumFeed('emil')" id="ff-emil" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">👤 Bài của Emil</button>
@@ -481,7 +478,6 @@
                     <button onclick="filterForumFeed('tips')" id="ff-tips" class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">🤫 Mẹo giấu vợ</button>
                 </div>
 
-                <!-- NỘI DUNG VAULT -->
                 <div class="app-body-scroll p-2.5 space-y-2.5 hide-scroll" id="vault-main-content"></div>
 
                 <div class="h-7 border-t border-red-950 bg-black text-red-500 text-[9px] flex items-center justify-center space-x-1 flex-shrink-0">
@@ -557,88 +553,106 @@
     </div>
 
     <script>
-        // ================= KHO BÀI ĐĂNG DIỄN ĐÀN ĐỒ SỘ (NOCTURNE NET) =================
+        // ================= KHO LƯU TRỮ TIN NHẮN ĐỒNG BỘ 2 CHIỀU THỜI GIAN THỰC (SHARED SYNC ENGINE) =================
+        // Mọi tin nhắn giữa User và Emil hoặc User và Rudolf sẽ được lưu chung vào đây và đồng bộ trên cả 2 máy!
+        const sharedConversations = {
+            user_emil: [
+                { sender: 'emil', text: 'Tối nay anh bận họp đối tác ở trung tâm Kazan, không về ăn cơm.' },
+                { sender: 'user', text: 'Lại họp? Tuần này 4 lần rồi đấy Emil.' },
+                { sender: 'emil', text: 'Đừng cằn nhằn nữa, lo ngủ sớm đi!' }
+            ],
+            user_rudolf: [
+                { sender: 'rudolf', text: 'Con gái, ngoài trời tuyết rơi lạnh lắm, ba vừa gửi súp củ dền nóng qua Kazan Go đấy.' },
+                { sender: 'rudolf', text: 'Nếu thiếu tiền tiêu cứ bảo ba ngay nhé con gái.' },
+                { sender: 'user', text: 'Dạ con cảm ơn Ba Rudolf nhiều ạ!' }
+            ],
+            // TIN NHẮN TÌNH TỨ "ÔNG ĂN CHẢ BÀ ĂN NEM" VỚI MAKSIM VOLKOV
+            user_maksim: [
+                { sender: 'maksim', text: 'Emil lại làm em phải buồn à? Đừng bận tâm đến gã tồi đó nữa em.' },
+                { sender: 'maksim', text: 'Tối nay anh đón em đi ăn tối ở Nhà hàng Panorama ngắm dòng sông Kazanka nhé?' },
+                { sender: 'user', text: 'Cảm ơn anh Maksim... anh luôn đối xử dịu dàng với em như vậy.' },
+                { sender: 'maksim', text: 'Vì em xứng đáng được trân trọng gấp vạn lần. Chiếc váy đỏ em thích anh đã thanh toán rồi đấy nhé.' }
+            ]
+        };
+
+        // ================= KHO BÀI ĐĂNG DIỄN ĐÀN NGẦM (NOCTURNE NET) CÓ THỚT EMIL BỊ CẮM SỪNG NGƯỢC =================
         const comprehensiveForumThreads = [
             {
-                id: "ft_emil_1", category: "emil", tag: "Tài chính ngầm", author: "KazanWolf_91 (Emil)", badge: "VIP Diamond", time: "45 phút trước",
+                id: "ft_tit_for_tat",
+                category: "emil",
+                tag: "Ghen ngược",
+                author: "KazanWolf_91 (Emil)",
+                badge: "VIP Diamond",
+                time: "20 phút trước",
+                title: "Nghi ngờ con vợ ở nhà đang cắm sừng tôi: Dạo này nó hay vừa bấm điện thoại vừa cười tủm tỉm, lại còn xịt nước hoa lạ đắt tiền!",
+                snippet: "Tôi đi công tác về thấy trong phòng ngủ có hộp quà thắt nơ nhung đỏ. Con vợ tôi giấu giấu giếm giếm...",
+                body: "Anh em cho lời khuyên: Dạo này tôi hay về muộn và đi khách sạn với bé sinh viên. Nhưng gần đây con vợ ở nhà đổi tính hẳn! Nó không còn cằn nhằn hay tra khảo tôi nữa, thay vào đó lúc nào cũng cầm điện thoại nhắn tin rồi mỉm cười một mình. Hôm qua tôi còn ngửi thấy mùi nước hoa đắt tiền lạ hoắc trên người nó. Có khi nào nó cũng cắm sừng tôi ở ngoài không?!",
+                likes: 185, views: 4200,
+                comments: [
+                    { user: "Dark_Joker", time: "15 phút trước", text: "Hahaha quả báo nhãn tiền bác ơi! Bác đi ăn chả thì bà nhà đi ăn nem là đúng rồi!" },
+                    { user: "Old_Wolf", time: "10 phút trước", text: "Bác lo kiểm tra xe nó xem, khéo có đại gia nào đưa đón rồi đấy." },
+                    { user: "KazanWolf_91 (Emil)", time: "5 phút trước", text: "Nó mà dám cắm sừng tôi thì tôi đuổi ra khỏi nhà không cho một xu!" }
+                ]
+            },
+            {
+                id: "ft_emil_1", category: "emil", tag: "Tài chính ngầm", author: "KazanWolf_91 (Emil)", badge: "VIP Diamond", time: "1 giờ trước",
                 title: "Làm sao tẩu tán 2 triệu Rúp sang ví lạnh Dubai trước khi ly hôn? Cần tìm luật sư kín ở Kazan.",
                 snippet: "Vợ tôi bắt đầu nghi ngờ vì mấy tuần nay tôi vắng nhà liên tục. Tôi đang chuẩn bị đường lui để dứt áo ra đi...",
-                body: "Chào anh em hội kín. Vợ tôi dạo này bắt đầu cằn nhằn về chuyện đi sớm về muộn. Tôi đã gom được hơn 2 triệu Rúp tiền mặt từ công ty. Tôi muốn chuyển toàn bộ sang Bitcoin rút vào ví lạnh Ledger cất riêng. Nếu nộp đơn ly hôn ra tòa án Kazan thì tòa có thể sao kê được địa chỉ ví tiền ảo không? Tuyệt đối không để con bé ở nhà đụng vào một xu nào.",
+                body: "Chào anh em hội kín. Vợ tôi dạo này bắt đầu cằn nhằn về chuyện đi sớm về muộn. Tôi đã gom được hơn 2 triệu Rúp tiền mặt từ công ty. Tôi muốn chuyển toàn bộ sang Bitcoin rút vào ví lạnh Ledger cất riêng.",
                 likes: 92, views: 1840,
                 comments: [
-                    { user: "Zurich_Broker", time: "30 phút trước", text: "Chỉ cần không nạp tiền qua thẻ ngân hàng Nga là an toàn 100%. Tôi đã giúp hơn 20 anh em Kazan chuyển trót lọt." },
-                    { user: "KazanWolf_91 (Emil)", time: "25 phút trước", text: "Cảm ơn bác. Tôi đang giấu chiếc ví lạnh Ledger trong cốp xe Mercedes rồi." },
-                    { user: "Dark_Lawyer_KZN", time: "10 phút trước", text: "Cẩn thận bố vợ bác nhé, nghe bảo ông già là giáo sư có tiếng quen biết rộng lắm đấy." }
+                    { user: "Zurich_Broker", time: "45 phút trước", text: "Chỉ cần không nạp tiền qua thẻ ngân hàng Nga là an toàn 100%." },
+                    { user: "KazanWolf_91 (Emil)", time: "30 phút trước", text: "Cảm ơn bác. Tôi đang giấu chiếc ví lạnh Ledger trong cốp xe Mercedes rồi." }
                 ]
             },
             {
                 id: "ft_warn_1", category: "warning", tag: "Cảnh báo khẩn", author: "Shadow_Spotter", badge: "Thành viên uy tín", time: "2 giờ trước",
                 title: "CẢNH BÁO: Khách sạn Lux Kazan dạo này có thám tử tư lởn vởn ở sảnh, anh em dẫn bồ cẩn thận!",
                 snippet: "Tôi vừa thấy một gã thám tử cầm máy ảnh ống kính tele ngồi ở quán cà phê đối diện cổng Khách sạn Lux...",
-                body: "Anh em hay dắt bồ qua phòng Suite 402 hoặc các phòng VIP ở Lux Hotel chú ý cao độ! Hôm qua tôi thấy 2 người ăn mặc lịch sự chụp hình lại toàn bộ biển số xe vào bãi đỗ ngầm. Nghi ngờ có bà vợ nhà nào thuê thám tử săn bằng chứng ngoại tình.",
+                body: "Anh em hay dắt bồ qua phòng Suite 402 hoặc các phòng VIP ở Lux Hotel chú ý cao độ! Hôm qua tôi thấy 2 người ăn mặc lịch sự chụp hình lại toàn bộ biển số xe vào bãi đỗ ngầm.",
                 likes: 154, views: 3200,
                 comments: [
                     { user: "Nocturne_Night", time: "1 giờ trước", text: "Toi rồi, đêm qua tôi vừa đỗ con xe ở đó. Không biết có bị dính biển số không!" },
-                    { user: "KazanWolf_91 (Emil)", time: "50 phút trước", text: "Bác có nhớ họ đi xe gì không? Xe Mercedes E200 biển 777 có bị dòm ngó không?!" },
-                    { user: "Shadow_Spotter", time: "40 phút trước", text: "@KazanWolf_91 Có thấy họ ghi chép một con Mec đen đấy bác, cẩn thận củi lửa!" }
+                    { user: "KazanWolf_91 (Emil)", time: "50 phút trước", text: "Bác có nhớ họ đi xe gì không? Xe Mercedes E200 biển 777 có bị dòm ngó không?!" }
                 ]
             },
             {
-                id: "ft_service_1", category: "tips", tag: "Dịch vụ đen", author: "Aero_Ticket_Fake", badge: "Thương gia", time: "Hôm nay 10:15",
+                id: "ft_service_1", category: "tips", tag: "Dịch vụ đen", author: "Aero_Ticket_Fake", badge: "Thương gia", time: "Hôm nay",
                 title: "Nhận xuất hóa đơn đỏ công tác Moscow giả để sếp đi nghỉ dưỡng Sochi cùng thư ký",
                 snippet: "Xuất hóa đơn vé máy bay, phòng khách sạn đóng dấu công ty kiểm toán chuẩn chỉ 100%...",
-                body: "Anh em nào muốn dẫn bồ nhí đi Sochi hoặc Dubai xả hơi mà cần bằng chứng 'đi công tác khẩn cấp' nộp cho vợ và phòng kế toán thì liên hệ. Bao trọn gói từ giấy điều động công tác đến hóa đơn ăn uống ở Moscow.",
+                body: "Anh em nào muốn dẫn bồ nhí đi Sochi hoặc Dubai xả hơi mà cần bằng chứng 'đi công tác khẩn cấp' nộp cho vợ và phòng kế toán thì liên hệ.",
                 likes: 78, views: 1450,
-                comments: [
-                    { user: "KazanWolf_91 (Emil)", time: "Hôm nay 11:00", text: "Đã làm bên bác chuyến bay Sochi 4 ngày. Công nhận giấy tờ chuẩn, vợ ở nhà không mảy may nghi ngờ." }
-                ]
+                comments: [{ user: "KazanWolf_91 (Emil)", time: "Hôm nay", text: "Đã làm bên bác chuyến bay Sochi 4 ngày. Giấy tờ rất chuẩn." }]
             },
             {
                 id: "ft_emil_2", category: "emil", tag: "Cấp cứu", author: "KazanWolf_91 (Emil)", badge: "VIP Diamond", time: "Hôm qua",
                 title: "CẤP CỨU: Bị bé sinh viên dọa gửi ảnh phòng 402 cho bố vợ, anh em có số đội dằn mặt kín ở Kazan không?",
                 snippet: "Nó phát hiện tôi dắt cô thư ký đi nghỉ dưỡng Sochi nên nổi điên, đòi tống tiền 1 triệu Rúp...",
-                body: "Con bé sinh viên tôi bao nuôi ở chung cư Magnolia phát hiện tôi đi Sochi với em thư ký Elena. Giờ nó quay ra đe dọa đòi 1 triệu Rúp, nếu không sẽ gửi toàn bộ ảnh nhạy cảm chụp ở khách sạn Lux cho bố vợ tôi. Anh em có số mối nào xử lý kín miệng hoặc dằn mặt cho nó xóa ảnh không?",
+                body: "Con bé sinh viên tôi bao nuôi ở chung cư Magnolia phát hiện tôi đi Sochi với em thư ký Elena. Giờ nó quay ra đe dọa đòi 1 triệu Rúp, nếu không sẽ gửi toàn bộ ảnh nhạy cảm chụp ở khách sạn Lux cho bố vợ tôi.",
                 likes: 112, views: 2900,
-                comments: [
-                    { user: "Iron_Fist_KZN", time: "Hôm qua", text: "Đừng dại mà thuê giang hồ bác ơi, thời buổi này dính vào hình sự là mất trắng sự nghiệp." },
-                    { user: "Old_Wolf", time: "Hôm qua", text: "Càng chuyển tiền nó càng vòi. Tìm cách lấy điện thoại nó mà xóa sạch đi bác." }
-                ]
+                comments: [{ user: "Iron_Fist_KZN", time: "Hôm qua", text: "Đừng dại mà dính vào hình sự bác ơi." }]
             },
             {
                 id: "ft_tips_1", category: "tips", tag: "Kinh nghiệm", author: "Master_Gaslight", badge: "Hội viên vàng", time: "Hôm qua",
                 title: "Kinh nghiệm 5 năm bao 2 bồ cùng lúc mà vợ ở nhà vẫn tưởng chồng là trụ cột mẫu mực",
                 snippet: "Tuyệt chiêu: Luôn luôn chủ động gắt gỏng trước mỗi khi bước chân vào nhà...",
-                body: "Bước 1: Về đến cửa là mặt mày nhăn nhó, kêu mệt mỏi vì họp hành kiếm tiền. Bước 2: Vợ vừa hé miệng hỏi 'Anh đi đâu về muộn thế?' là gắt lên ngay: 'Tôi đi kiếm tiền nuôi cái nhà này mà cô còn tra khảo à?'. Bước 3: Lập tức vợ sẽ thấy có lỗi và đi rót nước nấu canh cho các bác.",
+                body: "Bước 1: Về đến cửa là mặt mày nhăn nhó. Bước 2: Vợ vừa hỏi là gắt lên: 'Tôi đi kiếm tiền nuôi cái nhà này mà cô còn tra khảo à?'. Bước 3: Vợ sẽ tự thấy có lỗi.",
                 likes: 245, views: 4500,
-                comments: [
-                    { user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đang áp dụng chiêu này hàng ngày, cực kỳ hiệu quả. Con vợ tôi không dám hé răng câu thứ hai." }
-                ]
+                comments: [{ user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đang áp dụng chiêu này hàng ngày, cực kỳ hiệu quả." }]
             },
             {
                 id: "ft_blackmarket_1", category: "tips", tag: "Chợ đen", author: "Spy_Gadgets_Rus", badge: "Thương gia", time: "2 ngày trước",
                 title: "Bán thiết bị quét sóng GPS phát hiện định vị lén gắn trên xe hơi và máy phá sóng mini",
                 snippet: "Thiết bị cầm tay chuyên quét tìm thiết bị nghe lén, AirTag hoặc nam châm GPS gắn gầm xe...",
-                body: "Dạo này các bà vợ hay lén gắn AirTag hoặc thiết bị GPS của thám tử tư dưới gầm xe các sếp. Thiết bị bên em rà một lượt là tít còi báo động ngay. Nhỏ gọn bằng bao thuốc lá.",
+                body: "Dạo này các bà vợ hay lén gắn thiết bị GPS của thám tử tư dưới gầm xe các sếp. Thiết bị bên em rà một lượt là tít còi báo động ngay.",
                 likes: 89, views: 1600,
-                comments: [
-                    { user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Đã nhận hàng. Vừa rà dưới gầm con Mercedes thì phát hiện có vật lạ gắn nam châm thật! May mà có máy quét!" }
-                ]
-            },
-            {
-                id: "ft_crypto_1", category: "emil", tag: "Rửa tiền", author: "Crypto_Kazan_P2P", badge: "Uy tín", time: "3 ngày trước",
-                title: "Nhận đổi tiền mặt sang USDT ẩn danh tại quán cà phê phố Bauman, giao dịch tiền tươi",
-                snippet: "Bảo mật tuyệt đối, không yêu cầu KYC, không lưu camera, tỷ giá tốt nhất Tatarstan...",
-                body: "Anh em cần rút quỹ đen công ty hoặc giấu tiền trước khi phân chia tài sản cứ mang tiền mặt qua điểm hẹn. Đổi thẳng sang ví lạnh cá nhân trong vòng 5 phút.",
-                likes: 67, views: 1120,
-                comments: [
-                    { user: "KazanWolf_91 (Emil)", time: "2 ngày trước", text: "Đã giao dịch 500k Rúp thành công. Rất uy tín." }
-                ]
+                comments: [{ user: "KazanWolf_91 (Emil)", time: "Hôm qua", text: "Vừa rà dưới gầm con Mercedes thì phát hiện có cục nam châm lạ thật!" }]
             }
         ];
 
         let currentForumCategory = 'all';
 
-        // ================= CƠ CHẾ ĐỒNG BỘ THỜI GIAN THẬT & DANH BẠ ĐỘC QUYỀN =================
+        // ================= DANH BẠ ĐỘC QUYỀN MỞ RỘNG & TÌNH TIẾT TỰ NHIÊN =================
         const dynamicMistresses = [
             { name: "Anya", role: "Sinh viên năm 3", phone: "+7 (927) 888-11-22", loc: "Chung cư Magnolia", cost: "120,000 ₽" },
             { name: "Elena", role: "Thư ký chi nhánh", phone: "+7 (919) 444-55-66", loc: "Biệt thự ven hồ", cost: "185,000 ₽" },
@@ -647,7 +661,7 @@
 
         let activeProfile = 'user';
         let currentVaultSubTab = 'photos';
-        let currentChatIndex = null;
+        let currentChatTargetKey = 'emil'; // Lưu ID phòng chat hiện tại để render chuẩn
         let selectedContactObj = null;
         let currentMessageFilter = 'inbox';
         let currentPhotoAlbum = 'all';
@@ -666,11 +680,6 @@
             let timeHint = "Kazan, Tatarstan • -5°C Tuyết rơi dày";
             let weatherBadge = "Kazan • Mặt đường đóng băng";
             let mistressNightText = `${mistress.name}: Anh yêu, phòng 402 em lấy thẻ rồi nhé, qua nhanh đi...`;
-            
-            let emilExcuseToWife = "Tối nay anh bận họp đối tác ở trung tâm Kazan, không về ăn cơm.";
-            if (hour >= 22 || hour < 6) {
-                emilExcuseToWife = "Họp muộn quá anh ngủ lại khách sạn gần đối tác, em đừng chờ cơm.";
-            }
 
             if (hour >= 6 && hour < 12) {
                 timeHint = "Buổi sáng ở Kazan • Rudolf dậy sớm đọc sách, Emil đi làm";
@@ -683,120 +692,189 @@
                 weatherBadge = "Đêm muộn • Bar & Khách sạn lên đèn";
             }
 
-            return { mistress, timeHint, weatherBadge, mistressNightText, emilExcuseToWife, hour };
+            return { mistress, timeHint, weatherBadge, mistressNightText, hour };
         }
 
         let ctx = getNaturalContext();
 
-        let activeStoryState = {
-            vaultPhotos: [],
-            vaultMistresses: [],
-            chats: { user: [], emil: [], rudolf: [] },
-            deletedChats: { user: [], emil: [], rudolf: [] }
+        // DANH BẠ VÀ DỮ LIỆU ĐỘC QUYỀN TỪNG MÁY
+        const db = {
+            // 1. MÁY CỦA TÔI (USER) - CÓ THÊM MAKSIM VOLKOV (ÔNG ĂN CHẢ BÀ ĂN NEM)
+            user: {
+                readOnly: false,
+                contacts: [
+                    { id: "c_u1", key: "emil", name: "Chồng (Emil)", phone: "+7 (917) 442-88-12", tag: "Chồng", notes: "Lén lút, giấu giếm các chuyến đi." },
+                    { id: "c_u2", key: "rudolf", name: "Ba Rudolf", phone: "+7 (987) 221-00-99", tag: "Cha", notes: "Luôn bảo bọc, dặn dò ăn uống và chu cấp tiền." },
+                    { id: "c_u3", key: "maksim", name: "Maksim Volkov 🖤", phone: "+7 (999) 777-66-88", tag: "Người theo đuổi bí mật", notes: "CEO Bất động sản Kazan. Đang tán tỉnh và sẵn sàng chu cấp mọi thứ." },
+                    { id: "c_u4", key: "dmitry", name: "Dmitry (Bạn của Emil)", phone: "+7 (927) 333-77-88", tag: "Bạn của chồng", notes: "Bạn cùng hội xe hơi và quán rượu với Emil." },
+                    { id: "c_u5", key: "viktor", name: "Bác Viktor (Bạn của Ba)", phone: "+7 (917) 555-88-11", tag: "Bạn của Ba", notes: "Viện sĩ Viện Hàn Lâm, rất yêu quý gia đình mình." },
+                    { id: "c_u6", key: "mikhail", name: "Bác sĩ Mikhail", phone: "+7 (843) 222-33-44", tag: "Bác sĩ gia đình", notes: "Bạn chơi cờ của Ba Rudolf, bác sĩ tim mạch." },
+                    { id: "c_u7", key: "mart", name: "Tiệm Bánh Kazan Mart", phone: "+7 (843) 555-12-34", tag: "Cửa hàng", notes: "Giao bánh Medovik nóng hổi mỗi sáng." }
+                ],
+                bank: [{ title: "Rudolf chuyển sinh hoạt phí", time: "Sáng nay", val: "+50,000 ₽", plus: true }],
+                notes: [{ title: "Cần sắm", body: "Kem nẻ Siberi, áo dạ mới, thử mùi nước hoa Maksim tặng." }]
+            },
+            // 2. MÁY CỦA EMIL
+            emil: {
+                readOnly: true,
+                contacts: [
+                    { id: "c_e1", key: "user", name: "Vợ (Ở nhà)", phone: "+7 (917) 000-44-33", tag: "Vợ", notes: "Phải che giấu số dư tài khoản nước ngoài." },
+                    { id: "c_e2", key: "boss", name: "Sếp Arkady (Tổng Giám Đốc)", phone: "+7 (917) 111-00-01", tag: "Lãnh đạo", notes: "Tập đoàn StroiKazan. Cần luồn cúi lấy lòng." },
+                    { id: "c_e3", key: "anya", name: "Client A (Anya - Bồ nhí)", phone: "+7 (927) 888-11-22", tag: "Nhân tình 1", notes: "Bí mật. Tặng túi Chanel và căn hộ Magnolia." },
+                    { id: "c_e4", key: "elena", name: "Đối tác Elena (Thư ký)", phone: "+7 (919) 444-55-66", tag: "Nhân tình 2", notes: "Đi Sochi cùng Emil, làm hợp đồng khống." },
+                    { id: "c_e5", key: "polina", name: "Polina (Nocturne Club)", phone: "+7 (927) 111-99-00", tag: "Quán bar", notes: "Vũ nữ quen ở phòng VIP." },
+                    { id: "c_e6", key: "dmitry_e", name: "Dmitry (Chiến hữu)", phone: "+7 (927) 333-77-88", tag: "Bạn thân", notes: "Chuyên bao che các vụ đi ăn chơi ngoại tình." },
+                    { id: "c_e7", key: "garage", name: "Garage sửa xe Mercedes Kazan", phone: "+7 (843) 777-66-55", tag: "Dịch vụ", notes: "Bảo dưỡng xe và kiểm tra gầm." },
+                    { id: "c_e8", key: "p2p", name: "Dịch vụ đổi tiền P2P Bauman", phone: "+7 (999) 444-12-34", tag: "Rửa tiền", notes: "Đổi tiền mặt sang USDT ẩn danh." },
+                    { id: "c_e9", key: "ticket", name: "Cò vé máy bay ngầm", phone: "+7 (903) 888-99-00", tag: "Dịch vụ", notes: "Xuất hóa đơn công tác giả đi Sochi." }
+                ],
+                bank: [{ title: "Khách sạn Lux phòng 402", time: "Đêm qua", val: "-28,000 ₽", plus: false }],
+                notes: [{ title: "Ví Ledger", body: "Giấu trong hộc xe Mercedes." }]
+            },
+            // 3. MÁY CỦA BA RUDOLF
+            rudolf: {
+                readOnly: true,
+                contacts: [
+                    { id: "c_r1", key: "user", name: "Con gái nhỏ yêu quý", phone: "+7 (917) 000-44-33", tag: "Gia đình", notes: "Cần bảo vệ khỏi kẻ lừa đảo Emil." },
+                    { id: "c_r2", key: "emil_r", name: "Con rể (Emil Kulikov)", phone: "+7 (917) 442-88-12", tag: "Con rể", notes: "Thằng lừa đảo, đang bị thám tử theo dõi chặt chẽ." },
+                    { id: "c_r3", key: "viktor_r", name: "Viktor Petrov (Bạn thân)", phone: "+7 (917) 555-88-11", tag: "Bạn thân chí cốt", notes: "Viện sĩ Viện Hàn Lâm, hỗ trợ điều tra Emil." },
+                    { id: "c_r4", key: "mikhail_r", name: "Bác sĩ Mikhail (Bạn thân)", phone: "+7 (843) 222-33-44", tag: "Bạn thân", notes: "Bác sĩ tim mạch, bạn chơi cờ vua 20 năm." },
+                    { id: "c_r5", key: "lawyer", name: "Luật sư Tarasov", phone: "+7 (843) 999-11-22", tag: "Luật sư", notes: "Chuyên gia ly hôn và tranh chấp tài sản hàng đầu Kazan." },
+                    { id: "c_r6", key: "lambert", name: "Hiệu trưởng Lambert", phone: "+7 (843) 111-22-33", tag: "Đồng nghiệp", notes: "Đại học Tổng hợp Kazan." },
+                    { id: "c_r7", key: "detective", name: "Thám tử tư Morozov (Học trò cũ)", phone: "+7 (905) 333-22-11", tag: "Thám tử", notes: "Chuyên thu thập bằng chứng ngoại tình của Emil." }
+                ],
+                bank: [{ title: "Thuê thám tử tư Kazan", time: "Hôm nay", val: "-50,000 ₽", plus: false }],
+                notes: [{ title: "Chứng cứ thu thập", body: "Lịch trình đi khách sạn Lux và các chuyến bay đêm." }]
+            }
         };
 
-        function buildNaturalState() {
-            ctx = getNaturalContext();
+        // TIN NHẮN RIÊNG LẺ CỦA CÁC LIÊN HỆ KHÔNG ĐỒNG BỘ
+        const privateChats = {
+            user_dmitry: [
+                { me: false, text: "Chào chị dâu, tìm thằng Emil à? Nó vừa chạy ra ngoài gặp đối tác một chút, chị đừng lo nhé." }
+            ],
+            user_viktor: [
+                { me: false, text: "Cháu gái, hôm nay bố cháu ghé Viện Hàn Lâm chơi cờ với bác, thấy ông ấy nhắc cháu suốt." },
+                { me: true, text: "Dạ cháu cảm ơn Bác Viktor ạ, hôm nào cháu sang thăm bác nhé." }
+            ],
+            emil_boss: [
+                { me: false, text: "Emil, báo cáo kiểm toán chi nhánh quý này chưa khớp số liệu, sáng mai nộp ngay cho tôi!" },
+                { me: true, text: "Dạ vâng thưa sếp, em đang hoàn thiện nốt ạ." }
+            ],
+            emil_mistress: [
+                { me: false, text: "Anh yêu, tối nay ở phòng 402 Lux Hotel nhé! Em chờ anh." },
+                { me: true, text: "Anh biết rồi, chờ anh một chút." }
+            ],
+            emil_dmitry: [
+                { me: false, text: "Tao vừa bảo con vợ mày là mày đang họp với sếp rồi, yên tâm quẩy nhé!" },
+                { me: true, text: "Khá lắm bạn hiền. Tối nay chầu rượu Nocturne tao bao." }
+            ],
+            rudolf_emil: [
+                { me: true, text: "Emil, hôm nay tôi gọi vào máy cậu 3 lần không được. Đừng tưởng cậu làm gì ở Kazan này tôi không biết." }
+            ],
+            rudolf_viktor: [
+                { me: false, text: "Rudolf, chiều nay qua Viện Hàn Lâm chơi cờ nhé. Vụ việc của con gái ông, tôi đã cho người xác minh giấy tờ bên công ty thằng rể rồi." },
+                { me: true, text: "Cảm ơn ông bạn già. Chiều tôi qua sớm." }
+            ],
+            rudolf_lawyer: [
+                { me: false, text: "Giáo sư Rudolf, hồ sơ đóng băng tài sản và đơn ly hôn đơn phương có bằng chứng ngoại tình của Emil đã hoàn tất." },
+                { me: true, text: "Tốt lắm. Hãy bảo đảm con gái tôi nhận được 100% tài sản căn hộ và tiền bồi thường danh dự." }
+            ]
+        };
 
-            activeStoryState.vaultPhotos = [
-                { title: `[ẢNH MẬT: ${ctx.mistress.name} tại Khách sạn Lux]`, desc: `${ctx.mistress.name} mặc váy ngủ lụa đỏ chụp trước gương phòng 402, cổ đeo sợi dây chuyền kim cương vừa được Emil tặng.`, tag: "Phòng 402" },
-                { title: `[ẢNH MẬT: Xe Mercedes Emil tại ${ctx.mistress.loc}]`, desc: `Ảnh chụp biển số xe Mercedes đỗ lén lút ngoài căn hộ của ${ctx.mistress.name} lúc 23:40.`, tag: "Lén lút" },
-                { title: `[ẢNH MẬT: Hóa đơn Chanel Boutique Kazan]`, desc: `Biên lai thanh toán 85,000 ₽ mua túi xách tặng bồ nhí giấu dưới ghế phụ xe.`, tag: "Hóa đơn đen" }
-            ];
-
-            activeStoryState.vaultMistresses = [
-                { name: `${ctx.mistress.name} (${ctx.mistress.role})`, phone: ctx.mistress.phone, monthlyCost: ctx.mistress.cost, address: ctx.mistress.loc, note: "Nhân tình đang hẹn hò thường xuyên" },
-                { name: "Elena (Thư ký công ty)", phone: "+7 (919) 444-55-66", monthlyCost: "Hoa hồng lậu", address: "Biệt thự ven hồ", note: "Cùng đi nghỉ dưỡng Sochi" },
-                { name: "Anya (Sinh viên)", phone: "+7 (927) 888-11-22", monthlyCost: "120,000 ₽", address: "Chung cư Magnolia", note: "Thích quà cáp đắt tiền" }
-            ];
-
-            // 1. MÁY CỦA TÔI (USER)
-            activeStoryState.chats.user = [
-                { id: "emil", name: "Chồng (Emil)", sub: "Trực tuyến", preview: ctx.emilExcuseToWife, history: [
-                    { me: false, text: ctx.emilExcuseToWife },
-                    { me: true, text: "Lại họp? Tuần này 4 lần rồi đấy Emil." },
-                    { me: false, text: "Đừng cằn nhằn nữa, lo ngủ sớm đi!" }
-                ]},
-                { id: "rudolf", name: "Ba Rudolf", sub: "Vừa xong", preview: "Con gái, ngoài trời tuyết rơi lạnh lắm...", history: [
-                    { me: false, text: "Con gái, ngoài trời tuyết rơi lạnh lắm, ba vừa gửi súp củ dền nóng qua Kazan Go đấy." },
-                    { me: false, text: "Nếu thiếu tiền tiêu cứ bảo ba ngay nhé con gái." },
-                    { me: true, text: "Dạ con cảm ơn Ba Rudolf nhiều ạ!" }
-                ]},
-                { id: "dmitry", name: "Dmitry (Bạn Emil)", sub: "1 giờ trước", preview: "Chị dâu tìm Emil à?", history: [
-                    { me: false, text: "Chào chị dâu, thằng Emil nó vừa ra ngoài gặp đối tác một chút, chị đừng lo nhé." }
-                ]},
-                { id: "viktor", name: "Bác Viktor (Bạn của Ba)", sub: "Hôm qua", preview: "Cháu gái, hôm nay bố cháu ghé chơi...", history: [
-                    { me: false, text: "Cháu gái, hôm nay bố cháu ghé Viện Hàn Lâm chơi cờ với bác, thấy ông ấy nhắc cháu suốt." },
-                    { me: true, text: "Dạ cháu cảm ơn Bác Viktor ạ, hôm nào cháu sang thăm bác nhé." }
-                ]}
-            ];
-
-            // 2. MÁY CỦA EMIL
-            activeStoryState.chats.emil = [
-                { id: "wife", name: "Vợ (Ở nhà)", sub: "1 giờ trước", preview: "Lại họp? Tuần này 4 lần rồi...", history: [
-                    { me: true, text: ctx.emilExcuseToWife },
-                    { me: false, text: "Lại họp? Tuần này 4 lần rồi đấy Emil." },
-                    { me: true, text: "Đừng cằn nhằn nữa, lo ngủ sớm đi!" }
-                ]},
-                { id: "mistress", name: ctx.mistress.name, sub: "Đang hoạt động", preview: ctx.mistressNightText, history: [
-                    { me: false, text: ctx.mistressNightText },
-                    { me: true, text: "Anh biết rồi, chờ anh một chút." }
-                ]},
-                { id: "boss", name: "Sếp Arkady (Tổng Giám Đốc)", sub: "Hôm nay", preview: "Báo cáo kiểm toán quý này chưa nộp...", history: [
-                    { me: false, text: "Emil, báo cáo kiểm toán chi nhánh quý này chưa khớp số liệu, sáng mai nộp ngay cho tôi!" },
-                    { me: true, text: "Dạ vâng thưa sếp, em đang hoàn thiện nốt ạ." }
-                ]},
-                { id: "dmitry", name: "Dmitry (Chiến hữu)", sub: "1 giờ trước", preview: "Tao nói dối con vợ mày rồi đấy.", history: [
-                    { me: false, text: "Tao vừa bảo con vợ mày là mày đang họp với sếp rồi, yên tâm quẩy nhé!" },
-                    { me: true, text: "Khá lắm bạn hiền. Tối nay chầu rượu Nocturne tao bao." }
-                ]}
-            ];
-
-            // 3. MÁY CỦA BA RUDOLF
-            activeStoryState.chats.rudolf = [
-                { id: "user_r", name: "Con gái nhỏ yêu quý", sub: "Hôm nay", preview: "Con nhớ giữ ấm nhé...", history: [
-                    { me: true, text: "Con gái, ngoài trời tuyết lạnh lắm, nhớ mặc ấm nhé." },
-                    { me: false, text: "Dạ con cảm ơn Ba Rudolf nhiều ạ!" }
-                ]},
-                { id: "emil_r", name: "Con rể (Emil Kulikov)", sub: "Hôm qua", preview: "Emil, hôm nay tôi gọi cậu không được...", history: [
-                    { me: true, text: "Emil, hôm nay tôi gọi vào máy cậu 3 lần không được. Đừng tưởng cậu làm gì ở Kazan này tôi không biết." }
-                ]},
-                { id: "viktor_r", name: "Viktor Petrov (Bạn thân)", sub: "Sáng nay", preview: "Chiều nay qua viện hàn lâm chơi cờ nhé...", history: [
-                    { me: false, text: "Rudolf, chiều nay qua Viện Hàn Lâm chơi cờ nhé. Vụ việc của con gái ông, tôi đã cho người xác minh giấy tờ bên công ty thằng rể rồi." },
-                    { me: true, text: "Cảm ơn ông bạn già. Chiều tôi qua sớm." }
-                ]},
-                { id: "lawyer_r", name: "Luật sư Tarasov", sub: "Hôm qua", preview: "Hồ sơ ly hôn đã hoàn tất...", history: [
-                    { me: false, text: "Giáo sư Rudolf, hồ sơ đóng băng tài sản và đơn ly hôn đơn phương có bằng chứng ngoại tình của Emil đã hoàn tất." },
-                    { me: true, text: "Tốt lắm. Hãy bảo đảm con gái tôi nhận được 100% tài sản căn hộ và tiền bồi thường danh dự." }
-                ]}
-            ];
-
-            // 4. THÙNG RÁC RIÊNG BIỆT TỪNG MÁY
-            activeStoryState.deletedChats.user = [
-                { id: "del_u1", name: "Spam - Thẩm mỹ viện Kazan", sub: "3 ngày trước", preview: "Ưu đãi 20% chăm sóc da mùa đông...", history: [{ me: false, text: "Ưu đãi 20% dịch vụ xông hơi và phục hồi da mùa tuyết lạnh." }] }
-            ];
-
-            activeStoryState.deletedChats.emil = [
-                { id: "del_e1", name: `🗑️ Client A (${ctx.mistress.name})`, sub: "Đã xóa 1 giờ trước", preview: "Anh nhớ chùi vết son môi trên áo...", history: [
+        // THÙNG RÁC HOÀN TOÀN TÁCH BIỆT (ĐÃ FIX TRIỆT ĐỂ)
+        const isolatedDeletedChats = {
+            user: [
+                { id: "del_u1", name: "Spam - Thẩm mỹ viện Kazan", sub: "3 ngày trước", preview: "Ưu đãi 20% chăm sóc da...", history: [{ me: false, text: "Ưu đãi 20% dịch vụ xông hơi và chăm sóc da mùa đông tuyết lạnh." }] }
+            ],
+            emil: [
+                { id: "del_e1", name: "🗑️ Client A (Anya)", sub: "Đã xóa 1 giờ trước", preview: "Anh nhớ chùi vết son môi trên áo...", history: [
                     { me: false, text: "Lúc nãy em lỡ làm dính son môi trên cổ áo sơ mi đấy, chùi sạch chưa? Coi chừng mụ vợ ở nhà phát hiện!" },
                     { me: true, text: "Anh chùi rồi, em yên tâm. Mai anh lại ghé đưa em đi mua sắm." }
                 ]},
                 { id: "del_e2", name: "🗑️ Đối tác Elena (Sochi)", sub: "Đã xóa đêm qua", preview: "Vé bay khoang thương gia...", history: [
                     { me: false, text: "Vé khoang thương gia đi Sochi em in xong rồi, gặp anh ở sảnh VIP nhé anh yêu." }
                 ]},
-                { id: "del_e3", name: "🗑️ Lễ tân Khách sạn Lux", sub: "Đã xóa 2 ngày trước", preview: "Xác nhận đặt phòng Suite 402...", history: [
+                { id: "del_e3", name: "🗑️ Lễ tân Khách sạn Lux", sub: "Đã xóa 2 ngày trước", preview: "Xác nhận phòng Suite 402...", history: [
                     { me: false, text: "Quý khách Emil Kulikov đã hoàn tất đặt phòng Suite 402 kèm rượu vang Krym." }
                 ]}
+            ],
+            rudolf: [
+                { id: "del_r1", name: "🗑️ Thư viện ĐH Kazan", sub: "Tuần trước", preview: "Xác nhận gia hạn sách...", history: [{ me: false, text: "Sách 'Văn học Nga cổ điển' của Giáo sư đã được gia hạn thêm 30 ngày." }] }
+            ]
+        };
+
+        // ================= HÀM LẤY HỘP THƯ THEO TỪNG PROFILE (CÓ ĐỒNG BỘ 2 CHIỀU) =================
+        function getInboxListForProfile(profile) {
+            if (profile === 'user') {
+                return [
+                    { key: 'emil', name: "Chồng (Emil)", sub: "Trực tuyến", getPreview: () => getSharedPreview('user_emil'), isShared: true, sharedKey: 'user_emil' },
+                    { key: 'rudolf', name: "Ba Rudolf", sub: "Vừa xong", getPreview: () => getSharedPreview('user_rudolf'), isShared: true, sharedKey: 'user_rudolf' },
+                    { key: 'maksim', name: "Maksim Volkov 🖤", sub: "Trực tuyến", getPreview: () => getSharedPreview('user_maksim'), isShared: true, sharedKey: 'user_maksim' },
+                    { key: 'dmitry', name: "Dmitry (Bạn Emil)", sub: "1 giờ trước", getPreview: () => "Chào chị dâu, tìm thằng Emil à?...", isShared: false, privateKey: 'user_dmitry' },
+                    { key: 'viktor', name: "Bác Viktor (Bạn Ba)", sub: "Hôm qua", getPreview: () => "Cháu gái, hôm nay bố cháu ghé chơi...", isShared: false, privateKey: 'user_viktor' }
+                ];
+            } else if (profile === 'emil') {
+                return [
+                    // MÁY EMIL: HỘP THƯ VỚI VỢ ĐƯỢC ĐỒNG BỘ NGUYÊN VẸN VỚI MÁY CỦA USER!
+                    { key: 'user', name: "Vợ (Ở nhà)", sub: "1 giờ trước", getPreview: () => getSharedPreview('user_emil'), isShared: true, sharedKey: 'user_emil' },
+                    { key: 'mistress', name: ctx.mistress.name, sub: "Đang hoạt động", getPreview: () => ctx.mistressNightText, isShared: false, privateKey: 'emil_mistress' },
+                    { key: 'boss', name: "Sếp Arkady (Tổng Giám Đốc)", sub: "Hôm nay", getPreview: () => "Báo cáo kiểm toán quý này chưa nộp...", isShared: false, privateKey: 'emil_boss' },
+                    { key: 'dmitry', name: "Dmitry (Chiến hữu)", sub: "1 giờ trước", getPreview: () => "Tao nói dối con vợ mày rồi đấy.", isShared: false, privateKey: 'emil_dmitry' }
+                ];
+            } else if (profile === 'rudolf') {
+                return [
+                    // MÁY RUDOLF: HỘP THƯ VỚI CON GÁI ĐƯỢC ĐỒNG BỘ NGUYÊN VẸN VỚI MÁY CỦA USER!
+                    { key: 'user', name: "Con gái nhỏ yêu quý", sub: "Hôm nay", getPreview: () => getSharedPreview('user_rudolf'), isShared: true, sharedKey: 'user_rudolf' },
+                    { key: 'emil', name: "Con rể (Emil Kulikov)", sub: "Hôm qua", getPreview: () => "Emil, hôm nay tôi gọi cậu không được...", isShared: false, privateKey: 'rudolf_emil' },
+                    { key: 'viktor', name: "Viktor Petrov (Bạn thân)", sub: "Sáng nay", getPreview: () => "Chiều nay qua viện hàn lâm chơi cờ nhé...", isShared: false, privateKey: 'rudolf_viktor' },
+                    { key: 'lawyer', name: "Luật sư Tarasov", sub: "Hôm qua", getPreview: () => "Hồ sơ ly hôn đã hoàn tất...", isShared: false, privateKey: 'rudolf_lawyer' }
+                ];
+            }
+        }
+
+        function getSharedPreview(key) {
+            const arr = sharedConversations[key];
+            if (!arr || arr.length === 0) return "Chưa có tin nhắn";
+            return arr[arr.length - 1].text;
+        }
+
+        // ================= HÀM LẤY LỊCH SỬ CHAT VÀ PHÂN QUYỀN TRÁI/PHẢI (ME: TRUE/FALSE) =================
+        function getChatHistoryForCurrentView(chatItem) {
+            if (chatItem.isShared) {
+                const rawArr = sharedConversations[chatItem.sharedKey];
+                // Tùy theo người đang cầm máy (activeProfile) mà xác định tin nhắn nào là "me" (bên phải) hay đối phương (bên trái)
+                return rawArr.map(msg => ({
+                    me: (msg.sender === activeProfile),
+                    text: msg.text,
+                    isPhoto: msg.isPhoto
+                }));
+            } else {
+                return privateChats[chatItem.privateKey] || [];
+            }
+        }
+
+        function buildNaturalState() {
+            ctx = getNaturalContext();
+
+            // 1. Ảnh Vault
+            db.emil.vaultPhotos = [
+                { title: `[ẢNH MẬT: ${ctx.mistress.name} tại Khách sạn Lux]`, desc: `${ctx.mistress.name} mặc váy ngủ lụa đỏ chụp trước gương phòng 402, cổ đeo sợi dây chuyền kim cương vừa được Emil tặng.`, tag: "Phòng 402" },
+                { title: `[ẢNH MẬT: Xe Mercedes Emil tại ${ctx.mistress.loc}]`, desc: `Ảnh chụp biển số xe Mercedes đỗ lén lút ngoài căn hộ của ${ctx.mistress.name} lúc 23:40.`, tag: "Lén lút" },
+                { title: `[ẢNH MẬT: Hóa đơn Chanel Boutique Kazan]`, desc: `Biên lai thanh toán 85,000 ₽ mua túi xách tặng bồ nhí giấu dưới ghế phụ xe.`, tag: "Hóa đơn đen" }
             ];
 
-            activeStoryState.deletedChats.rudolf = [
-                { id: "del_r1", name: "🗑️ Thư viện ĐH Kazan", sub: "Tuần trước", preview: "Xác nhận gia hạn sách...", history: [{ me: false, text: "Sách 'Văn học Nga cổ điển' của Giáo sư đã được gia hạn thêm 30 ngày." }] }
+            // 2. Sổ tay nhân tình của Emil
+            db.emil.vaultMistresses = [
+                { name: `${ctx.mistress.name} (${ctx.mistress.role})`, phone: ctx.mistress.phone, monthlyCost: ctx.mistress.cost, address: ctx.mistress.loc, note: "Nhân tình đang hẹn hò thường xuyên" },
+                { name: "Elena (Thư ký công ty)", phone: "+7 (919) 444-55-66", monthlyCost: "Hoa hồng lậu", address: "Biệt thự ven hồ", note: "Cùng đi nghỉ dưỡng Sochi" },
+                { name: "Anya (Sinh viên)", phone: "+7 (927) 888-11-22", monthlyCost: "120,000 ₽", address: "Chung cư Magnolia", note: "Thích quà cáp đắt tiền" }
             ];
 
             document.getElementById('home-story-badge').innerText = ctx.weatherBadge;
             document.getElementById('lock-timeline-hint').innerText = ctx.timeHint;
-            document.getElementById('lock-sender').innerText = (activeProfile === 'emil') ? ctx.mistress.name : (activeProfile === 'rudolf' ? "Viktor Petrov" : "Ba Rudolf");
-            document.getElementById('lock-snippet').innerText = (activeProfile === 'emil') ? ctx.mistressNightText : (activeProfile === 'rudolf' ? "Chiều nay qua viện hàn lâm chơi cờ nhé..." : "Con gái, ngoài trời tuyết rơi lạnh lắm...");
+            document.getElementById('lock-sender').innerText = (activeProfile === 'emil') ? ctx.mistress.name : (activeProfile === 'rudolf' ? "Viktor Petrov" : "Maksim Volkov 🖤");
+            document.getElementById('lock-snippet').innerText = (activeProfile === 'emil') ? ctx.mistressNightText : (activeProfile === 'rudolf' ? "Chiều nay qua viện hàn lâm chơi cờ nhé..." : "Tối nay anh đón em đi ăn tối ở Panorama nhé?...");
         }
 
         // ================= KAZAN GO / PHOTOS / BANKING =================
@@ -820,52 +898,6 @@
         };
 
         const mediaPlaying = { user: "Lana Del Rey - Young and Beautiful", emil: "Deep Dark Techno - Nocturne Live", rudolf: "Tchaikovsky - Nutcracker Suite" };
-
-        const db = {
-            user: {
-                readOnly: false,
-                contacts: [
-                    { id: "c_u1", key: "emil", name: "Chồng (Emil)", phone: "+7 (917) 442-88-12", tag: "Chồng", notes: "Hay đi sớm về muộn, giấu các hóa đơn thẻ." },
-                    { id: "c_u2", key: "rudolf", name: "Ba Rudolf", phone: "+7 (987) 221-00-99", tag: "Cha", notes: "Luôn bảo bọc, dặn dò ăn uống và chu cấp tiền." },
-                    { id: "c_u3", key: "dmitry", name: "Dmitry (Bạn của Emil)", phone: "+7 (927) 333-77-88", tag: "Bạn của chồng", notes: "Bạn cùng hội xe hơi và quán rượu với Emil." },
-                    { id: "c_u4", key: "viktor", name: "Bác Viktor (Bạn thân của Ba)", phone: "+7 (917) 555-88-11", tag: "Bạn của Ba", notes: "Viện sĩ Viện Hàn Lâm, rất yêu quý gia đình mình." },
-                    { id: "c_u5", key: "mikhail", name: "Bác sĩ Mikhail", phone: "+7 (843) 222-33-44", tag: "Bác sĩ gia đình", notes: "Bạn chơi cờ của Ba Rudolf, bác sĩ tim mạch." },
-                    { id: "c_u6", key: "mart", name: "Tiệm Bánh Kazan Mart", phone: "+7 (843) 555-12-34", tag: "Cửa hàng", notes: "Giao bánh Medovik nóng hổi mỗi sáng." }
-                ],
-                bank: [{ title: "Rudolf chuyển tiền", time: "Sáng nay", val: "+50,000 ₽", plus: true }],
-                notes: [{ title: "Cần sắm", body: "Kem nẻ Siberi, áo dạ mới." }]
-            },
-            emil: {
-                readOnly: true,
-                contacts: [
-                    { id: "c_e1", key: "wife", name: "Vợ (Ở nhà)", phone: "+7 (917) 000-44-33", tag: "Vợ", notes: "Phải che giấu số dư tài khoản nước ngoài." },
-                    { id: "c_e2", key: "boss", name: "Sếp Arkady (Tổng Giám Đốc)", phone: "+7 (917) 111-00-01", tag: "Lãnh đạo", notes: "Tập đoàn StroiKazan. Cần luồn cúi lấy lòng." },
-                    { id: "c_e3", key: "anya", name: "Client A (Anya - Bồ nhí)", phone: "+7 (927) 888-11-22", tag: "Nhân tình 1", notes: "Bí mật. Tặng túi Chanel và căn hộ Magnolia." },
-                    { id: "c_e4", key: "elena", name: "Đối tác Elena (Thư ký)", phone: "+7 (919) 444-55-66", tag: "Nhân tình 2", notes: "Đi Sochi cùng Emil, làm hợp đồng khống." },
-                    { id: "c_e5", key: "polina", name: "Polina (Nocturne Club)", phone: "+7 (927) 111-99-00", tag: "Quán bar", notes: "Vũ nữ quen ở phòng VIP." },
-                    { id: "c_e6", key: "dmitry_e", name: "Dmitry (Chiến hữu)", phone: "+7 (927) 333-77-88", tag: "Bạn thân", notes: "Chuyên bao che các vụ đi ăn chơi ngoại tình." },
-                    { id: "c_e7", key: "garage", name: "Garage sửa xe Mercedes Kazan", phone: "+7 (843) 777-66-55", tag: "Dịch vụ", notes: "Bảo dưỡng xe và kiểm tra gầm." },
-                    { id: "c_e8", key: "p2p", name: "Dịch vụ đổi tiền P2P Bauman", phone: "+7 (999) 444-12-34", tag: "Rửa tiền", notes: "Đổi tiền mặt sang USDT ẩn danh." },
-                    { id: "c_e9", key: "ticket", name: "Cò vé máy bay ngầm", phone: "+7 (903) 888-99-00", tag: "Dịch vụ", notes: "Xuất hóa đơn công tác giả đi Sochi." }
-                ],
-                bank: [{ title: "Khách sạn Lux phòng 402", time: "Đêm qua", val: "-28,000 ₽", plus: false }],
-                notes: [{ title: "Ví Ledger", body: "Giấu trong hộc xe Mercedes." }]
-            },
-            rudolf: {
-                readOnly: true,
-                contacts: [
-                    { id: "c_r1", key: "user_r", name: "Con gái nhỏ yêu quý", phone: "+7 (917) 000-44-33", tag: "Gia đình", notes: "Cần bảo vệ khỏi kẻ lừa đảo Emil." },
-                    { id: "c_r2", key: "emil_r", name: "Con rể (Emil Kulikov)", phone: "+7 (917) 442-88-12", tag: "Con rể", notes: "Thằng lừa đảo, đang bị thám tử theo dõi chặt chẽ." },
-                    { id: "c_r3", key: "viktor_r", name: "Viktor Petrov (Bạn thân)", phone: "+7 (917) 555-88-11", tag: "Bạn thân chí cốt", notes: "Viện sĩ Viện Hàn Lâm, hỗ trợ điều tra Emil." },
-                    { id: "c_r4", key: "mikhail_r", name: "Bác sĩ Mikhail (Bạn thân)", phone: "+7 (843) 222-33-44", tag: "Bạn thân", notes: "Bác sĩ tim mạch, bạn chơi cờ vua 20 năm." },
-                    { id: "c_r5", key: "lawyer", name: "Luật sư Tarasov", phone: "+7 (843) 999-11-22", tag: "Luật sư", notes: "Chuyên gia ly hôn và tranh chấp tài sản hàng đầu Kazan." },
-                    { id: "c_r6", key: "lambert", name: "Hiệu trưởng Lambert", phone: "+7 (843) 111-22-33", tag: "Đồng nghiệp", notes: "Đại học Tổng hợp Kazan." },
-                    { id: "c_r7", key: "detective", name: "Thám tử tư Morozov (Học trò cũ)", phone: "+7 (905) 333-22-11", tag: "Thám tử", notes: "Chuyên thu thập bằng chứng ngoại tình của Emil." }
-                ],
-                bank: [{ title: "Thuê thám tử tư Kazan", time: "Hôm nay", val: "-50,000 ₽", plus: false }],
-                notes: [{ title: "Chứng cứ thu thập", body: "Lịch trình đi khách sạn Lux và các chuyến bay đêm." }]
-            }
-        };
 
         function clickSound() {
             try {
@@ -973,7 +1005,7 @@
             triggerToast(`🎵 Đang phát: ${mediaPlaying[activeProfile]}`);
         }
 
-        // ================= TÍNH NĂNG MỚI: GỬI ẢNH MÔ TẢ TRONG PHÒNG CHAT =================
+        // ================= GỬI ẢNH MÔ TẢ TRONG PHÒNG CHAT =================
         function openPhotoPickerSheet() {
             clickSound();
             document.getElementById('photo-picker-sheet').classList.remove('hidden');
@@ -1002,21 +1034,29 @@
 
         function dispatchDescribedPhoto(photoText) {
             clickSound();
-            const chat = activeStoryState.chats[activeProfile][currentChatIndex];
             
-            // Đẩy vào lịch sử tin nhắn dưới dạng ảnh
-            chat.history.push({ me: true, text: photoText, isPhoto: true });
-            chat.preview = photoText;
+            // XÁC ĐỊNH PHÒNG CHAT ĐANG MỞ
+            if (currentChatTargetKey === 'emil') {
+                // Gửi vào kênh đồng bộ User <-> Emil
+                sharedConversations.user_emil.push({ sender: 'user', text: photoText, isPhoto: true });
+            } else if (currentChatTargetKey === 'rudolf') {
+                // Gửi vào kênh đồng bộ User <-> Rudolf
+                sharedConversations.user_rudolf.push({ sender: 'user', text: photoText, isPhoto: true });
+            } else if (currentChatTargetKey === 'maksim') {
+                // Gửi cho Maksim
+                sharedConversations.user_maksim.push({ sender: 'user', text: photoText, isPhoto: true });
+            }
+
             renderChatBubbles();
             renderMessagesInbox();
 
-            // Kích hoạt AI phản ứng theo nội dung ảnh
+            // Phản ứng của AI
             if (activeProfile === 'user') {
-                processPhotoReaction(chat, photoText);
+                processPhotoReaction(currentChatTargetKey, photoText);
             }
         }
 
-        function processPhotoReaction(chat, photoText) {
+        function processPhotoReaction(targetKey, photoText) {
             const box = document.getElementById('bubbles-area');
             const typingDiv = document.createElement('div');
             typingDiv.className = "self-start bg-slate-200 rounded-2xl rounded-bl-none typing-bubble mt-1";
@@ -1033,275 +1073,140 @@
 
                 let reply = "";
 
-                if (chat.id === 'emil') {
-                    // Emil phản ứng giật mình nếu gửi ảnh bằng chứng
-                    if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('phòng 402') || lower.includes('lux') || lower.includes('lén') || lower.includes('lắc tay')) {
+                if (targetKey === 'emil') {
+                    if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('lux') || lower.includes('402')) {
                         reply = "Cái này ở đâu ra?! Cô lục lọi túi áo và xe của tôi đấy à?! Cô thôi ngay cái thói theo dõi bệnh hoạn ấy đi trước khi tôi nổi điên!";
-                    } else if (lower.includes('súp') || lower.includes('áo') || lower.includes('bánh')) {
+                    } else if (lower.includes('nước hoa') || lower.includes('quà') || lower.includes('panorama') || lower.includes('maksim')) {
+                        reply = "Ai tặng em món quà này?! Dạo này em đi đâu làm gì mờ ám với thằng nào mà có quà đắt tiền thế này hả?!";
+                    } else {
                         reply = "Gửi mấy thứ này làm gì? Tôi đang họp bận tối mắt tối mũi, đừng làm phiền nữa.";
-                    } else {
-                        reply = "Gửi ảnh gì đấy? Tôi không có thời gian xem mấy thứ vớ vẩn này.";
                     }
-                } else if (chat.id === 'rudolf') {
-                    // Ba Rudolf phản ứng bảo bọc / điều tra
-                    if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('phòng 402') || lower.includes('lux') || lower.includes('lén')) {
-                        reply = "Con chụp được cái này ở đâu thế?! Hãy cất kỹ bản gốc đừng để nó biết, ba sẽ chuyển ngay bằng chứng này cho Luật sư Tarasov để bổ sung vào hồ sơ khởi kiện!";
-                    } else if (lower.includes('súp') || lower.includes('bánh')) {
-                        reply = "Bát súp trông ấm áp và ngon miệng quá con gái. Con nhớ ăn hết khi còn nóng nhé, ba thương con.";
-                    } else if (lower.includes('áo')) {
-                        reply = "Áo đẹp và ấm lắm con gái. Mùa đông Kazan lạnh buốt, con nhớ luôn giữ ấm cơ thể nhé.";
-                    } else {
-                        reply = "Ba đã xem ảnh con gửi rồi nhé con gái.";
-                    }
-                } else if (chat.id === 'dmitry') {
+                    // ĐỒNG BỘ TIN PHẢN HỒI CỦA EMIL VÀO SHARED CHAT!
+                    sharedConversations.user_emil.push({ sender: 'emil', text: reply });
+                } else if (targetKey === 'rudolf') {
                     if (lower.includes('hóa đơn') || lower.includes('son môi') || lower.includes('lux')) {
-                        reply = "Ủa... cái này... chị dâu chụp ở đâu thế? Em không biết gì đâu nhé, chị hỏi thẳng thằng Emil ấy!";
+                        reply = "Con chụp được cái này ở đâu thế?! Cất kỹ bản gốc đừng để nó biết, ba sẽ chuyển ngay bằng chứng này cho Luật sư Tarasov lập vi bằng bổ sung vào hồ sơ ly hôn!";
                     } else {
-                        reply = "Ảnh đẹp đấy chị dâu!";
+                        reply = "Ba đã xem ảnh con gửi rồi nhé con gái. Giữ ấm nhé con.";
                     }
-                } else {
-                    reply = "Đã nhận được hình ảnh.";
+                    // ĐỒNG BỘ TIN PHẢN HỒI CỦA RUDOLF VÀO SHARED CHAT!
+                    sharedConversations.user_rudolf.push({ sender: 'rudolf', text: reply });
+                } else if (targetKey === 'maksim') {
+                    // PHẢN ỨNG CỦA MAKSIM (ÔNG ĂN CHẢ BÀ ĂN NEM)
+                    if (lower.includes('nước hoa') || lower.includes('quà')) {
+                        reply = "Mùi hương đó sinh ra là để dành cho em. Chỉ cần em vui, bất cứ thứ gì ở Kazan này anh cũng sẵn sàng mua cho em.";
+                    } else if (lower.includes('panorama') || lower.includes('rượu')) {
+                        reply = "Bàn ăn ở Panorama đã sẵn sàng rồi em yêu. 19h tối nay anh cho xe qua đón em nhé, mặc chiếc váy đỏ em thích nhé.";
+                    } else {
+                        reply = "Ảnh em chụp đẹp lắm. Anh vừa chuyển thêm 100,000 ₽ vào thẻ cho em sắm đồ nhé, không phải ngại với anh đâu.";
+                        accountBalances.user += 100000;
+                        renderBankApp();
+                        triggerPushBanner("T-Bank", "fa-building-columns", "Nhận tiền từ Maksim", "+100,000 ₽ từ Maksim Volkov.");
+                    }
+                    sharedConversations.user_maksim.push({ sender: 'maksim', text: reply });
                 }
 
-                chat.history.push({ me: false, text: reply });
-                chat.preview = reply;
                 renderChatBubbles();
                 renderMessagesInbox();
                 clickSound();
             }, 1500);
         }
 
-        // ================= RENDER RED VAULT & DIỄN ĐÀN NGẦM =================
-        function switchVaultSubTab(tab) {
+        // ================= GỬI TIN NHẮN TEXT (ĐỒNG BỘ 2 CHIỀU THỰC SỰ) =================
+        function executeSendMessage() {
+            const input = document.getElementById('composer-text');
+            const txt = input.value.trim();
+            if (!txt || db[activeProfile].readOnly) return;
             clickSound();
-            currentVaultSubTab = tab;
-            const filterBar = document.getElementById('forum-filter-bar');
-            
-            ['photos', 'forum', 'mistresses'].forEach(t => {
-                const btn = document.getElementById('vtab-' + t);
-                if (t === tab) {
-                    btn.className = "px-2.5 py-1 rounded-xl bg-red-600 text-white shadow-sm font-bold flex items-center";
-                } else {
-                    btn.className = "px-2.5 py-1 rounded-xl text-slate-400 hover:text-white font-bold flex items-center";
+
+            if (currentChatTargetKey === 'emil') {
+                sharedConversations.user_emil.push({ sender: 'user', text: txt });
+            } else if (currentChatTargetKey === 'rudolf') {
+                sharedConversations.user_rudolf.push({ sender: 'user', text: txt });
+            } else if (currentChatTargetKey === 'maksim') {
+                sharedConversations.user_maksim.push({ sender: 'user', text: txt });
+            } else {
+                const privateKey = `user_${currentChatTargetKey}`;
+                if (!privateChats[privateKey]) privateChats[privateKey] = [];
+                privateChats[privateKey].push({ me: true, text: txt });
+            }
+
+            input.value = '';
+            renderChatBubbles();
+            renderMessagesInbox();
+
+            if (activeProfile === 'user') {
+                processNpcTextReaction(currentChatTargetKey, txt);
+            }
+        }
+
+        function processNpcTextReaction(targetKey, userMsg) {
+            const box = document.getElementById('bubbles-area');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = "self-start bg-slate-200 rounded-2xl rounded-bl-none typing-bubble mt-1";
+            typingDiv.id = "typingBubble";
+            typingDiv.innerHTML = `<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>`;
+            box.appendChild(typingDiv);
+            box.scrollTop = box.scrollHeight;
+
+            const lower = userMsg.toLowerCase();
+
+            setTimeout(() => {
+                const bubble = document.getElementById('typingBubble');
+                if (bubble) bubble.remove();
+
+                let reply = "";
+
+                if (targetKey === 'emil') {
+                    if (lower.includes('bồ') || lower.includes('ở đâu') || lower.includes('ai') || lower.includes('lux')) {
+                        reply = "Tôi đã bảo là đang bận việc tập đoàn! Em thôi ngay cái thói tra khảo vớ vẩn đi!";
+                    } else if (lower.includes('tiền') || lower.includes('chuyển')) {
+                        reply = "Tôi vừa chuyển 25,000 ₽ rồi đấy, chi tiêu cho biết tiết kiệm vào.";
+                        accountBalances.user += 25000;
+                        renderBankApp();
+                        triggerPushBanner("T-Bank", "fa-building-columns", "Nhận tiền từ Emil", "+25,000 ₽ từ Emil Kulikov.");
+                    } else {
+                        reply = "Tôi đang bận, đừng nhắn nữa phiền phức.";
+                    }
+                    sharedConversations.user_emil.push({ sender: 'emil', text: reply });
+                } else if (targetKey === 'rudolf') {
+                    if (lower.includes('tiền') || lower.includes('hết') || lower.includes('mua')) {
+                        reply = "Ba vừa chuyển 50,000 ₽ cho con rồi nhé. Con thích mua gì ở K-Mart cứ mua thoải mái.";
+                        accountBalances.user += 50000;
+                        renderBankApp();
+                        triggerPushBanner("T-Bank", "fa-building-columns", "Nhận tiền từ Ba Rudolf", "+50,000 ₽ từ Rudolf Korolyov.");
+                    } else {
+                        reply = "Con gái ngoan, đừng lo lắng gì cả. Có chuyện gì ba luôn bảo vệ con.";
+                    }
+                    sharedConversations.user_rudolf.push({ sender: 'rudolf', text: reply });
+                } else if (targetKey === 'maksim') {
+                    // Maksim Volkov ngọt ngào và hào phóng
+                    if (lower.includes('ăn tối') || lower.includes('gặp') || lower.includes('đi chơi')) {
+                        reply = "Anh cho tài xế đón em lúc 19h tối nay nhé. Em không cần phải về căn nhà ngột ngạt đó nữa đâu, có anh ở đây.";
+                    } else if (lower.includes('tiền') || lower.includes('mua') || lower.includes('váy')) {
+                        reply = "Em thích chiếc váy nào? Anh vừa chuyển 100,000 ₽ vào tài khoản của em rồi đấy, cứ mua những gì làm em cảm thấy hạnh phúc.";
+                        accountBalances.user += 100000;
+                        renderBankApp();
+                        triggerPushBanner("T-Bank", "fa-building-columns", "Nhận tiền từ Maksim", "+100,000 ₽ từ Maksim Volkov 🖤.");
+                    } else {
+                        reply = "Chỉ cần em nhắn là anh trả lời ngay. Anh luôn ở cạnh em, em yêu.";
+                    }
+                    sharedConversations.user_maksim.push({ sender: 'maksim', text: reply });
+                } else if (targetKey === 'dmitry') {
+                    reply = "Chị dâu tìm Emil à? Thằng Emil đang họp bàn công việc với sếp ấy mà, chị đừng lo nhé!";
+                    privateChats['user_dmitry'].push({ me: false, text: reply });
+                } else if (targetKey === 'viktor') {
+                    reply = "Bác chào cháu gái nhé. Bác vừa nhắc bố cháu nhớ uống trà quế giữ ấm cổ họng đấy.";
+                    privateChats['user_viktor'].push({ me: false, text: reply });
                 }
-            });
 
-            if (tab === 'forum') {
-                filterBar.classList.remove('hidden');
-                filterBar.classList.add('flex');
-            } else {
-                filterBar.classList.add('hidden');
-                filterBar.classList.remove('flex');
-            }
-
-            renderVaultMain();
+                renderChatBubbles();
+                renderMessagesInbox();
+                clickSound();
+            }, 1400);
         }
 
-        function filterForumFeed(cat) {
-            clickSound();
-            currentForumCategory = cat;
-            ['all', 'emil', 'warning', 'tips'].forEach(c => {
-                const btn = document.getElementById('ff-' + c);
-                if (c === cat) {
-                    btn.className = "px-2 py-0.5 rounded-full bg-red-600 text-white whitespace-nowrap font-bold shadow-sm";
-                } else {
-                    btn.className = "px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap";
-                }
-            });
-            renderVaultMain();
-        }
-
-        function renderVaultMain() {
-            const container = document.getElementById('vault-main-content');
-            container.innerHTML = '';
-            document.getElementById('vphoto-count').innerText = activeStoryState.vaultPhotos.length;
-
-            if (currentVaultSubTab === 'photos') {
-                container.innerHTML += `<p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mb-1"><i class="fa-solid fa-camera mr-1"></i>Album ảnh mật bị mã hóa (${activeStoryState.vaultPhotos.length} Mục)</p>`;
-                activeStoryState.vaultPhotos.forEach(p => {
-                    container.innerHTML += `
-                        <div class="p-3 bg-[#141422] rounded-2xl border border-red-950/70 shadow-sm space-y-1.5">
-                            <div class="flex justify-between items-center text-[10px]">
-                                <span class="font-bold text-red-300 flex items-center"><i class="fa-solid fa-image mr-1 text-red-500"></i>${p.title}</span>
-                                <span class="text-[8px] bg-red-950 text-red-400 px-1.5 py-0.5 rounded border border-red-900">${p.tag}</span>
-                            </div>
-                            <div class="p-2 bg-black/60 rounded-xl border border-white/5 text-[11px] text-slate-300 leading-relaxed italic">
-                                "${p.desc}"
-                            </div>
-                        </div>`;
-                });
-            } else if (currentVaultSubTab === 'forum') {
-                let posts = comprehensiveForumThreads;
-                if (currentForumCategory !== 'all') {
-                    posts = comprehensiveForumThreads.filter(p => p.category === currentForumCategory);
-                }
-
-                container.innerHTML += `
-                    <div class="flex justify-between items-center text-[10px] text-slate-400 mb-1">
-                        <span class="font-bold text-red-400"><i class="fa-solid fa-skull mr-1"></i>Nocturne DarkNet • @KazanWolf_91</span>
-                        <span class="text-emerald-400">1,420 Online</span>
-                    </div>`;
-
-                posts.forEach(post => {
-                    container.innerHTML += `
-                        <div class="p-3 bg-[#13131e] rounded-2xl border border-red-950/60 hover:border-red-700/80 cursor-pointer transition-all active:scale-98 shadow-sm space-y-1" onclick="openForumDetailModal('${post.id}')">
-                            <div class="flex justify-between items-center text-[9px] text-slate-400">
-                                <span class="font-bold ${post.author.includes('Emil') ? 'text-red-400' : 'text-slate-300'}">${post.author}</span>
-                                <span class="text-[8px] bg-red-950 text-red-300 px-1 py-0.2 rounded border border-red-900">${post.tag}</span>
-                            </div>
-                            <h3 class="text-xs font-bold text-white hover:text-red-400 transition-colors leading-snug">${post.title}</h3>
-                            <p class="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">${post.snippet}</p>
-                            <div class="mt-2 flex items-center space-x-3 text-[9px] text-slate-500 border-t border-white/5 pt-1.5">
-                                <span class="text-red-400 font-bold"><i class="fa-solid fa-arrow-up mr-1"></i>${post.likes}</span>
-                                <span><i class="fa-solid fa-comment mr-1"></i>${post.comments.length} Bình luận</span>
-                                <span><i class="fa-solid fa-eye mr-1"></i>${post.views}</span>
-                            </div>
-                        </div>`;
-                });
-            } else if (currentVaultSubTab === 'mistresses') {
-                container.innerHTML += `<p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mb-1"><i class="fa-solid fa-address-book mr-1"></i>Danh sách nhân tình & Chi phí bí mật</p>`;
-                activeStoryState.vaultMistresses.forEach(m => {
-                    container.innerHTML += `
-                        <div class="p-3 bg-[#151522] rounded-2xl border border-red-900/40 shadow-sm space-y-1 text-xs">
-                            <div class="flex justify-between items-center">
-                                <p class="font-bold text-red-300">${m.name}</p>
-                                <span class="text-[10px] font-mono text-emerald-400 font-bold">${m.monthlyCost}</span>
-                            </div>
-                            <p class="text-[10px] text-slate-400"><i class="fa-solid fa-phone mr-1"></i>${m.phone}</p>
-                            <p class="text-[10px] text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${m.address}</p>
-                            <div class="mt-1 p-1.5 bg-black/50 rounded-lg text-[10px] text-red-300/80 italic border border-red-950">Ghi chú: ${m.note}</div>
-                        </div>`;
-                });
-            }
-        }
-
-        function openForumDetailModal(postId) {
-            clickSound();
-            const post = comprehensiveForumThreads.find(p => p.id === postId);
-            if (!post) return;
-
-            const box = document.getElementById('forum-detail-content');
-            let commentsHtml = '';
-            post.comments.forEach(c => {
-                commentsHtml += `
-                    <div class="p-2.5 bg-[#151522] rounded-xl border border-white/5 text-[11px] space-y-1">
-                        <div class="flex justify-between text-[9px]">
-                            <span class="font-bold ${c.user.includes('Emil') ? 'text-red-400' : 'text-slate-400'}">${c.user}</span>
-                            <span class="text-slate-500">${c.time}</span>
-                        </div>
-                        <p class="text-slate-300 leading-relaxed">${c.text}</p>
-                    </div>`;
-            });
-
-            box.innerHTML = `
-                <div class="p-3 bg-[#13131e] rounded-2xl border border-red-950/80 space-y-2">
-                    <div class="flex justify-between items-center text-[10px]">
-                        <span class="font-bold text-red-400">${post.author}</span>
-                        <span class="text-[8px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded border border-red-900">${post.tag}</span>
-                    </div>
-                    <h2 class="text-sm font-bold text-white leading-snug">${post.title}</h2>
-                    <p class="text-xs text-slate-300 leading-relaxed border-t border-white/5 pt-2">${post.body}</p>
-                    <div class="flex space-x-3 text-[10px] text-slate-400 pt-2 border-t border-white/5">
-                        <span class="text-red-400 font-bold"><i class="fa-solid fa-arrow-up mr-1"></i>${post.likes} Upvotes</span>
-                        <span><i class="fa-solid fa-eye mr-1"></i>${post.views} Lượt đọc</span>
-                    </div>
-                </div>
-                <div class="space-y-2 pt-2">
-                    <p class="text-[10px] font-bold text-red-400 uppercase tracking-wider"><i class="fa-solid fa-comments mr-1"></i>Bình luận hội viên (${post.comments.length})</p>
-                    <div class="space-y-1.5">${commentsHtml}</div>
-                </div>`;
-
-            document.getElementById('forum-detail-view').classList.add('open');
-        }
-
-        function closeForumDetail() {
-            clickSound();
-            document.getElementById('forum-detail-view').classList.remove('open');
-        }
-
-        // ================= KAZAN GO / PHOTOS / MESSAGES / APP RENDERING =================
-        function switchKazanGoTab(tab) {
-            clickSound();
-            currentKazanGoTab = tab;
-            const tabRides = document.getElementById('tab-go-rides');
-            const tabDeliv = document.getElementById('tab-go-delivery');
-            if (tab === 'rides') {
-                tabRides.className = "px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-bold";
-                tabDeliv.className = "px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white";
-            } else {
-                tabDeliv.className = "px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-bold";
-                tabRides.className = "px-2.5 py-0.5 rounded-md text-slate-400 hover:text-white";
-            }
-            renderKazanGoApp();
-        }
-
-        function renderKazanGoApp() {
-            const container = document.getElementById('kazango-content');
-            container.innerHTML = '';
-            const data = kazanGoData[activeProfile];
-
-            if (currentKazanGoTab === 'rides') {
-                data.rides.forEach(r => {
-                    container.innerHTML += `
-                        <div class="p-3 bg-slate-800/80 rounded-2xl border border-white/10 text-xs shadow-sm">
-                            <div class="flex justify-between items-center text-[10px] text-amber-400 mb-1 font-bold">
-                                <span><i class="fa-solid fa-clock mr-1"></i>${r.time}</span>
-                                <span class="text-white font-mono text-xs">${r.cost}</span>
-                            </div>
-                            <p class="text-[11px] text-slate-200">${r.from} ➔ ${r.to}</p>
-                            <p class="text-[9px] text-slate-400 mt-1">${r.car}</p>
-                        </div>`;
-                });
-            } else {
-                data.delivery.forEach(d => {
-                    container.innerHTML += `
-                        <div class="p-3 bg-slate-800/80 rounded-2xl border border-pink-500/20 text-xs shadow-sm">
-                            <p class="text-xs font-bold text-white">${d.item}</p>
-                            <p class="text-[10px] text-slate-300">${d.from} ➔ ${d.to || 'Địa chỉ nhận'}</p>
-                            ${d.note ? `<p class="mt-1 p-1.5 bg-pink-950/40 rounded text-[9px] text-pink-200 italic">${d.note}</p>` : ''}
-                        </div>`;
-                });
-            }
-        }
-
-        function switchPhotoAlbum(albumType) {
-            clickSound();
-            currentPhotoAlbum = albumType;
-            const btnAll = document.getElementById('btn-photo-all');
-            const btnDel = document.getElementById('btn-photo-del');
-            if (albumType === 'all') {
-                btnAll.className = "px-2 py-0.5 rounded-md bg-slate-700 text-cyan-300 font-bold";
-                btnDel.className = "px-2 py-0.5 rounded-md text-slate-400 hover:text-rose-400";
-            } else {
-                btnDel.className = "px-2 py-0.5 rounded-md bg-rose-900/80 text-rose-200 font-bold border border-rose-700";
-                btnAll.className = "px-2 py-0.5 rounded-md text-slate-400 hover:text-white";
-            }
-            renderPhotosApp();
-        }
-
-        function renderPhotosApp() {
-            const grid = document.getElementById('photos-grid');
-            grid.innerHTML = '';
-            const album = photosDb[activeProfile][currentPhotoAlbum] || [];
-            document.getElementById('photo-album-tag').innerText = `${album.length} Mục`;
-
-            if (album.length === 0) {
-                grid.parentElement.innerHTML = '<p class="text-xs text-slate-500 text-center py-10 col-span-2">Thư mục trống.</p>';
-                return;
-            }
-
-            album.forEach(p => {
-                grid.innerHTML += `
-                    <div class="bg-slate-800 rounded-xl overflow-hidden border border-white/10 shadow-sm flex flex-col">
-                        <img src="${p.url}" alt="${p.title}" class="w-full h-24 object-cover">
-                        <div class="p-1.5 flex flex-col justify-between flex-1">
-                            <p class="text-[10px] font-bold text-slate-200 truncate">${p.title}</p>
-                            <span class="text-[8px] bg-slate-700 text-cyan-300 px-1 py-0.5 rounded self-start mt-1">${p.tag}</span>
-                        </div>
-                    </div>`;
-            });
-        }
-
+        // ================= RENDER MESSAGES INBOX & CHAT THREAD (ĐỒNG BỘ 2 CHIỀU) =================
         function filterMessages(tab) {
             clickSound();
             currentMessageFilter = tab;
@@ -1320,35 +1225,53 @@
         function renderMessagesInbox() {
             const list = document.getElementById('inbox-list');
             list.innerHTML = '';
-            const chatList = (currentMessageFilter === 'inbox') ? (activeStoryState.chats[activeProfile] || []) : (activeStoryState.deletedChats[activeProfile] || []);
 
-            document.getElementById('trash-count').innerText = (activeStoryState.deletedChats[activeProfile] || []).length;
+            if (currentMessageFilter === 'trash') {
+                // Thùng rác riêng biệt từng người
+                const trashList = isolatedDeletedChats[activeProfile] || [];
+                document.getElementById('trash-count').innerText = trashList.length;
 
-            if (!chatList || chatList.length === 0) {
-                list.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">${currentMessageFilter === 'trash' ? 'Thùng rác trống (Không có tin nhắn nào bị xóa).' : 'Hộp thư trống.'}</p>`;
-                return;
+                if (trashList.length === 0) {
+                    list.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">Thùng rác trống.</p>';
+                    return;
+                }
+
+                trashList.forEach((c, idx) => {
+                    list.innerHTML += `
+                        <div class="p-2 rounded-xl bg-rose-50/60 border border-rose-100 flex items-center space-x-2.5 cursor-pointer active:scale-98 transition-all" onclick="openTrashChatThread(${idx})">
+                            <div class="w-9 h-9 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold text-xs">${c.name.charAt(0)}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-baseline"><p class="font-bold text-[11px] truncate text-rose-700">${c.name}</p><span class="text-[8px] text-slate-400">${c.sub}</span></div>
+                                <p class="text-[10px] text-slate-500 truncate mt-0.5">${c.preview}</p>
+                            </div>
+                        </div>`;
+                });
+            } else {
+                // Hộp thư đến (Inbox) có hỗ trợ đồng bộ 2 chiều
+                const inboxItems = getInboxListForProfile(activeProfile);
+                document.getElementById('trash-count').innerText = (isolatedDeletedChats[activeProfile] || []).length;
+
+                inboxItems.forEach(item => {
+                    const previewText = item.getPreview();
+                    list.innerHTML += `
+                        <div class="p-2 rounded-xl hover:bg-slate-100 flex items-center space-x-2.5 cursor-pointer active:scale-98 transition-all" onclick="openInboxChatThread('${item.key}', '${item.name}')">
+                            <div class="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-xs">${item.name.charAt(0)}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-baseline"><p class="font-bold text-[11px] truncate">${item.name}</p><span class="text-[8px] text-slate-400">${item.sub}</span></div>
+                                <p class="text-[10px] text-slate-500 truncate mt-0.5">${previewText}</p>
+                            </div>
+                        </div>`;
+                });
             }
-
-            chatList.forEach((c, idx) => {
-                list.innerHTML += `
-                    <div class="p-2 rounded-xl hover:bg-slate-100 flex items-center space-x-2.5 cursor-pointer active:scale-98 transition-all ${currentMessageFilter === 'trash' ? 'bg-rose-50/60 border border-rose-100' : ''}" onclick="openChatThread(${idx})">
-                        <div class="w-9 h-9 rounded-full ${currentMessageFilter === 'trash' ? 'bg-rose-600' : 'bg-purple-600'} text-white flex items-center justify-center font-bold text-xs">${c.name.charAt(0)}</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-baseline"><p class="font-bold text-[11px] truncate ${currentMessageFilter === 'trash' ? 'text-rose-700' : ''}">${c.name}</p><span class="text-[8px] text-slate-400">${c.sub}</span></div>
-                            <p class="text-[10px] text-slate-500 truncate mt-0.5">${c.preview}</p>
-                        </div>
-                    </div>`;
-            });
         }
 
-        function openChatThread(idx) {
+        function openInboxChatThread(targetKey, targetName) {
             clickSound();
-            currentChatIndex = idx;
-            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats[activeProfile];
-            const chat = chatList[idx];
-            document.getElementById('chatting-name').innerText = chat.name;
+            currentChatTargetKey = targetKey;
+            document.getElementById('chatting-name').innerText = targetName;
 
-            if (currentMessageFilter === 'trash' || db[activeProfile].readOnly) {
+            // Phân quyền soạn thảo: Chỉ máy User mới có thanh nhập tin nhắn & nút gửi ảnh
+            if (db[activeProfile].readOnly) {
                 document.getElementById('chat-composer').classList.add('hidden');
                 document.getElementById('chat-readonly-banner').classList.remove('hidden');
                 document.getElementById('chat-readonly-banner').classList.add('flex');
@@ -1361,15 +1284,52 @@
             document.getElementById('chat-subview').classList.add('open');
         }
 
-        function renderChatBubbles() {
-            const chatList = (currentMessageFilter === 'inbox') ? activeStoryState.chats[activeProfile] : activeStoryState.deletedChats[activeProfile];
-            const chat = chatList[currentChatIndex];
+        function openTrashChatThread(idx) {
+            clickSound();
+            const trashList = isolatedDeletedChats[activeProfile] || [];
+            const chat = trashList[idx];
+            document.getElementById('chatting-name').innerText = chat.name;
+            document.getElementById('chat-composer').classList.add('hidden');
+            document.getElementById('chat-readonly-banner').classList.remove('hidden');
+            document.getElementById('chat-readonly-banner').classList.add('flex');
+
             const box = document.getElementById('bubbles-area');
             box.innerHTML = '';
-            
             chat.history.forEach(c => {
+                box.innerHTML += `
+                    <div class="self-start bg-slate-200 text-slate-900 rounded-2xl rounded-bl-none px-3 py-1.5 max-w-[80%] leading-relaxed text-[11px] shadow-sm">
+                        ${c.text}
+                    </div>`;
+            });
+            document.getElementById('chat-subview').classList.add('open');
+        }
+
+        function renderChatBubbles() {
+            const box = document.getElementById('bubbles-area');
+            box.innerHTML = '';
+
+            let messages = [];
+
+            // TỰ ĐỘNG KẾT NỐI KÊNH ĐỒNG BỘ NẾU LÀ CÁC CUỘC TRÒ CHUYỆN CHUNG
+            if (activeProfile === 'user' && currentChatTargetKey === 'emil') {
+                messages = sharedConversations.user_emil.map(m => ({ me: (m.sender === 'user'), text: m.text, isPhoto: m.isPhoto }));
+            } else if (activeProfile === 'emil' && currentChatTargetKey === 'user') {
+                // ĐỒNG BỘ 2 CHIỀU: TRÊN MÁY EMIL, TIN NHẮN CỦA USER SẼ Ở BÊN TRÁI, EMIL Ở BÊN PHẢI!
+                messages = sharedConversations.user_emil.map(m => ({ me: (m.sender === 'emil'), text: m.text, isPhoto: m.isPhoto }));
+            } else if (activeProfile === 'user' && currentChatTargetKey === 'rudolf') {
+                messages = sharedConversations.user_rudolf.map(m => ({ me: (m.sender === 'user'), text: m.text, isPhoto: m.isPhoto }));
+            } else if (activeProfile === 'rudolf' && currentChatTargetKey === 'user') {
+                // ĐỒNG BỘ 2 CHIỀU: TRÊN MÁY RUDOLF, TIN NHẮN CỦA USER Ở BÊN TRÁI, RUDOLF Ở BÊN PHẢI!
+                messages = sharedConversations.user_rudolf.map(m => ({ me: (m.sender === 'rudolf'), text: m.text, isPhoto: m.isPhoto }));
+            } else if (activeProfile === 'user' && currentChatTargetKey === 'maksim') {
+                messages = sharedConversations.user_maksim.map(m => ({ me: (m.sender === 'user'), text: m.text, isPhoto: m.isPhoto }));
+            } else {
+                const pKey = `${activeProfile}_${currentChatTargetKey}`;
+                messages = privateChats[pKey] || [];
+            }
+
+            messages.forEach(c => {
                 if (c.isPhoto) {
-                    // HIỂN THỊ DẠNG THẺ ẢNH POLAROID ĐÍNH KÈM
                     box.innerHTML += `
                         <div class="${c.me ? 'self-end bg-purple-700 text-white rounded-br-none' : 'self-start bg-slate-800 text-white rounded-bl-none'} p-2.5 rounded-2xl max-w-[85%] shadow-md border border-purple-400/30 space-y-1">
                             <div class="flex items-center space-x-1.5 text-[9px] text-purple-200 font-bold">
@@ -1399,19 +1359,25 @@
             clickSound();
             let callerName = "Ba Rudolf";
             let script = [
-                "Con gái à, ba Rudolf đây... Ngoài trời Kazan tuyết rơi âm 5 độ rồi đấy.",
+                "Con gái à, ba Rudolf đây... Ngoài trời Kazan bão tuyết âm 5 độ rồi đấy.",
                 "Ba vừa gửi chuyển phát âu súp củ dền nóng qua Kazan Go cho con đấy.",
                 "Có chuyện gì cứ gọi cho ba ngay nhé, đừng chịu đựng một mình..."
             ];
 
             const rand = Math.random();
-            if (rand < 0.4) {
+            if (rand < 0.35) {
                 callerName = "Chồng (Emil)";
                 script = [
                     "(Tiếng nhạc xập xình)... Alo? Tối nay tôi bận họp thâu đêm không về đâu.",
                     "Đừng có gọi liên tục vào máy tôi nữa, phiền phức lắm. Ngủ trước đi!"
                 ];
-            } else if (rand < 0.7) {
+            } else if (rand < 0.65) {
+                callerName = "Maksim Volkov 🖤";
+                script = [
+                    "Alo? Em yêu, anh vừa kết thúc cuộc họp bên khu Panorama...",
+                    "Tối nay tuyết rơi lạnh lắm, anh lái xe qua đón em đi dạo ngắm Kazan về đêm nhé?"
+                ];
+            } else {
                 callerName = `Số lạ (${ctx.mistress.name})`;
                 script = [
                     `Alo? Chị là vợ anh Emil à? Tôi là ${ctx.mistress.name} đây...`,
@@ -1444,10 +1410,21 @@
 
         function makeCall(targetName) {
             clickSound();
-            const script = [
+            let script = [
                 "Alo? Anh đang bận họp với đối tác, có gì tối về nói sau nhé!",
                 "Đừng có tra khảo anh nữa, cúp máy đây!"
             ];
+            if (targetName.includes("Maksim")) {
+                script = [
+                    "Alo? Em yêu à, anh đang nghe đây...",
+                    "Có chuyện gì thế em? Anh qua đón em ngay nhé?"
+                ];
+            } else if (targetName.includes("Rudolf")) {
+                script = [
+                    "Ba đây con gái... Con ăn tối chưa?",
+                    "Cần gì cứ bảo ba nhé con gái."
+                ];
+            }
             startVoiceCallWithSubtitles(targetName, script);
         }
 
@@ -1613,21 +1590,10 @@
         function jumpToChatFromContact() {
             if (!selectedContactObj) return;
             const targetKey = selectedContactObj.key;
+            const targetName = selectedContactObj.name;
             closeContactDetail();
-            let chatIdx = activeStoryState.chats[activeProfile].findIndex(c => c.id === targetKey);
-            if (chatIdx === -1) {
-                activeStoryState.chats[activeProfile].push({
-                    id: targetKey,
-                    name: selectedContactObj.name,
-                    sub: "Trực tuyến",
-                    preview: "Bắt đầu trò chuyện...",
-                    history: []
-                });
-                renderMessagesInbox();
-                chatIdx = activeStoryState.chats[activeProfile].length - 1;
-            }
             openAppScreen('app-messages');
-            openChatThread(chatIdx);
+            openInboxChatThread(targetKey, targetName);
         }
 
         function jumpToCallFromContact() {
@@ -1635,77 +1601,7 @@
             makeCall(selectedContactObj.name);
         }
 
-        function executeSendMessage() {
-            const input = document.getElementById('composer-text');
-            const txt = input.value.trim();
-            if (!txt || currentChatIndex === null || db[activeProfile].readOnly) return;
-            clickSound();
-
-            const chat = activeStoryState.chats[activeProfile][currentChatIndex];
-            chat.history.push({ me: true, text: txt });
-            chat.preview = txt;
-            input.value = '';
-            renderChatBubbles();
-            renderMessagesInbox();
-
-            if (activeProfile === 'user') {
-                processNpcChatAndMoneyFlow(chat, txt);
-            }
-        }
-
-        function processNpcChatAndMoneyFlow(chat, userMsg) {
-            const box = document.getElementById('bubbles-area');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = "self-start bg-slate-200 rounded-2xl rounded-bl-none typing-bubble mt-1";
-            typingDiv.id = "typingBubble";
-            typingDiv.innerHTML = `<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>`;
-            box.appendChild(typingDiv);
-            box.scrollTop = box.scrollHeight;
-
-            const lower = userMsg.toLowerCase();
-
-            setTimeout(() => {
-                const bubble = document.getElementById('typingBubble');
-                if (bubble) bubble.remove();
-
-                let reply = "";
-                let transferAmount = 0;
-                let transferSender = "";
-
-                if (chat.id === 'rudolf') {
-                    if (lower.includes('tiền') || lower.includes('mua') || lower.includes('hết') || lower.includes('chuyển')) {
-                        transferAmount = 50000;
-                        transferSender = "Rudolf Korolyov";
-                        reply = "Ba vừa chuyển 50,000 ₽ cho con rồi nhé. Con thích mua gì ở K-Mart cứ mua thoải mái.";
-                    } else {
-                        reply = "Con gái ngoan, đừng lo lắng gì cả. Có chuyện gì ba luôn bảo vệ con.";
-                    }
-                } else if (chat.id === 'emil') {
-                    if (lower.includes('bồ') || lower.includes('ở đâu') || lower.includes('ai')) {
-                        reply = "Tôi đã bảo là đang bận việc tập đoàn! Em thôi ngay cái thói tra khảo vớ vẩn đi!";
-                    } else {
-                        reply = "Tôi đang bận, đừng nhắn nữa phiền phức.";
-                    }
-                } else if (chat.id === 'viktor') {
-                    reply = "Bác chào cháu gái nhé. Bác vừa nhắc bố cháu nhớ uống trà quế giữ ấm cổ họng đấy.";
-                } else {
-                    reply = "Đã nhận tin nhắn.";
-                }
-
-                chat.history.push({ me: false, text: reply });
-                chat.preview = reply;
-                renderChatBubbles();
-                renderMessagesInbox();
-                clickSound();
-
-                if (transferAmount > 0) {
-                    accountBalances.user += transferAmount;
-                    renderBankApp();
-                    triggerPushBanner("T-Bank", "fa-building-columns", "Nhận tiền", `+${transferAmount.toLocaleString('vi-VN')} ₽ từ ${transferSender}.`);
-                }
-            }, 1400);
-        }
-
+        // ================= K-MART =================
         function renderKMartProducts() {
             const container = document.getElementById('kmart-items-container');
             container.innerHTML = '';
@@ -1806,7 +1702,7 @@
             setTimeout(() => t.classList.add('opacity-0'), 2200);
         }
 
-        // TỰ ĐỘNG KHỞI TẠO NỘI DUNG THEO NGÀY VÀ GIỜ THẬT
+        // KHỞI ĐỘNG HỆ THỐNG
         buildNaturalState();
         renderBankApp();
         renderMessagesInbox();
